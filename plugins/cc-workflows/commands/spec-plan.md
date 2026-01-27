@@ -1,5 +1,4 @@
 ---
-name: spec-plan
 description: Creates implementation plan with focused, independently executable stories from PRD and optional assets (architecture, design system, wireframes).
 argument-hint: [Specs directory containing PRD and optional assets]
 ---

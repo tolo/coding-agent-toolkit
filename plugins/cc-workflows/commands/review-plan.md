@@ -1,5 +1,4 @@
 ---
-name: review-plan
 description: Review specifications, plans, requirement documents, or other documentation for completeness, clarity, edge cases, and technical accuracy.
 argument-hint: [Path to spec/plan document(s) or additional review focus areas]
 ---

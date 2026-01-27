@@ -1,5 +1,4 @@
 ---
-name: wireframes
 description: Creates simple HTML wireframes for all pages/screens from feature requirements
 argument-hint: [Feature requirements - inline, file path, or PRD reference] [Optional - design system or concept design directory]
 ---

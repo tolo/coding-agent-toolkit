@@ -1,5 +1,4 @@
 ---
-name: quick-implement
 description: Quick implementation path for small features or fixes with verification
 argument-hint: <spec> | --issue <number>
 ---

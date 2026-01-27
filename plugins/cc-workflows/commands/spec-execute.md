@@ -1,5 +1,4 @@
 ---
-name: spec-execute
 description: Executes a Feature Implementation Specification that contains all implementation details
 ---
 

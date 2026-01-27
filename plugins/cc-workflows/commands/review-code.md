@@ -1,6 +1,5 @@
 ---
-name: review-code
-description: Perform a thorough review of code, architecture, UI, and security of the current implementation and generate a detailed report with prioritized findings. 
+description: Perform a thorough review of code, architecture, UI, and security of the current implementation and generate a detailed report with prioritized findings.
 argument-hint: [Optional - specific files, PR number, or focus area]
 ---
 

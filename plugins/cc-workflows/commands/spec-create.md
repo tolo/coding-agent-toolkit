@@ -1,5 +1,4 @@
 ---
-name: spec-create
 description: Creates a Feature Implementation Specification from template
 argument-hint: <description> | --issue <number>
 ---

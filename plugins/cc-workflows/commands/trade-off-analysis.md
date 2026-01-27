@@ -1,5 +1,4 @@
 ---
-name: trade-off-analysis
 description: Systematic trade-off analysis and technical research for architectural decisions
 argument-hint: [Topic/decision to research - inline or file path] [Number of alternatives (default is 5)] [Output path (default is docs/research/)]
 ---

@@ -1,5 +1,4 @@
 ---
-name: review-impl
 description: Review implementation against requirements - includes code review and gap analysis with actionable report.
 argument-hint: [Additional Context]
 ---

@@ -1,5 +1,4 @@
 ---
-name: prd
 description: Creates comprehensive Product Requirements Document (PRD) from refined requirements, covering all functional and non-functional requirements with no outstanding questions.
 argument-hint: [Requirements source - refined idea file, clarification doc, or description]
 ---
