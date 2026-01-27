@@ -1,0 +1,26 @@
+{
+  "name": "coding-agent-toolkit",
+  "owner": {
+    "name": "Tobias"
+  },
+  "metadata": {
+    "description": "Common development workflows and tools for Claude Code",
+    "version": "0.2.0",
+    "pluginRoot": "./plugins"
+  },
+  "plugins": [
+    {
+      "name": "cc-workflows",
+      "source": "./plugins/cc-workflows",
+      "description": "Common development workflows: spec generation, code review, implementation, troubleshooting",
+      "version": "0.2.10",
+      "keywords": [
+        "development",
+        "specification",
+        "code-review",
+        "implementation",
+        "troubleshooting"
+      ]
+    }
+  ]
+}
