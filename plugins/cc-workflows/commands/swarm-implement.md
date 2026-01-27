@@ -1,5 +1,4 @@
 ---
-name: swarm-implement
 description: Swarm-based feature implementation with parallel sub-agents and task tracking. Use for multi-step features, GitHub issue implementation (--issue), or spec-driven development requiring parallelization.
 argument-hint: <description> | --issue <number> | <spec file path>
 disable-model-invocation: true
