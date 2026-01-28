@@ -26,6 +26,9 @@ OUTPUT_DIR: ${3:-docs/wireframes}
 - **Wireframes only** - No design system creation (use `create-design-system` command for that)
 - **Simple, grayscale layouts** - Focus on structure, not visual polish
 - **100% page coverage** - Every page/screen in requirements MUST have a wireframe
+- **NEVER STOP until complete** - this is a continuous workflow from analysis through creation to validation
+- **Auto-integrate feedback** - validation findings are immediately fixed, not waiting for approval
+- **Self-correcting** - if issues are found during review, fix them and continue; only stop if fundamentally blocked
 
 
 ## Workflow
@@ -201,7 +204,7 @@ After all wireframes created:
 **Gate**: All pages from inventory have wireframes
 
 
-### Phase 3: Validation
+### Phase 3: Validation & Auto-Refinement
 
 #### Self-Review
 Review all wireframes for:
@@ -212,14 +215,12 @@ Review all wireframes for:
 - Content organization
 - User flow representation
 
-#### Refinement
-Based on review:
-- Fix layout issues
-- Improve unclear sections
-- Add missing elements
-- Ensure consistency across pages
+#### Automatically Integrate Findings (DO NOT STOP - continue immediately)
+- **Critical/High issues** (broken layouts, missing sections, navigation inconsistencies): Fix immediately in affected wireframe files
+- **Medium/Low issues** (proportion tweaks, minor hierarchy adjustments): Fix inline during this phase
+- If review identifies missing pages or states not in original inventory → create them now
 
-**Gate**: Validation complete
+**NO GATE - Continue immediately to Phase 4 after fixing all issues found**
 
 
 ### Phase 4: Documentation

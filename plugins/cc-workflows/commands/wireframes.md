@@ -26,6 +26,7 @@ OUTPUT_DIR: ${3:-docs/wireframes}
 - **Simple, grayscale layouts** - Focus on structure, not visual polish
 - **100% page coverage** - Every page/screen in requirements MUST have a wireframe
 - **Delegate to sub-agents** for parallel wireframe creation
+- **Browser automation required** - Use Playwright MCP or Chrome DevTools MCP for visual validation (falls back to manual if unavailable)
 
 
 ## Workflow
@@ -210,30 +211,212 @@ After all wireframes created:
 
 ### Phase 3: Validation
 
-#### 3.1 Visual Validation
-Follow any **Visual Validation Protocol** in project guidelines.
+#### 3.1 Browser-Based Visual Validation
+**CRITICAL**: Use browser automation (Playwright MCP or Chrome DevTools MCP) to capture and validate wireframes across viewports.
 
-Launch `cc-workflows:qa-test-engineer` to:
-- Test responsive behavior across viewports
-- Verify navigation consistency
-- Check layout proportions
-- Identify broken or unclear layouts
+##### 3.1.1 MCP Server Detection
+Check available browser automation tools in order of preference:
+1. **Playwright MCP** (`mcp__playwright__*` tools) - preferred
+2. **Chrome DevTools MCP** (`mcp__chrome-devtools__*` tools) - fallback
+3. **Manual validation** - if no MCP available, use `cc-workflows:screenshot-validation-specialist` with manually opened browser
 
-#### 3.2 Design Review
+##### 3.1.2 Viewport Matrix
+Test each wireframe at these viewports:
+| Device | Width | Height |
+|--------|-------|--------|
+| Mobile | 375px | 667px |
+| Tablet | 768px | 1024px |
+| Desktop | 1280px | 800px |
+| Wide | 1920px | 1080px |
+
+##### 3.1.3 Automated Screenshot Capture
+For **each wireframe** in `OUTPUT_DIR`:
+
+**Using Playwright MCP:**
+```
+1. Navigate to file:///path/to/OUTPUT_DIR/[page].html
+2. For each viewport in matrix:
+   - Set viewport size
+   - Wait for layout to stabilize
+   - Capture full-page screenshot
+   - Save to OUTPUT_DIR/screenshots/[page]-[viewport].png
+```
+
+**Using Chrome DevTools MCP:**
+```
+1. Open file:///path/to/OUTPUT_DIR/[page].html
+2. For each viewport:
+   - Emulate device/viewport
+   - Capture screenshot
+   - Save to OUTPUT_DIR/screenshots/[page]-[viewport].png
+```
+
+##### 3.1.4 Automated Validation Checks
+Run these checks programmatically via browser automation:
+
+**Layout Integrity:**
+- No horizontal overflow (scroll width ≤ viewport width)
+- Content doesn't overflow containers
+- All boxes render with expected dimensions
+- No negative margins pushing content off-screen
+
+**Overlapping Elements:**
+- Check element bounding boxes for unexpected overlaps
+- Verify z-index stacking is intentional (nav over content is OK, content over content is not)
+- Detect elements with same position coordinates that shouldn't overlap
+- Check for text overlapping other text or UI elements
+
+**Broken Layouts:**
+- Elements with zero width/height that should have content
+- Flex/grid children overflowing their parents
+- Absolute/fixed positioned elements outside viewport
+- Elements with `display: none` that should be visible
+- Collapsed containers (height: 0) with visible children
+
+**Missing Assets:**
+- Placeholder images not rendering (broken `<img>` tags)
+- Missing background images (check `background-image` loads)
+- Icons not displaying (font icons, SVG, or image icons)
+- Check network tab for 404 errors on any assets
+
+**Responsive Behavior:**
+- Navigation collapses/adapts at mobile breakpoints
+- Grid layouts reflow correctly (no single-column becoming zero-width)
+- Flexible elements resize proportionally
+- Touch targets remain ≥44px on mobile
+- Text remains readable (no tiny fonts at small viewports)
+
+**Element Visibility:**
+- All placeholder boxes visible and non-zero size
+- Text content readable (not truncated unexpectedly)
+- CTAs accessible and clickable
+- No content hidden behind other elements unintentionally
+
+**Console Errors:**
+- Check for JavaScript errors
+- Check for resource loading failures (404s, CORS issues)
+- Check for CSS parsing errors
+
+##### 3.1.5 Issue Detection & Fix Protocol
+When issues are detected, follow this protocol:
+
+**For Overlapping Elements:**
+```css
+/* Fix: Add explicit positioning or adjust flex/grid */
+.overlapping-element {
+  position: relative; /* or adjust z-index */
+  margin-top: 20px;   /* or add spacing */
+}
+/* Or fix grid/flex gap */
+.parent { gap: 20px; }
+```
+
+**For Broken Layouts:**
+```css
+/* Fix: Ensure minimum dimensions */
+.box { min-height: 50px; min-width: 100px; }
+/* Fix: Prevent overflow */
+.container { overflow: hidden; } /* or overflow: auto; */
+/* Fix: Constrain absolute elements */
+.absolute-child { max-width: 100%; }
+```
+
+**For Missing Icons/Images:**
+```html
+<!-- Fix: Add fallback text for placeholders -->
+<div class="placeholder">
+  <span class="fallback-text">IMAGE</span>
+</div>
+<!-- Fix: Use CSS background with fallback color -->
+<style>
+.icon { background: #ccc url('icon.svg') center/contain no-repeat; }
+</style>
+```
+
+**For Responsive Issues:**
+```css
+/* Fix: Add missing breakpoint rules */
+@media (max-width: 768px) {
+  .grid { grid-template-columns: 1fr; }
+  .flex { flex-direction: column; }
+  .btn { min-height: 44px; min-width: 44px; }
+}
+```
+
+**Severity Classification:**
+| Issue | Severity | Action |
+|-------|----------|--------|
+| Content completely hidden/invisible | 🔴 Critical | Fix immediately |
+| Overlapping text/buttons | 🔴 Critical | Fix immediately |
+| Missing navigation elements | 🔴 Critical | Fix immediately |
+| Horizontal scroll on mobile | 🟠 High | Fix before review |
+| Minor overlap (decorative only) | 🟡 Medium | Fix if time permits |
+| Suboptimal spacing | 🟢 Low | Note for refinement |
+
+#### 3.2 Visual Comparison (screenshot-validation-specialist)
+Launch `cc-workflows:screenshot-validation-specialist` with:
+- **Screenshots captured** from Phase 3.1
+- **Comparison criteria**:
+  - Layout consistency across viewports
+  - Proportional scaling of elements
+  - Readable content hierarchy
+  - Proper spacing and alignment
+
+**Specific issues to detect visually:**
+- **Overlapping elements**: Text on text, buttons on content, nav items colliding
+- **Broken layouts**: Gaps where content should be, asymmetric grids, misaligned elements
+- **Missing visuals**: Empty placeholder boxes, broken image indicators, missing icons
+- **Truncated content**: Text cut off mid-word, ellipsis where full text expected
+- **Inconsistent spacing**: Uneven margins/padding between similar elements
+- **Z-index issues**: Content hidden behind other elements, dropdowns under content
+
+Agent should produce `OUTPUT_DIR/validation-report.md` documenting:
+```markdown
+# Wireframe Validation Report
+
+## Summary
+- Pages validated: [N]
+- Viewports tested: [mobile, tablet, desktop, wide]
+- Issues found: [N] (🔴 Critical: X, 🟠 High: Y, 🟡 Medium: Z)
+
+## Per-Page Results
+
+### [page-name].html
+| Viewport | Status | Issues |
+|----------|--------|--------|
+| Mobile | ✅/❌ | [issue summary] |
+| Tablet | ✅/❌ | [issue summary] |
+| Desktop | ✅/❌ | [issue summary] |
+| Wide | ✅/❌ | [issue summary] |
+
+**Issues Found:**
+1. 🔴 [Critical issue description]
+   - Screenshot: screenshots/[page]-[viewport].png
+   - Location: [element/section]
+   - Fix: [specific CSS/HTML fix]
+
+2. 🟠 [High priority issue]
+   ...
+
+## Recommended Fixes
+[Consolidated list of fixes with code snippets]
+```
+
+#### 3.3 Design Review
 Launch `cc-workflows:ui-ux-designer` to:
 - Evaluate information hierarchy
 - Check content organization
 - Verify user flow representation
 - Identify missing UI states
 
-#### 3.3 Refinement
+#### 3.4 Refinement
 Based on review feedback:
 - Fix layout issues
 - Improve unclear sections
 - Add missing elements
 - Ensure consistency across pages
 
-**Gate**: All reviews pass, wireframes complete
+**Gate**: All automated checks pass, reviews complete
 
 
 ### Phase 4: Documentation
@@ -297,23 +480,45 @@ Create _`OUTPUT_DIR/index.html`_ as navigation hub:
 OUTPUT_DIR/
 ├── index.html              # Navigation hub for all wireframes
 ├── page-inventory.md       # Checklist of all pages
-├── home.html              # Individual wireframes...
+├── home.html               # Individual wireframes...
 ├── dashboard.html
 ├── [page-name].html
+├── screenshots/            # Visual validation captures
+│   ├── home-mobile.png
+│   ├── home-tablet.png
+│   ├── home-desktop.png
+│   ├── home-wide.png
+│   ├── dashboard-mobile.png
+│   └── ...
+├── validation-report.md    # Automated validation results
 └── ...
 ```
 
 
 ## Quality Checklist
 
+### Coverage
 - [ ] **100% coverage**: Every page from requirements has a wireframe
 - [ ] **No missing pages**: Cross-checked against inventory
+- [ ] Page inventory matches actual files
+- [ ] Index page links to all wireframes
+
+### Design Quality
 - [ ] Layout hierarchy is clear
 - [ ] Navigation is consistent across pages
-- [ ] Responsive behavior works
 - [ ] All wireframes use grayscale (no colors)
-- [ ] Index page links to all wireframes
-- [ ] Page inventory matches actual files
+
+### Visual Validation (Browser Automation)
+- [ ] **Screenshots captured**: All viewports (mobile/tablet/desktop/wide) for each page
+- [ ] **No horizontal overflow**: Content fits viewport at all sizes
+- [ ] **No overlapping elements**: Text/buttons don't collide unexpectedly
+- [ ] **No broken layouts**: All containers render with content, no collapsed sections
+- [ ] **No missing visuals**: Placeholders, icons, and images all render
+- [ ] **Responsive behavior**: Layouts adapt correctly at breakpoints
+- [ ] **Touch targets**: Buttons ≥44px on mobile viewports
+- [ ] **No console errors**: Clean browser console (no 404s, no JS errors)
+- [ ] **All critical issues fixed**: No 🔴 items remaining in validation report
+- [ ] **Validation report**: Generated with pass/fail per page/viewport
 
 
 **Remember**: Wireframes focus on structure, not polish. Keep them simple, grayscale, and focused on layout patterns. Every page in the requirements must have a corresponding wireframe.

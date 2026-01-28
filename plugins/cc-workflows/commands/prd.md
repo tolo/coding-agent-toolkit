@@ -63,6 +63,7 @@ Interview user to fill gaps. Ask 3-5 targeted questions at a time, iterate until
 - Specific workflow for each major user action?
 - Data validation rules and constraints?
 - Error handling and recovery?
+- Does this involve UI/frontend work? (determines if wireframes needed)
 
 **Users & Permissions**
 - User roles and their permissions?
@@ -141,6 +142,12 @@ For each feature:
 - Primary flows with step-by-step descriptions
 - Alternative paths
 - Error scenarios and recovery
+
+**UI Wireframes** _(if applicable - skip for backend-only work)_
+- Simple ASCII wireframes for core screens/views
+- Focus on layout structure and key elements only
+- Show primary user interaction points
+- Keep minimal - just enough to communicate intent
 
 **Data Requirements**
 - Data models and relationships
@@ -291,6 +298,24 @@ Generate markdown document following this structure:
 
 ### User Flows
 1. [Primary flow with steps]
+
+### UI Wireframes
+<!-- Include only if PRD involves UI work -->
+```
++----------------------------------+
+|  [Screen Name]                   |
++----------------------------------+
+|  [Header/Nav]                    |
++----------------------------------+
+|                                  |
+|  [Main Content Area]             |
+|  - Key element 1                 |
+|  - Key element 2                 |
+|                                  |
++----------------------------------+
+|  [Actions/Footer]                |
++----------------------------------+
+```
 
 ### Data Requirements
 - [Data models, fields, constraints]

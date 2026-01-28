@@ -122,3 +122,15 @@ Run using **foreground parallel agents (`run_in_background=false`)** - multiple 
    - Add relevant labels
 
 **Gate**: PR created successfully (or changes committed if no PR)
+
+
+## Report
+After completed implementation, create an *Implementation Notes* section at the end of the original spec document, if present, or create a new implementation notes file (e.g. `<feature-name>-implementation-notes-<YYYY-MM-DD>.md`).
+
+The _implementation notes_ should include details like: 
+- Description of what was implemented and how different parts of the implementation relate and integrate with each other
+- Key challenges faced and how they were overcome
+- Important decisions made and their rationale
+- Any deviations from the original plan and why
+- Any unresolved issues
+- Suggestions for future improvements or related features

@@ -65,12 +65,13 @@ Execute the implementation and validation as detailed in the *Implementation Pla
   - Execute next iteration (i.e. *steps 2-3*)
 
 
-### Step 4: Update Implementation Notes documents with important learnings and decsisions
-After completed implementation, update the *Implementation Notes* document (`fis-implementation-notes.md`, in the same directory as the FIS file) with important learnings and decisions made during implementation.
+## Report: Update Implementation Notes documents with important learnings and decsisions
+After completed implementation, update the *Implementation Notes* document (`fis-implementation-notes.md`, in the same or parent directory as the FIS file) with important learnings and decisions made during implementation.
 
 For instance: 
 - Description of what was implemented and how different parts of the implementation relate and integrate with each other
 - Key challenges faced and how they were overcome
 - Important decisions made and their rationale
 - Any deviations from the original plan and why
+- Any unresolved issues
 - Suggestions for future improvements or related features

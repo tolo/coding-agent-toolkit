@@ -71,6 +71,7 @@ Ask targeted questions based on identified gaps. Ask 3-5 questions at a time, it
 - What's the primary user flow (happy path)?
 - What alternate paths exist?
 - What's the expected user journey?
+- Does this involve UI/frontend work? (determines if wireframes needed)
 
 **Edge Cases & Errors**
 - What happens with invalid input?
@@ -101,7 +102,8 @@ Structure all findings into comprehensive requirements document:
 1. **Summary** - 2-3 sentences: what, who, core value
 2. **Scope definition** - In scope, out of scope, MVP boundary
 3. **Functional requirements** - Core flows, alternate paths, user stories
-4. **Edge cases** - Scenarios with expected behavior
+4. **UI wireframes** _(if applicable)_ - Simple ASCII wireframes for core screens
+5. **Edge cases** - Scenarios with expected behavior
 5. **Error handling** - Error types, messages, recovery actions
 6. **Non-functional requirements** - Performance, security, accessibility
 7. **Success criteria** - Testable acceptance criteria
@@ -116,6 +118,7 @@ Structure all findings into comprehensive requirements document:
 Review consolidated requirements for quality:
 
 - [ ] All user flows have clear steps
+- [ ] UI wireframes included (if applicable)
 - [ ] Edge cases identified with expected behavior
 - [ ] Scope boundaries explicit (in/out)
 - [ ] Success criteria specific and testable
@@ -159,6 +162,24 @@ Generate markdown document with:
 
 ### Alternate Flows
 - [Alternate paths and variations]
+
+### UI Wireframes
+<!-- Include only if requirements involve UI work -->
+```
++----------------------------------+
+|  [Screen Name]                   |
++----------------------------------+
+|  [Header/Nav]                    |
++----------------------------------+
+|                                  |
+|  [Main Content Area]             |
+|  - Key element 1                 |
+|  - Key element 2                 |
+|                                  |
++----------------------------------+
+|  [Actions/Footer]                |
++----------------------------------+
+```
 
 ## Edge Cases
 | Scenario | Expected Behavior |

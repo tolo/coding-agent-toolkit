@@ -203,6 +203,6 @@ Generate markdown report with:
 - **Remediation Plan** - Categorized/prioritized issues (Critical/High/Medium/Low), dependencies, sequencing, risk assessment, specific remediation steps, acceptance criteria
 - **Appendix** (if needed) - Code snippets, technical details, reference materials
 
-Store report in: `<project_root>/docs/temp/gap-analysis/<feature-name>-gap-analysis-<YYYY-MM-DD>.md`
+Store report in: `<project_root>/docs/temp/gap-analysis/<feature-name>-gap-analysis-<coding-agent-name>-<YYYY-MM-DD>.md`
 
 Inform user of report location when complete.

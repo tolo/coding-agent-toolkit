@@ -114,34 +114,28 @@ Ask ONLY if implementation is blocked by ambiguity.
 ### 3. Generate FIS
 **IMPORTANT**: Use `cc-workflows:solution-architect` to create the FIS.
 
-#### Gather All Needed **Context**
-- Research documents from _Feature Research and Design_ phase with links
-- Architecture decisions documents (ADRs) or other solution architecture documentation
-- Documentation URLs with exact sections
-- Exact file paths with line numbers
-- Specific documentation URLs with sections
-- Example patterns to follow
-- UI wireframes, mockups, sketches and concept designs
-   - _All_ UI related FIS documents **MUST** reference their corresponding wireframe file, containing the exact screen/page design to implement
-- UI design assets (e.g. design system references, Figma links, etc)
-    - _All_ UI stories **MUST** reference their corresponding design system tokens, components and element definitions, etc.
-- Architecture diagrams and design documents
-- References to relevant guidelines documents
+#### Gather Context (as references, not inline content)
+- Research docs from previous phase (link to files in `docs/temp/research/`)
+- ADRs and architecture docs
+- File paths with line numbers for patterns to follow
+- UI wireframes/mockups (required for UI tasks)
+- Design system references (required for UI tasks)
+- External documentation URLs with specific sections
 
 #### Generate from Template
 **USE THE TEMPLATE**: Generate the FIS using the template in the **Appendix** below as your structure.
 
 #### Key Generation Guidelines
-1. Fill in template sections - **Include ALL Critical Context**, including: documentation, code examples, gotchas, patterns
-2. Each task must be atomic
-3. Include all context and file references with line numbers (when applicable)
-4. Identify which tasks can safely be done in parallel - and mark them with [P]
+1. Each task: atomic, self-contained, with file:line references
+2. Mark parallelizable tasks with [P]
+3. Reference patterns, don't reproduce them
+4. Stay within 300-500 line target
 
 
 ### 4. Quality Validation
 
 #### Plan Review
-Use the `/cc-workflows:review-plan` command to review the generated implementation plan for completeness, correctness, requirements coverage, edge cases, redundant aspects, etc.
+Use the `/cc-workflows:review-plan` command (**important**: run this as in a separate sub-agent) to review the generated implementation plan for completeness, correctness, requirements coverage, edge cases, redundant aspects, etc.
 - Use the generated FIS as input.
 - After review-plan command completes, read the output (generated review report) carefully.
 - Address **all** issues identified during review and improve/update the FIS accordingly.
@@ -179,25 +173,26 @@ Use the template below to generate the Feature Implementation Specification.
 # Feature Implementation Specification Template
 
 > **Purpose:**
-> Executable specification template optimized for AI agents to implement features with sufficient context and self-validation capabilities to achieve working code through iterative refinement.
+> Executable specification optimized for AI agents — concise, actionable, reference-heavy.
 >
 > **Core Principles:**
-> 1. **Context is King**: Include ALL necessary documentation, examples, and caveats
-> 2. **Validation Loops**: Provide executable tests/lints the AI can run and fix
-> 3. **Information Dense**: Use keywords and patterns from the codebase
-> 4. **Progressive Success**: Start simple, validate, then enhance
-> 5. **Global rules**: Be sure to follow all rules in CLAUDE.md
-> 6. **Delegate** as much work as possible to the available *sub agents*, and let the main claude code agent act as an orchestrator.
-> 7. **Fix-forward approach** - address issues immediately
+> 1. **References over Content**: Link to docs, code (file:line), and research — don't inline them
+> 2. **Decisions, not Explanations**: State what to do, not lengthy rationale
+> 3. **Patterns by Reference**: Point to existing code patterns (file:line) rather than reproducing them
+> 4. **Validation at Execution**: Code is written during spec-execute, not spec-create
+> 5. **Information Dense**: Keywords and patterns from the codebase, minimal prose
+> 6. **Delegate**: Sub-agents do the work; main agent orchestrates
+>
+> **Size Constraint:**
+> - Target: **300-500 lines** max for most features
+> - If exceeding 500 lines, split into multiple specs or extract shared content to referenced files
 >
 > **DON'Ts**
-> - ❌ **Never** modify code or documentation that are not related to the current task
-> - ❌ Researching what's already decided
-> - ❌ Redesigning the solution
-> - ❌ Creating unnecessary files
-> - ❌ Sequential verification (parallelize!)
-> - ❌ Discussing instead of *doing*
-> - ❌ Over-engineering the implementation and implementing functionality not in the scope
+> - ❌ Code snippets longer than 5-10 lines — reference existing patterns instead
+> - ❌ Inline documentation excerpts — link to the source
+> - ❌ Verbose prose or explanations — be terse and actionable
+> - ❌ Repeating information available elsewhere — reference it
+> - ❌ Over-engineering or out-of-scope functionality
 
 
 
@@ -275,43 +270,15 @@ Use the template below to generate the Feature Implementation Specification.
 ## Critical Documentation & Context
 
 ### Documentation & References
-```md
-# MUST READ - Include these in your context window
-- url/file: {{Architecture diagram URL or file path}}
-  description: {{Description/purpose of document/file}}
-  why: {{Explains system architecture, relationships, data flow, etc}}
-  section: {{lines 45-67}}
-
-- url/file: {{UI designs / wireframes URL or file path}}
-  description: {{Description/purpose of document/file}}
-  why: {{Describes layout, UI components, user interactions, etc}}
-  section: {{Relevant sections}}
-
-- url: {{Official API docs URL}}
-  description: {{Description/purpose of document/file}}
-  why: {{Specific sections/methods you'll need}}
-  section: {{Relevant sections}}
-
-- url: {{Library documentation URL}}
-  description: {{Description/purpose of document/file}}
-  critical: {{Key insight that prevents common errors}}
-  section: {{Relevant sections}}
-
-- file: {{path/to/example.py}}
-  description: {{Description/purpose of document/file}}
-  why: {{Pattern to follow, gotchas to avoid}}
-  section: {{lines 45-67}}
-
-- docfile: {{docs/file.md}}
-  description: {{Description/purpose of document/file}}
-  why: {{docs that the user has pasted in to the project}}
-  section: {{lines 45-67}}
-
-- url: {{Relevant related GitHub issues or PRs - same or external repo}}
-  description: {{Description/purpose of document/file}}
-  why: {{Context on similar features, discussions, or decisions}}
-  section: {{Relevant sections}}
 ```
+# Reference format: type | path/url | section | why needed
+file   | src/components/Modal.tsx:45-78    | Pattern for dialog handling
+file   | src/api/users.ts:12-34            | API structure to follow
+url    | https://docs.example.com/auth     | OAuth flow reference
+doc    | docs/architecture/adr-001.md      | Auth architecture decision
+wire   | docs/specs/wireframes/login.html  | UI layout for login screen
+```
+> Keep this list focused — only include references that are essential for implementation.
 
 
 ### Known Constraints & Gotchas
@@ -350,74 +317,24 @@ _Examples:_
   - Create static/styles/architecture-theme.css with custom variables
   - Set up responsive design system per ADR-002
 
-#### Per task Pseudocode (code snippets, configuration, data models, etc.)  _as needed_ (relevant to the specific task - *Short and Simple* _NOT_ full implementations!)
-```swift
-// Example pseudocode for initial setup
-class FeatureController {
-    func setup() {
-        // Initialize components
-    }
+#### Implementation Notes (per task, only when needed)
+- Reference existing patterns: `see src/components/Modal.tsx:45-78 for similar pattern`
+- Only include pseudocode (max 5-10 lines) when no existing pattern exists in codebase
+- Configuration/data models: describe structure briefly, don't write full schemas
 
-    func process() {
-        // Core logic here
-    }
-}
-```
+### Validation Tasks
+> Validation methodology details (agents, checks) defined in spec-execute.
 
-### List of validation tasks to be completed and the order in which they should be completed
+- [ ] **TV01** [P] Level 1: Code review and analysis
+- [ ] **TV02** [P] Level 2: Unit, integration, E2E testing
+- [ ] **TV03** [P] Level 3: Visual validation _(if UI applicable)_
+- [ ] **TV04** Address validation issues, verify *Final Validation Checklist*
 
-- [ ] **TV01** [P] Run Level 1 commands of Validation Strategy: Code Review and Analysis
-- [ ] **TV02** [P] Run Level 2 commands of Validation Strategy: Unit, Integration and E2E Testing
-- [ ] **TV03** [P] Run Level 3 commands of Validation Strategy: Visual Validation
-
-- [ ] **TV04** Address remaining issues and validation feedback, and verify completion of *Final Validation Checklist*
-  - Address any remaining defects, analysis/review feedback, and functionality gaps
-  - _IF NEEDED_: Re-execute complete *Validation Strategy* to verify fixes
-  - Ensure *Final Validation Checklist* is complete
-  - Execute any additional cleanup (files, unused code, etc.)
+### Feature-Specific Validation (if any)
+{{Only add requirements not covered by standard validation levels}}
 
 
-## Validation Strategy
-
-### Level 1: Code Review and Analysis
-Use the `code-review` skill to perform comprehensive review and analysis covering:
-
-- 📋 Static analysis, linting, formatting and type checking issues
-- 📋 Code quality, security vulnerabilities, maintainability, potential regressions and adherence to project standards
-- 📋 Architecture adherence to project guidelines, best practices, and relevant ADRs
-- 📋 Requirements adherence - identify gaps between implementation and requirements
-- 📋 UI/UX adherence to design specs (if applicable)
-
-
-### Level 2: Testing (Unit, Integration and E2E)
-**Always** execute unit, integration and E2E tests using available **sub-agents** such as `cc-workflows:qa-test-engineer` or more specialized agents.
-
-#### Unit Tests
-- 📋 Update/create and run additional unit tests for the new feature.
-- 📋 Set up and run appropriate unit tests as per _project guidelines_ (see CLAUDE.md)
-- 📋 Verify all unit tests pass
-
-#### System and Integration Tests (if applicable)
-- 📋 Update/create and run additional integration tests for the new feature
-- 📋 Set up and run appropriate integration tests as per _project guidelines_ (see CLAUDE.md)
-- 📋 Verify all integration tests pass
-
-#### UI/E2E Tests (if applicable)
-- 📋 Update/create and run additional UI/E2E tests for the new feature
-- 📋 Set up and run appropriate UI/E2E tests as per _project guidelines_ (see CLAUDE.md)
-- 📋 Verify all UI/E2E tests pass
-
-
-### Level 3: Visual Validation (if applicable)
-**Always** execute visual validation using available **sub-agents** such as `cc-workflows:qa-test-engineer` or more specialized agents.
-
-- 📋 Verify that the updated UI is working correctly according to specified requirements
-- 📋 Follow any _Visual Validation Protocols_ defined in _project guidelines_ (see CLAUDE.md), describing how to use tools, MCP servers or code for actual visual inspection and validation
-  - Include exact workflow here, or _reference_ to exact workflow
-- 📋 Check for visual regressions and ensure UI matches design specs
-
-
-## **IMPORTANT**: Final Validation Checklist
+## Final Validation Checklist
 
 ### Feature Validation
 - [ ] **All success criteria** from the top-level "Success Criteria" section met

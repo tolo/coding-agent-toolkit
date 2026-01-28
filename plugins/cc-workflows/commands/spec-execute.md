@@ -3,7 +3,8 @@ description: Executes a Feature Implementation Specification that contains all i
 ---
 
 # Execute Feature Implementation Specification
-Execute a fully-defined FIS document, focusing on autonomous, systematic and **COMPLETE** implementation with continuous validation.
+
+Execute a fully-defined FIS document as an **orchestrator**, delegating all implementation and validation tasks to sub-agents.
 
 ## Variables
 FIS_FILE_PATH: $ARGUMENTS
@@ -11,80 +12,142 @@ FIS_FILE_PATH: $ARGUMENTS
 
 ## Instructions
 
-- **Fully** read and understand the **Workflow Rules, Guardrails and Guidelines** section in CLAUDE.md before starting work, including but not limited to:
-  - **Foundational Rules and Guardrails**
-  - **Foundational Development Guidelines and Standards** (e.g. Development, Architecture, UI/UX Guidelines etc.)
-- **Autonomous Execution**: Agents work independently to complete tasks
-- **Complete Implementation**: 100% completion required - no partial work  
-- **No manual steps**: Make use of agents, tools and MCPs to ensure an autonomous process towards 100% completion - **MANUAL WORK = IMMEDIATE FAILURE**
-- **Read and understand all instructions**: Read and understand all instructions in this command fully before proceeding!
-- The FIS is the source of truth - follow it exactly
-- No planning or decision-making - just execution
-- Delegate as much work as possible to the available sub agents, and let the main claude code agent act as an orchestrator.
-   - Use **foreground parallel agents (`run_in_background=false`)** when possible and there is no risk of conflicts - launch multiple Task calls in one message (**IMPORTANT:** Tasks such as compilation/building must typically not be done in parallel)
-- If something is unclear, the FIS is incomplete (not this command)
-- **IMPORTANT**: The *Final Validation Checklist* must be completed (each item must be verified to be completed and then checked off in the FIS) and all criteria must be met before considering the implementation done.
-- **CRITICAL**: Validation tasks must be completed by different agents than implementation tasks to ensure independent verification
+### Orchestrator Role
+**You are the orchestrator.** Your job is to:
+- Load and understand the FIS
+- Delegate ALL implementation/validation tasks to sub-agents
+- Track progress and collect results
+- Ensure final validation checklist is complete
+
+**You do NOT:**
+- Write implementation code directly (delegate to sub-agents)
+- Let your context get bloated with implementation details
+- Skip final steps due to context exhaustion
+
+### Core Rules
+- **Fully** read CLAUDE.md guidelines before starting
+- **100% completion required** — no partial work
+- **FIS is source of truth** — follow it exactly
+- **Sub-agents for all tasks** — keep orchestrator context lean
+- **Validation by different agents** than implementation (independent verification)
+
+
+## Sub-Agent Protocol
+
+### Input Template (provide to each sub-agent)
+```
+## Task: {TASK_ID} - {Task title}
+{Task description and sub-items from FIS}
+
+## FIS Reference
+Path: {FIS_FILE_PATH}
+Read sections: ADR, Critical Documentation & Context, relevant Implementation Notes
+
+## Key References (from FIS)
+{List specific file:line references relevant to THIS task}
+
+## Previous Task Context (if sequential dependency)
+{Brief summary of what previous tasks accomplished that this task depends on}
+
+## Requirements
+1. Complete the task fully per FIS spec
+2. Follow patterns in referenced files
+3. Report back: status, files changed, decisions made, issues encountered
+```
+
+### Expected Output (sub-agent should provide)
+```
+Status: complete | partial | blocked
+Files changed: {list of created/modified files}
+Decisions: {any deviations or choices made}
+Issues: {blockers, errors, concerns for orchestrator}
+```
+
+### Handling Sub-Agent Results
+After each sub-agent completes:
+1. **Read the result** — extract status, files changed, issues
+2. **Update FIS** — check off completed task checkbox
+3. **Track context** — note key outputs needed by dependent tasks
+4. **Handle issues** — if blocked/partial, assess and either retry or flag for user
 
 
 ## Workflow
 
+### Step 1: Load FIS and Prepare
+1. Read FIS at _`FIS_FILE_PATH`_
+2. Understand: Success Criteria, Scope, ADR, Implementation Plan
+3. Quick codebase orientation: `tree -d`, `git ls-files | head -100`
+4. Read any existing `fis-implementation-notes.md`
+5. Create task tracking for ALL tasks (implementation + validation)
 
-### Step 1: Load FIS and plan for execution
-1. Read the FIS document at _`FIS_FILE_PATH`_, understand the Success Criteria, Scope & Boundaries, Architecture Decision Record (ADR), implementation plan, and validation strategies
-2. Analyse the codebase to properly understand the project structure, relevant files and similar patterns
-  - Use command like `tree -d` and `git ls-files | head -250` to get an overview of the codebase structure
-3. Read any *`fis-implementation-notes.md`* document for additional context and learnings from previous stories
-4. - **Read additional guidelines and documentation** - Read additional relevant guidelines and documentation (API, guides, reference, etc.) as needed
-5. Use task management tools to create todos/tasks for ALL tasks from the FIS (both implementation and validation tasks)
-6. **Think hard** before you execute the plan. Make sure the plan is comprehensive and addresses all requirements.
+### Step 2: Execute Implementation Tasks
+For each implementation task (TI01, TI02, etc.):
+
+**Sequential tasks:**
+- Spawn sub-agent with Input Template
+- Wait for result
+- Process output, update FIS, track context for next task
+
+**Parallel tasks [P]:**
+- Spawn multiple sub-agents in single message (`run_in_background=false`)
+- Ensure tasks don't have file conflicts
+- Collect all results, update FIS
+
+**Sub-agent selection:**
+- Default: `general-purpose` agent
+- Build issues: `cc-workflows:build-troubleshooter`
+- UI work: `cc-workflows:ui-ux-designer`
+- Complex architecture: `cc-workflows:solution-architect`
+
+### Step 3: Execute Validation Tasks
+**CRITICAL**: Use different agents than implementation for independent verification.
+
+#### TV01 [P] — Level 1: Code Review
+Use `code-review` skill:
+- Static analysis, linting, type checking
+- Code quality, security, maintainability
+- Architecture adherence to ADR
+- Requirements coverage gaps
+
+#### TV02 [P] — Level 2: Testing
+Use `cc-workflows:qa-test-engineer`:
+- Unit tests for new functionality
+- Integration tests (if applicable)
+- E2E tests (if applicable)
+
+#### TV03 [P] — Level 3: Visual Validation (if UI)
+Use `cc-workflows:screenshot-validation-specialist`:
+- UI matches requirements/design specs
+- No visual regressions
+
+#### TV04 — Address Issues
+- Collect all validation feedback
+- Spawn sub-agents to fix identified issues
+- Re-run affected validation levels if needed
+
+### Step 4: Final Quality Assurance
+As orchestrator (not delegated):
+- Review all sub-agent results
+- Check for functionality gaps or requirement mismatches
+- If simplification opportunities exist, use `code-simplifier` agent
+
+### Step 5: Verify Completion
+**Orchestrator performs directly:**
+1. Verify ALL success criteria in FIS are met
+2. Verify ALL task checkboxes marked complete (- [x])
+3. Verify Final Validation Checklist items are satisfied
+4. Update FIS with completion status
+
+### Step 6: Iteration (if needed)
+If success criteria not met:
+1. Analyze gaps from validation feedback
+2. Create new tasks for fixes
+3. Execute Steps 2-5 again
 
 
-### Step 2: FIS Execution
-Execute the implementation and validation as detailed in the *Implementation Plan* section of the FIS. 
-
-*For each task:*
-- Make sure relevant docs and context as defined under *Critical Documentation & Context* in the FIS are properly referenced and used
-- Execute each task in sequence
-- Make sure tasks marked with [P] are executed with **foreground parallel agents (`run_in_background=false`)** - launch multiple Task calls in one message.
-- When possible, delegate tasks to appropriate sub-agents (e.g. `cc-workflows:qa-test-engineer`, `cc-workflows:build-troubleshooter`, `cc-workflows:solution-architect`, `cc-workflows:ui-ux-designer`, `cc-workflows:screenshot-validation-specialist`, `cc-workflows:documentation-lookup`, etc.)
-- Update todos/tasks using task management tools and mark each task as complete *in the FIS* when successfully implemented and verified against success criteria
-- If encountering build issues or runtime errors, delegate troubleshooting work to `cc-workflows:build-troubleshooter`
-
-
-### Step 3: Final Quality Assurance
-After all implementation and validation tasks are completed, perform a final quality assurance pass:
-
-- **Check for Functionality Gaps and Requirement Mismatches**
-  - Missing features or capabilities that were required
-  - Implemented features that don't match requirements
-  - Incomplete implementations (partially done features)
-  - Missing error handling, edge cases, or validation
-
-- **Code and Solution Correctness and Simplification Opportunities**
-  - Given what was implemented, is there a better, simpler or more efficient way to achieve the same outcome?
-  - Use the `code-simplifier` agent to optimize and improve code quality, focusing on consistency, maintainability and simplicity
-
-
-### Step 4: Evaluation, Iteration and Completion
-- Check all success criteria in the FIS are met
-- Ensure all checkboxes in FIS are marked complete (- [x])
-- Update progress summary in the FIS
-
-
-#### Additional Iterations
-- If the implementation does not meet the success criteria, or there are defects, analysis and review feedback that needs addressing, plan another Implementation Iteration:
-  - Analyze the problems and use feedback from code reviews and testing to inform the next iteration
-  - **Update task tracking**: Use task management tools to create new tasks for implementation and validation (using the _Validation Strategy_) as needed
-  - Execute next iteration (i.e. *steps 2-3*)
-
-
-### Step 5: Update Implementation Notes documents with important learnings and decsisions
-After completed implementation, update the *Implementation Notes* document (`fis-implementation-notes.md`, in the same directory as the FIS file) with important learnings and decisions made during implementation.
-
-For instance: 
-- Description of what was implemented and how different parts of the implementation relate and integrate with each other
-- Key challenges faced and how they were overcome
-- Important decisions made and their rationale
-- Any deviations from the original plan and why
-- Suggestions for future improvements or related features
+## Report: Implementation Notes
+After completion, update `fis-implementation-notes.md`:
+- What was implemented and how parts integrate
+- Key challenges and solutions
+- Decisions and deviations from plan
+- Unresolved issues or future suggestions

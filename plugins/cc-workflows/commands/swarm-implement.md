@@ -38,6 +38,9 @@ ARGUMENTS: $ARGUMENTS
 - **Maximize parallelization** - identify independent tasks and execute concurrently
 - **Use task management** - track every piece of work via TaskCreate/TaskUpdate
 - **Verify independently** - use separate sub-agents for validation vs implementation
+- **NEVER STOP until complete** - this is a continuous workflow from planning through implementation to completion
+- **Auto-integrate feedback** - plan review findings are automatically incorporated, not waiting for approval
+- **Self-correcting** - if issues are found, fix them and continue; only stop if fundamentally blocked
 
 
 ## Workflow
@@ -116,9 +119,9 @@ TaskUpdate:
 
 **Output**: Complete task list with dependencies visualized via TaskList.
 
-#### 1.5 Plan Review
+#### 1.5 Plan Review & Auto-Integration
 
-Before execution, validate the implementation plan:
+Validate and automatically integrate improvements into the plan:
 
 1. **Save plan to temporary file** for review:
    - Write task list with descriptions, dependencies, and execution order to `.agent_temp/swarm-plan-<feature>.md`
@@ -129,12 +132,18 @@ Before execution, validate the implementation plan:
    - Scope: No over-engineering or unnecessary tasks?
    - Clarity: Each task has clear success criteria?
 
-3. **Address review findings**:
-   - **Critical issues**: Update task list before proceeding
-   - **Minor issues**: Note for execution, fix during implementation
-   - If plan needs significant rework, iterate on task decomposition
+3. **Automatically integrate review findings** (DO NOT STOP - continue immediately):
+   - **Critical/High issues**: Update affected tasks via TaskUpdate (modify description, add missing tasks, fix dependencies)
+   - **Medium/Low issues**: Note in task descriptions for handling during implementation
+   - If review identifies missing DataService methods, missing integration details, etc. → add to relevant task descriptions
 
-**Gate**: Plan reviewed and approved, all tasks created, dependencies mapped, ready for execution
+4. **Example auto-integration**:
+   ```
+   Review finding: "FlowEngine ↔ TimerModel integration not specified"
+   Action: TaskUpdate taskId="3" description="[original] + Integration: FlowEngine.onSessionComplete called by TimerModel; FlowEngine.startNextSession() calls timerModel.start()"
+   ```
+
+**NO GATE - Continue immediately to Phase 2 after integrating findings**
 
 
 ### Phase 2: Parallel Execution
