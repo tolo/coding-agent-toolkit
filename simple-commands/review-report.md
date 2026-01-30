@@ -16,7 +16,7 @@ ADDITIONAL_CONTEXT: $ARGUMENTS
 ## Instructions
 
 - **Non-modifying analysis only** - Do not make code changes
-- Follow project guidelines from CLAUDE.md, AGENTS.md, etc. if available
+- Follow project guidelines from AGENTS.md, etc. if available
 - Use embedded checklists (see [Appendices](#appendices)) for systematic assessment
 - No sub-agents required (direct review approach)
 

@@ -8,6 +8,7 @@
 - **Be Lean, Pragmatic and Effective** - All solutions must be focused on solving the problem at hand in the most efficient, robust way possible. _Never_ over-engineer or add unnecessary complexity (i.e. use a KISS, YAGNI and DRY approach).
 - **Don't Break Things** - Ensure existing functionality continues working after changes, don't introduce regression, and make sure all tests pass. Adopt a **fix-forward approach** - address issues immediately.
 - **Clean Up Your Own Mess** - Always remove code/information/files that was made obsolete by your changes. Never replace removed code with comments like `// REMOVED...` etc. Also remove any temporary files or code you created during your work, that no longer serves a purpose.
+- **Leave Things Better Than You Found Them (Boy Scout Rule)** - Always improve code quality, readability, robustness, structure, and maintainability when working on any part of the codebase (but keep the changes small). Also fix any obvious bugs, analyzer/linting issues, warnings or other "pre-existing" issues (even "not related to our changes") you encounter while working, in code, test, or documentation.
 - **Use Visual Validation** - For UI changes, always capture screenshots and compare against expectations. *Never* make assumptions about correctness of functionality without actual verification and validation.
 
 ### **Additional Core Rules**

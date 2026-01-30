@@ -84,12 +84,12 @@ After each sub-agent completes:
 For each implementation task (TI01, TI02, etc.):
 
 **Sequential tasks:**
-- Spawn sub-agent with Input Template
+- Spawn **sub-agents** (foreground, i.e. `run_in_background=false`) with Input Template
 - Wait for result
 - Process output, update FIS, track context for next task
 
 **Parallel tasks [P]:**
-- Spawn multiple sub-agents in single message (`run_in_background=false`)
+- Spawn **parallel sub-agents** (foreground, i.e. `run_in_background=false`)
 - Ensure tasks don't have file conflicts
 - Collect all results, update FIS
 
@@ -101,24 +101,29 @@ For each implementation task (TI01, TI02, etc.):
 
 ### Step 3: Execute Validation Tasks
 **CRITICAL**: Use different agents than implementation for independent verification.
+Important: Correct implementation of requirements and acceptance criteria must be verified through tests and visual validation (when applicable).
 
 #### TV01 [P] — Level 1: Code Review
-Use `code-review` skill:
-- Static analysis, linting, type checking
-- Code quality, security, maintainability
-- Architecture adherence to ADR
-- Requirements coverage gaps
+Use the `code-review` skill (if available) to perform comprehensive review and analysis covering:
+
+- Static analysis, linting, formatting and type checking issues
+- Code quality (correctness, readability, best practices, performance, maintainability)
+- Architecture (pattern adherence, ADR compliance, anti-pattern detection)
+- Security (input validation, injection prevention, auth, data protection, OWASP Top 10)
+- UI/UX (if applicable - visual quality, usability, accessibility)
+
 
 #### TV02 [P] — Level 2: Testing
-Use `cc-workflows:qa-test-engineer`:
-- Unit tests for new functionality
+Use `cc-workflows:qa-test-engineer` to execute tests fow new and existing functionality:
+- Unit tests
 - Integration tests (if applicable)
 - E2E tests (if applicable)
 
 #### TV03 [P] — Level 3: Visual Validation (if UI)
-Use `cc-workflows:screenshot-validation-specialist`:
-- UI matches requirements/design specs
-- No visual regressions
+- Verify updated UI works correctly according to specified requirements
+- Follow any Visual Validation Workflow defined in project guidelines (see CLAUDE.md)
+- Check for visual regressions and ensure UI matches design specs
+- Use `cc-workflows:screenshot-validation-specialist` for reviewing individual screenshots
 
 #### TV04 — Address Issues
 - Collect all validation feedback
@@ -126,10 +131,10 @@ Use `cc-workflows:screenshot-validation-specialist`:
 - Re-run affected validation levels if needed
 
 ### Step 4: Final Quality Assurance
-As orchestrator (not delegated):
+As orchestrator (not delegated to sub-agent):
 - Review all sub-agent results
 - Check for functionality gaps or requirement mismatches
-- If simplification opportunities exist, use `code-simplifier` agent
+- Use `code-simplifier:code-simplifier` agent to look for simplification, maintainability, and general quality of life improvement opportunities
 
 ### Step 5: Verify Completion
 **Orchestrator performs directly:**
@@ -139,15 +144,18 @@ As orchestrator (not delegated):
 4. Update FIS with completion status
 
 ### Step 6: Iteration (if needed)
-If success criteria not met:
+If success criteria not met or if previous step failed to successfully verify completion:
 1. Analyze gaps from validation feedback
 2. Create new tasks for fixes
 3. Execute Steps 2-5 again
 
 
-## Report: Implementation Notes
-After completion, update `fis-implementation-notes.md`:
-- What was implemented and how parts integrate
-- Key challenges and solutions
-- Decisions and deviations from plan
+## Report: Update Implementation Notes documents with important learnings and decsisions
+After completion, update `fis-implementation-notes.md` with important implementation notes, making sure to keep them very concise and to the point (avoid any unnecessary verbosity and code listings etc).
+
+Including details like:
+- Extremelty brief descripton of what was implemented and how parts integrate
+- Key challenges faced and how they were overcome
+- Important decisions made and their rationale
+- Deviations from plan
 - Unresolved issues or future suggestions

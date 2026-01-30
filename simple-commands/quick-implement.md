@@ -1,13 +1,13 @@
 ---
-description: Quick implementation path for small features or fixes with verification
+description: Quick implementation path for small features or fixes with verification (simple, no sub-agents)
 argument-hint: <spec> | --issue <number>
 ---
 
-# Quick Implement with Verification
+# Quick Implement with Verification (Simple)
 
 Fast implementation path for small features, bug fixes, or GitHub issues. Bypasses FIS workflow for quick turnaround while maintaining verification quality.
 
-**For larger features, use the full workflow:** `clarify` → `spec-create` → `spec-execute`
+**For larger features, use the full workflow:** `clarify-requirements` → `spec-generate` → `spec-execute`
 
 
 ## Variables
@@ -27,7 +27,7 @@ ARGUMENTS: $ARGUMENTS
 
 ## Instructions
 
-- **Fully** read and understand the **Workflow Rules, Guardrails and Guidelines** section in CLAUDE.md before starting work, including but not limited to:
+- **Fully** read and understand the **Workflow Rules, Guardrails and Guidelines** section as defined in AGENTS.md, etc. before starting work, including but not limited to:
   - **Foundational Rules and Guardrails**
   - **Foundational Development Guidelines and Standards** (e.g. Development, Architecture, UI/UX Guidelines etc.)
 - **Autonomously and iteratively** implement with comprehensive verification
@@ -53,68 +53,57 @@ ARGUMENTS: $ARGUMENTS
 
 #### 1.2. Analyze & Plan
 
-1. Understand requirements and scope - interpret as *what* to implement, not *how*
+1. Understand requirements and scope — interpret as *what* to implement, not *how*
 2. Analyze codebase structure and relevant patterns
    - Use `tree -d` and `git ls-files | head -250` for overview
-   - For complex exploration, use the Explore agent
-3. Read relevant documentation (use `cc-workflows:documentation-lookup` as needed)
+3. Read relevant documentation and guidelines as needed
 4. Identify roadblocks and plan mitigation
-5. Break down into manageable todos/tasks and use task management tools to track them
-6. **Think hard** - ensure plan is comprehensive
+5. Break down into manageable tasks and use task management tools to track them
 
 **Gate**: Plan complete, all requirements understood
 
 
 ### Phase 2: Implementation Loop
 
-- Execute implementation loop consisting of: Implementation → Verification → Evaluation
-- Repeat loop until all requirements met, no defects remain, all reviews pass. 
+Repeat: Implementation → Verification → Evaluation until all requirements met.
 
 #### Step 1: Implementation
 
 - Write tests first where applicable, otherwise alongside implementation
 - Write code following existing codebase patterns
 - Follow project guidelines strictly
-- Use **sub-agents (foreground, i.e. `run_in_background=false`)** for independent implementation tasks
-- Delegate build issues to `cc-workflows:build-troubleshooter`
 
 #### Step 2: Verification
 
-Run each verification sub-step using **parallel sub-agents (foreground, i.e. `run_in_background=false`)**:
-
 ##### 2.1. Code & Architecture Review
-- Static analysis, linting, type checking
-- Use the `/code-review` skill for comprehensive review (code quality, security, architecture, UI/UX)
+- Run static analysis, linting, type checking
+- Use the `code-review` skill (if available) for comprehensive review
+- Review code quality, security, architecture adherence
 
 ##### 2.2. Run Tests
-- Execute all tests
-- Use project-specific test commands
+- Execute all tests using project-specific test commands
 - Fix issues that arise
 
 ##### 2.3. Visual Validation (if applicable)
 - Follow Visual Validation Workflow from project guidelines
-- Verify UI changes meet requirements and design specs, by actual screenshot analysis
+- Verify UI changes meet requirements by actual screenshot analysis
 
-##### 2.4. Final Quality Assurance
-As orchestrator (not delegated to sub-agent):
-- Review all sub-agent results
+##### 2.4. Final Check
 - Check for functionality gaps or requirement mismatches
-- Use `code-simplifier:code-simplifier` agent to look for simplification, maintainability, and general quality of life improvement opportunities
+- Look for simplification and maintainability improvements
 
 #### Step 3: Evaluation
 
 - Verify implementation meets all requirements
-- Review work against each task's acceptance criteria
-- Correct implementation of requirements and acceptance criteria must be verified through tests and visual validation (when applicable).
-- Mark completed todos in tracking
+- Correct implementation must be verified through tests and visual validation (when applicable)
+- Mark completed tasks in tracking
 
 **If issues remain:**
 - Analyze feedback from reviews and testing
 - Request user clarification if needed
-- Update todos for next iteration
 - Execute another Implementation Loop
 
-**Gate**: All validations pass - builds correctly, tests pass, no review issues, no regressions
+**Gate**: All validations pass — builds correctly, tests pass, no review issues, no regressions
 
 
 ### Phase 3: Completion (conditional)
@@ -133,11 +122,10 @@ As orchestrator (not delegated to sub-agent):
 
 
 ## Report
-After completed implementation, create an *Implementation Notes* section at the end of the original spec document, if present, or create a new implementation notes file (e.g. `<feature-name>-implementation-notes-<YYYY-MM-DD>.md`).
+After completed implementation, create concise *Implementation Notes* at the end of the original spec document (if present), or in a new file (e.g. `<feature-name>-implementation-notes.md`).
 
-The _implementation notes_ should be very concise and to the point (avoid any unnecessary verbosity and code listings etc). include details like: 
-- Extremelty brief descripton of what was implemented and how parts integrate
-- Key challenges faced and how they were overcome
-- Important decisions made and their rationale
-- Deviations from plan
+Keep notes very concise — include:
+- Brief description of what was implemented
+- Key challenges and solutions
+- Decisions and deviations from plan
 - Unresolved issues or future suggestions

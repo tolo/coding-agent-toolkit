@@ -14,7 +14,7 @@ FEATURE_REQUEST: $ARGUMENTS
 
 ## Instructions
 
-- **Fully** read and understand the **Workflow Rules, Guardrails and Guidelines** section as defined in CLAUDE.md, AGENTS.md, etc. before starting work, including but not limited to:
+- **Fully** read and understand the **Workflow Rules, Guardrails and Guidelines** section as defined in AGENTS.md, etc. before starting work, including but not limited to:
   - **Foundational Rules and Guardrails**
   - **Foundational Development Guidelines and Standards** (e.g. Development, Architecture, UI/UX Guidelines etc.)
 - No sub-agents - direct research and generation approach
@@ -86,21 +86,20 @@ Ask ONLY if implementation is blocked by ambiguity.
 
 ### Phase 3: Generate FIS
 
-#### Gather All Needed Context
+#### Gather Context (as references, not inline content)
 - Research findings with links
-- Documentation URLs with exact sections
-- Exact file paths with line numbers
-- Example patterns to follow
+- File paths with line numbers for patterns to follow
 - UI wireframes/mockups (if applicable)
-- Architecture diagrams and design documents
+- ADRs and architecture docs
+- External documentation URLs with specific sections
 
 #### Generate from Template
 **USE THE TEMPLATE**: Generate the FIS using the template in the **Appendix** below as your structure.
 
 #### Key Generation Guidelines
-1. Fill in template sections - **Include ALL Critical Context**, including: documentation, code examples, gotchas, patterns
-2. Each task must be atomic and self-contained
-3. Include all context and file references with line numbers (when applicable)
+1. Each task: atomic, self-contained, with file:line references
+2. Reference patterns, don't reproduce them
+3. Stay within 300-500 line target
 
 **Gate**: FIS generated
 
@@ -147,23 +146,25 @@ Use the template below to generate the Feature Implementation Specification.
 # Feature Implementation Specification Template (Simple)
 
 > **Purpose:**
-> Executable specification template for direct AI agent implementation without sub-agent delegation.
+> Executable specification for direct AI agent implementation — concise, actionable, reference-heavy.
 >
 > **Core Principles:**
-> 1. **Context is King**: Include ALL necessary documentation, examples, and caveats
-> 2. **Validation Loops**: Provide executable tests/lints the AI can run and fix
-> 3. **Information Dense**: Use keywords and patterns from the codebase
-> 4. **Progressive Success**: Start simple, validate, then enhance
-> 5. **Global rules**: Be sure to follow all rules in CLAUDE.md
-> 6. **Fix-forward approach** - address issues immediately
+> 1. **References over Content**: Link to docs, code (file:line), and research — don't inline them
+> 2. **Decisions, not Explanations**: State what to do, not lengthy rationale
+> 3. **Patterns by Reference**: Point to existing code patterns (file:line) rather than reproducing them
+> 4. **Information Dense**: Keywords and patterns from the codebase, minimal prose
+> 5. **Fix-forward approach**: Address issues immediately
+>
+> **Size Constraint:**
+> - Target: **300-500 lines** max for most features
+> - If exceeding 500 lines, split into multiple specs or extract shared content to referenced files
 >
 > **DON'Ts**
-> - Never modify code or documentation that are not related to the current task
-> - Researching what's already decided
-> - Redesigning the solution
-> - Creating unnecessary files
-> - Discussing instead of *doing*
-> - Over-engineering the implementation and implementing functionality not in the scope
+> - Code snippets longer than 5-10 lines — reference existing patterns instead
+> - Inline documentation excerpts — link to the source
+> - Verbose prose or explanations — be terse and actionable
+> - Repeating information available elsewhere — reference it
+> - Over-engineering or out-of-scope functionality
 
 
 
@@ -241,43 +242,15 @@ Use the template below to generate the Feature Implementation Specification.
 ## Critical Documentation & Context
 
 ### Documentation & References
-```md
-# MUST READ - Include these in your context window
-- url/file: {{Architecture diagram URL or file path}}
-  description: {{Description/purpose of document/file}}
-  why: {{Explains system architecture, relationships, data flow, etc}}
-  section: {{lines 45-67}}
-
-- url/file: {{UI designs / wireframes URL or file path}}
-  description: {{Description/purpose of document/file}}
-  why: {{Describes layout, UI components, user interactions, etc}}
-  section: {{Relevant sections}}
-
-- url: {{Official API docs URL}}
-  description: {{Description/purpose of document/file}}
-  why: {{Specific sections/methods you'll need}}
-  section: {{Relevant sections}}
-
-- url: {{Library documentation URL}}
-  description: {{Description/purpose of document/file}}
-  critical: {{Key insight that prevents common errors}}
-  section: {{Relevant sections}}
-
-- file: {{path/to/example.py}}
-  description: {{Description/purpose of document/file}}
-  why: {{Pattern to follow, gotchas to avoid}}
-  section: {{lines 45-67}}
-
-- docfile: {{docs/file.md}}
-  description: {{Description/purpose of document/file}}
-  why: {{docs that the user has pasted in to the project}}
-  section: {{lines 45-67}}
-
-- url: {{Relevant related GitHub issues or PRs - same or external repo}}
-  description: {{Description/purpose of document/file}}
-  why: {{Context on similar features, discussions, or decisions}}
-  section: {{Relevant sections}}
 ```
+# Reference format: type | path/url | section | why needed
+file   | src/components/Modal.tsx:45-78    | Pattern for dialog handling
+file   | src/api/users.ts:12-34            | API structure to follow
+url    | https://docs.example.com/auth     | OAuth flow reference
+doc    | docs/architecture/adr-001.md      | Auth architecture decision
+wire   | docs/specs/wireframes/login.html  | UI layout for login screen
+```
+> Keep this list focused — only include references essential for implementation.
 
 
 ### Known Constraints & Gotchas
@@ -315,19 +288,10 @@ _Examples:_
   - Create static/styles/architecture-theme.css with custom variables
   - Set up responsive design system per ADR-002
 
-#### Per task Pseudocode (code snippets, configuration, data models, etc.)  _as needed_ (relevant to the specific task - *Short and Simple* _NOT_ full implementations!)
-```swift
-// Example pseudocode for initial setup
-class FeatureController {
-    func setup() {
-        // Initialize components
-    }
-
-    func process() {
-        // Core logic here
-    }
-}
-```
+#### Implementation Notes (per task, only when needed)
+- Reference existing patterns: `see src/components/Modal.tsx:45-78 for similar pattern`
+- Only include pseudocode (max 5-10 lines) when no existing pattern exists in codebase
+- Configuration/data models: describe structure briefly, don't write full schemas
 
 ### List of validation tasks to be completed
 

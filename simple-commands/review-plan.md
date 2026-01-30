@@ -16,7 +16,7 @@ SPEC_PATH_OR_FOCUS: $ARGUMENTS
 ## Instructions
 
 - **Make sure `SPEC_PATH_OR_FOCUS` is provided** - otherwise **STOP** immediately and ask user for input
-- **Fully** read and understand the **Workflow Rules, Guardrails and Guidelines** section as defined in CLAUDE.md, AGENTS.md, etc. before starting work, including but not limited to:
+- **Fully** read and understand the **Workflow Rules, Guardrails and Guidelines** section as defined in AGENTS.md, etc. before starting work, including but not limited to:
   - **Foundational Rules and Guardrails**
   - **Foundational Development Guidelines and Standards** (e.g. Development, Architecture, UI/UX Guidelines etc.)
 - **Read-only review** - No modifications to specs during analysis
