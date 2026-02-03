@@ -28,6 +28,17 @@ Always fully read relevant guidelines below as needed, based on the type of work
 ---
 
 
+## Project specific Guidelines
+- [Add references to project-specific guidelines here (don't @ them, just list the paths)]
+
+
+## Visual Validation Workflow
+- [Describe any project-specific visual validation workflow here, or reference documentation files]
+
+
+---
+
+
 ## Vital Documentation Resources
 - [Add references to other important documentation files here (don't @ them, just list the paths)]
 

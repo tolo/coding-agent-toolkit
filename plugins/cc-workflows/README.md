@@ -196,9 +196,9 @@ Specialized sub-agents for delegation (used internally by commands):
 | `documentation-lookup` | External documentation retrieval |
 | `qa-test-engineer` | Test coverage and validation |
 | `research-specialist` | Web research and synthesis |
-| `screenshot-validation-specialist` | Visual UI comparison |
 | `solution-architect` | Architecture design |
 | `ui-ux-designer` | UI/UX design |
+| `visual-validation-specialist` | Full visual validation workflow (primary) |
 | `whimsy-injector` | Playful, unconventional UI/UX inspiration |
 
 ## Skills

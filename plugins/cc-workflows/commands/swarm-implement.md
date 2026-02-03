@@ -170,7 +170,7 @@ Wave 3: Integration tasks
 Wave 4: Validation tasks (parallel)
   └─ Code review via code-reviewer agent
   └─ Test execution via qa-test-engineer
-  └─ Visual validation if UI (screenshot-validation-specialist)
+  └─ Visual validation if UI (visual-validation-specialist)
 ```
 
 #### 2.2 Sub-Agent Delegation Pattern
@@ -265,11 +265,11 @@ Agent 3 (build-troubleshooter) [if build issues]:
 
 #### 3.2 Visual Validation (if UI changes)
 
-Use **screenshot-validation-specialist**:
+Use **visual-validation-specialist**:
 ```
 Task:
-  subagent_type: cc-workflows:screenshot-validation-specialist
-  prompt: "Validate UI changes against requirements. Capture screenshots, compare to baselines if available."
+  subagent_type: cc-workflows:visual-validation-specialist
+  prompt: "Validate UI changes against requirements. Follow project Visual Validation Workflow in CLAUDE.md if defined, otherwise use fallback workflow."
 ```
 
 #### 3.3 Issue Resolution Loop
@@ -416,7 +416,7 @@ TaskGet: { taskId: "X" }  # Full details of specific task
 | `code-reviewer` | Code quality, security, pattern review |
 | `qa-test-engineer` | Test strategy, test writing, coverage |
 | `build-troubleshooter` | Build failures, dependency issues |
-| `screenshot-validation-specialist` | Visual UI validation |
+| `visual-validation-specialist` | Full visual validation workflow |
 | `solution-architect` | Architecture decisions, design |
 | `documentation-lookup` | API docs, framework references |
 

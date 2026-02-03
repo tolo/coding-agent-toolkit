@@ -20,7 +20,7 @@ ADDITIONAL_CONTEXT: $ARGUMENTS
   - **Foundational Development Guidelines and Standards** (e.g. Development, Architecture, UI/UX Guidelines etc.)
 - **Read-only analysis** - No code changes, commits, or modifications during analysis
 - **Be thorough** - Don't skip steps or rush analysis; completeness is critical
-- **Use the `code-review` skill** - Delegate code review to the skill (runs in forked context)
+- **Delegate code review to a sub-agent** that uses the `code-review` skill (do NOT invoke the skill directly)
 - **Document everything** - All findings and recommendations must be captured in final report
 
 
@@ -79,13 +79,15 @@ Review general quality, soundness and adherence to guidelines, standards and bes
 - Use IDE diagnostics (`mcp__ide__getDiagnostics`) if available
 
 #### Comprehensive Code Review
-**Use the `code-review` skill** to perform thorough review covering:
+Spawn a **sub-agent** (via Task tool, `subagent_type: "general-purpose"`) to perform the code review.
+The sub-agent should **use the `code-review` skill** for thorough review covering:
 - Code quality (correctness, readability, best practices, performance)
 - Architecture (CUPID principles, DDD patterns, anti-patterns)
 - Security (OWASP Top 10, injection prevention, auth, data protection)
 - UI/UX (if applicable)
 
-The skill runs in a forked context and generates a detailed report. Incorporate findings into the gap analysis.
+**Do NOT invoke the skill directly** — delegate to a sub-agent to preserve context for remaining workflow steps.
+Incorporate the sub-agent's findings into the gap analysis.
 
 **Gate**: Quality reviews complete, over-engineering identified, all issues documented
 

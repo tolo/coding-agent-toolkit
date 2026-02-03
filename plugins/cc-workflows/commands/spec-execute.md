@@ -100,11 +100,11 @@ For each implementation task (TI01, TI02, etc.):
 - Complex architecture: `cc-workflows:solution-architect`
 
 ### Step 3: Execute Validation Tasks
-**CRITICAL**: Use different agents than implementation for independent verification.
+**CRITICAL**: Execute all validation tasks (TV01-TV03) in **parallel sub-agents**, never directly from the main agent.
 Important: Correct implementation of requirements and acceptance criteria must be verified through tests and visual validation (when applicable).
 
 #### TV01 [P] — Level 1: Code Review
-Use the `code-review` skill (if available) to perform comprehensive review and analysis covering:
+The sub-agent for code review (general-purpose) should use the `code-review` skill for comprehensive review and analysis covering:
 
 - Static analysis, linting, formatting and type checking issues
 - Code quality (correctness, readability, best practices, performance, maintainability)
@@ -112,22 +112,21 @@ Use the `code-review` skill (if available) to perform comprehensive review and a
 - Security (input validation, injection prevention, auth, data protection, OWASP Top 10)
 - UI/UX (if applicable - visual quality, usability, accessibility)
 
-
 #### TV02 [P] — Level 2: Testing
-Use `cc-workflows:qa-test-engineer` to execute tests fow new and existing functionality:
+Use the `cc-workflows:qa-test-engineer` sub-agent to execute tests fow new and existing functionality:
 - Unit tests
 - Integration tests (if applicable)
 - E2E tests (if applicable)
 
 #### TV03 [P] — Level 3: Visual Validation (if UI)
 - Verify updated UI works correctly according to specified requirements
-- Follow any Visual Validation Workflow defined in project guidelines (see CLAUDE.md)
-- Check for visual regressions and ensure UI matches design specs
-- Use `cc-workflows:screenshot-validation-specialist` for reviewing individual screenshots
+- Use the `cc-workflows:visual-validation-specialist` sub-agent for full visual validation
+- This agent automatically follows any **Visual Validation Workflow** defined in CLAUDE.md
+- Checks for visual regressions and ensures UI matches design specs
 
 #### TV04 — Address Issues
-- Collect all validation feedback
-- Spawn sub-agents to fix identified issues
+- Collect all validation feedback from the validation task sub-agents
+- Spawn sub-agents to fix identified issues, if any
 - Re-run affected validation levels if needed
 
 ### Step 4: Final Quality Assurance

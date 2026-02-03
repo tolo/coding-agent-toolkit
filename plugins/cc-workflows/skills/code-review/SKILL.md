@@ -2,6 +2,7 @@
 name: code-review
 description: Performs thorough code reviews covering code quality, security, architecture, and UI/UX. Use when reviewing code changes, PRs, implementations, or when asked to review, audit, or assess code quality. Generates detailed reports with prioritized findings.
 context: fork
+agent: general-purpose
 user-invocable: false
 ---
 
@@ -41,7 +42,6 @@ Comprehensive code review covering quality, security, architecture, and UI/UX as
 ### Phase 2: Review Execution
 
 Perform applicable reviews using the checklists. 
-**Always** delegate specific reviews/analysis to suitable **sub-agents**, and execute in **parallel**.
 
 #### Code Analysis
 - Run static analysis, linting, type checking per project guidelines

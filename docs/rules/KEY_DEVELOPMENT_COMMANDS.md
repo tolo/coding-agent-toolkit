@@ -37,14 +37,14 @@
 
 **Launch** app and test at [YOUR_APP_URL]
 
-### Visial Validation Tools _[TODO: Updates with relevant tools]_
+### Visual Validation Tools _[TODO: Update with relevant tools]_
 - **Playwright MCP**: If available, use `mcp__playwright__*` commands
 - **Screenshots**: [YOUR_SCREENSHOT_TOOL] # e.g., peekaboo, screenshot cli
 
-### Visial Validation Guidelines _[TODO: Updates with relevant guidelines]_
+### Visual Validation Guidelines _[TODO: Update with relevant guidelines]_
 When performing visual validation, always follow this process:
 - Get semantic page/screen structure first
 - Capture screenshots - prefer capturing only relevant sections/components if possible
-- **Always** use _`screenshot-validation-specialist`_ agent for screenshot analysis and comparison against baselines (if available)
-- Make targeted fixes to specific components based on visual diffs    
+- **Always** use _`visual-validation-specialist`_ agent for screenshot analysis and comparison against baselines (if available)
+- Make targeted fixes to specific components based on visual diffs
 - Re-capture and re-validate only the affected components until no unexpected diffs remain

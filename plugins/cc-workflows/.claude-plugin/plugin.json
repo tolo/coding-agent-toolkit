@@ -1,6 +1,6 @@
 {
   "name": "cc-workflows",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "description": "Claude Code workflows: requirements clarification, spec generation/execution, code review, trade-off analysis, and design tools",
   "author": {
     "name": "Tobias"

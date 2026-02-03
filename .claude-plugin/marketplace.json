@@ -13,7 +13,7 @@
       "name": "cc-workflows",
       "source": "./plugins/cc-workflows",
       "description": "Common development workflows: spec generation, code review, implementation, troubleshooting",
-      "version": "0.3.3",
+      "version": "0.4.0",
       "keywords": [
         "development",
         "specification",

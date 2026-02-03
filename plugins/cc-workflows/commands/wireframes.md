@@ -218,7 +218,7 @@ After all wireframes created:
 Check available browser automation tools in order of preference:
 1. **Playwright MCP** (`mcp__playwright__*` tools) - preferred
 2. **Chrome DevTools MCP** (`mcp__chrome-devtools__*` tools) - fallback
-3. **Manual validation** - if no MCP available, use `cc-workflows:screenshot-validation-specialist` with manually opened browser
+3. **Manual validation** - if no MCP available, use `cc-workflows:visual-validation-specialist` with manually opened browser
 
 ##### 3.1.2 Viewport Matrix
 Test each wireframe at these viewports:
@@ -353,8 +353,8 @@ When issues are detected, follow this protocol:
 | Minor overlap (decorative only) | 🟡 Medium | Fix if time permits |
 | Suboptimal spacing | 🟢 Low | Note for refinement |
 
-#### 3.2 Visual Comparison (screenshot-validation-specialist)
-Launch `cc-workflows:screenshot-validation-specialist` with:
+#### 3.2 Visual Comparison
+Launch `cc-workflows:visual-validation-specialist` with:
 - **Screenshots captured** from Phase 3.1
 - **Comparison criteria**:
   - Layout consistency across viewports

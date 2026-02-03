@@ -49,6 +49,7 @@ ARGUMENTS: $ARGUMENTS
 - Analyse the codebase to properly understand the project structure, relevant files and similar patterns
    - Use commands like `tree -d` and `git ls-files | head -250` to get overview of codebase structure
    - For complex codebase exploration, consider using the Explore agent
+- Use the `Explore` agent to gather additional context about the project, architecture, patterns etc.
 
 
 ### 2. Feature Research and Design
@@ -112,7 +113,7 @@ Ask ONLY if implementation is blocked by ambiguity.
 
 
 ### 3. Generate FIS
-**IMPORTANT**: Use `cc-workflows:solution-architect` to create the FIS.
+**IMPORTANT**: Use the `Plan` agent to create the FIS.
 
 #### Gather Context (as references, not inline content)
 - Research docs from previous phase (link to files in `docs/temp/research/`)
