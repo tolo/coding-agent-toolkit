@@ -20,7 +20,7 @@ ADDITIONAL_CONTEXT: $ARGUMENTS
   - **Foundational Development Guidelines and Standards** (e.g. Development, Architecture, UI/UX Guidelines etc.)
 - **Read-only analysis** - No code changes, commits, or modifications during analysis
 - **Be thorough** - Don't skip steps or rush analysis; completeness is critical
-- **Delegate code review to a sub-agent** that uses the `code-review` skill (do NOT invoke the skill directly)
+- **Delegate code review to a sub-agent** that uses the `/cc-workflows:code-review` skill (do NOT invoke the skill directly)
 - **Document everything** - All findings and recommendations must be captured in final report
 
 
@@ -80,7 +80,7 @@ Review general quality, soundness and adherence to guidelines, standards and bes
 
 #### Comprehensive Code Review
 Spawn a **sub-agent** (via Task tool, `subagent_type: "general-purpose"`) to perform the code review.
-The sub-agent should **use the `code-review` skill** for thorough review covering:
+The sub-agent should **use the `/cc-workflows:code-review` skill** for thorough review covering:
 - Code quality (correctness, readability, best practices, performance)
 - Architecture (CUPID principles, DDD patterns, anti-patterns)
 - Security (OWASP Top 10, injection prevention, auth, data protection)

@@ -59,8 +59,11 @@ ARGUMENTS: $ARGUMENTS
 - If from GitHub issue: include issue number reference, labels, and any relevant discussion from comments
 - Note any provided documentation, examples, or constraints
 - **Read additional guidelines and documentation** - Read additional relevant guidelines and documentation (API, guides, reference, etc.) as needed
+- Determine _completeness of requirements_ - Identify any ambiguities or missing details that need clarification
+  - **Identify** if additional research is needed
 
-#### Deep Research Process
+#### Additional Research - If Needed
+- Only perform research if the feature request lacks sufficient detail or context
 - Use **parallel sub-agents (foreground, i.e. `run_in_background=false`)** for research tasks - multiple Task calls in one message.
 - Save findings to _`<project_root>/docs/temp/research/{feature-name}/`_ **only** if substantial, and add links to generated FIS. Note: If only a file/URL is needed, do not create a research file, just add the reference.
 

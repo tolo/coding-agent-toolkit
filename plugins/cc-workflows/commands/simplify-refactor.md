@@ -82,7 +82,7 @@ Delegate to `code-simplifier:code-simplifier` agent:
 Run in **parallel sub-agents (foreground, i.e. `run_in_background=false`)**:
 
 1. **Tests**: Run full test suite — all tests must pass
-2. **Code review**: Use `code-review` skill to verify improvements and catch regressions
+2. **Code review**: Use `/cc-workflows:code-review` skill to verify improvements and catch regressions
 3. **Linting/types**: Run static analysis, confirm no new issues
 
 **If failures:** fix issues and re-verify before completing.

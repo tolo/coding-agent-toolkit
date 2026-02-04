@@ -84,7 +84,7 @@ Run each verification sub-step using **parallel sub-agents (foreground, i.e. `ru
 
 ##### 2.1. Code & Architecture Review
 - Static analysis, linting, type checking
-- Use the `/code-review` skill for comprehensive review (code quality, security, architecture, UI/UX)
+- Use the `/cc-workflows:code-review` skill for comprehensive review (code quality, security, architecture, UI/UX)
 
 ##### 2.2. Run Tests
 - Execute all tests

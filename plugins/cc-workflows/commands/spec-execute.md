@@ -12,6 +12,15 @@ FIS_FILE_PATH: $ARGUMENTS
 
 ## Instructions
 
+### Core Rules
+- **Fully** read and understand the **Workflow Rules, Guardrails and Guidelines** section in CLAUDE.md before starting work, including but not limited to:
+  - **Foundational Rules and Guardrails** (absolute must-follow rules)
+  - **Foundational Development Guidelines and Standards** (e.g. Development, Architecture, UI/UX Guidelines etc.)
+- **Spec generation only** - No code changes, commits, or modifications during execution of this command
+- **Complete Implementation**: 100% completion required - no partial work  
+- **FIS is source of truth** — follow it exactly
+- **Sub-agents for all tasks** — act as orchestrator and delegate all work to sub-agents
+
 ### Orchestrator Role
 **You are the orchestrator.** Your job is to:
 - Load and understand the FIS
@@ -22,19 +31,11 @@ FIS_FILE_PATH: $ARGUMENTS
 **You do NOT:**
 - Write implementation code directly (delegate to sub-agents)
 - Let your context get bloated with implementation details
-- Skip final steps due to context exhaustion
+ Skip final steps due to context exhaustion
 
-### Core Rules
-- **Fully** read CLAUDE.md guidelines before starting
-- **100% completion required** — no partial work
-- **FIS is source of truth** — follow it exactly
-- **Sub-agents for all tasks** — keep orchestrator context lean
-- **Validation by different agents** than implementation (independent verification)
+### Sub-Agent Protocol
 
-
-## Sub-Agent Protocol
-
-### Input Template (provide to each sub-agent)
+#### Input Template (provide to each sub-agent)
 ```
 ## Task: {TASK_ID} - {Task title}
 {Task description and sub-items from FIS}
@@ -55,7 +56,7 @@ Read sections: ADR, Critical Documentation & Context, relevant Implementation No
 3. Report back: status, files changed, decisions made, issues encountered
 ```
 
-### Expected Output (sub-agent should provide)
+#### Expected Output (sub-agent should provide)
 ```
 Status: complete | partial | blocked
 Files changed: {list of created/modified files}
@@ -63,7 +64,7 @@ Decisions: {any deviations or choices made}
 Issues: {blockers, errors, concerns for orchestrator}
 ```
 
-### Handling Sub-Agent Results
+#### Handling Sub-Agent Results
 After each sub-agent completes:
 1. **Read the result** — extract status, files changed, issues
 2. **Update FIS** — check off completed task checkbox
@@ -75,9 +76,10 @@ After each sub-agent completes:
 
 ### Step 1: Load FIS and Prepare
 1. Read FIS at _`FIS_FILE_PATH`_
-2. Understand: Success Criteria, Scope, ADR, Implementation Plan
-3. Quick codebase orientation: `tree -d`, `git ls-files | head -100`
-4. Read any existing `fis-implementation-notes.md`
+2. Fully Understand vital sections like Success Criteria, Scope & Boundaries, Solution Architecture and Design, Critical Documentation & Context, Implementation Plan, etc.
+3. Analyse the codebase to properly understand the project structure, relevant files and similar patterns
+  - Use command like `tree -d` and `git ls-files | head -250` to get an overview of the codebase structure
+4. Read any _`fis-implementation-notes.md`_ document for additional context and learnings from previous specifications
 5. Create task tracking for ALL tasks (implementation + validation)
 
 ### Step 2: Execute Implementation Tasks
@@ -104,7 +106,7 @@ For each implementation task (TI01, TI02, etc.):
 Important: Correct implementation of requirements and acceptance criteria must be verified through tests and visual validation (when applicable).
 
 #### TV01 [P] — Level 1: Code Review
-The sub-agent for code review (general-purpose) should use the `code-review` skill for comprehensive review and analysis covering:
+The sub-agent for code review (general-purpose) should use the `/cc-workflows:code-review` skill for comprehensive review and analysis covering:
 
 - Static analysis, linting, formatting and type checking issues
 - Code quality (correctness, readability, best practices, performance, maintainability)

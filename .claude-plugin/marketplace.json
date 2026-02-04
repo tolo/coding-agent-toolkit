@@ -5,21 +5,28 @@
   },
   "metadata": {
     "description": "Common development workflows and tools for Claude Code",
-    "version": "0.3.0",
     "pluginRoot": "./plugins"
   },
   "plugins": [
     {
       "name": "cc-workflows",
       "source": "./plugins/cc-workflows",
-      "description": "Common development workflows: spec generation, code review, implementation, troubleshooting",
-      "version": "0.4.0",
+      "strict": false,
+      "version": "0.5.0",
+      "description": "Claude Code workflows: requirements clarification, spec generation/execution, code review, trade-off analysis, and design tools",
+      "author": {
+        "name": "Tobias"
+      },
+      "license": "MIT",
       "keywords": [
-        "development",
+        "workflow",
         "specification",
         "code-review",
         "implementation",
-        "troubleshooting"
+        "requirements",
+        "trade-off-analysis",
+        "wireframes",
+        "design-system"
       ]
     }
   ]

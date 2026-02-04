@@ -9,7 +9,7 @@ Perform comprehensive code review and generate a detailed report with prioritize
 
 ## Instructions
 
-**Use the `code-review` skill** to review: $ARGUMENTS
+**Use the `/cc-workflows:code-review` skill** to review: $ARGUMENTS
 
 If no arguments provided, review all recent changes (git status/diff).
 

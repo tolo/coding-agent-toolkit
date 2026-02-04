@@ -238,7 +238,7 @@ Apply systematic prioritization to features:
 - [ ] No over-specification or gold-plating
 
 #### Launch Peer Review
-Use `cc-workflows:review-plan` agent to validate PRD for:
+Use the `/cc-workflows:review-plan` command to validate PRD for:
 - Missing requirements or user stories
 - Over-engineered or unnecessarily complex features
 - Conflicting requirements
@@ -366,7 +366,7 @@ Inform user of report location when complete.
 ## Follow-Up Actions
 
 After completion, ask user if they'd like to:
-1. Generate implementation plan with stories (`/spec-plan`)
+1. Create implementation roadmap (`/roadmap`)
 2. Create wireframes (`/wireframes`)
 3. Review specific sections in more depth
 4. Share with stakeholders for validation
