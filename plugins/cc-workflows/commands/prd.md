@@ -20,7 +20,7 @@ OUTPUT_DIR: `<project_root>/docs/specs/`
 ## Instructions
 
 - **Make sure `INPUT` is provided** - otherwise **STOP** immediately and ask user for input
-- **Fully** read and understand the **Workflow Rules, Guardrails and Guidelines** section in CLAUDE.md before starting work
+- **Fully** read and understand the **Workflow Rules, Guardrails and Guidelines** section in CLAUDE.md (and/or system prompt) before starting work
 - **Interactive process** - Interview user iteratively; don't assume answers
 - **Be thorough** - Challenge assumptions, find edge cases, identify all ambiguities
 - **Focus on "what" not "how"** - Requirements, not implementation details

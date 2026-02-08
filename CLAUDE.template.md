@@ -17,6 +17,13 @@ _**TODO**: Add Project Overview, Architecture, Tech Stack, Structure etc. here._
 ### Foundational Rules and Guardrails
 _Always fully read and understand this file before doing any work:_ @docs/rules/CRITICAL-RULES-AND-GUARDRAILS.md
 
+> **Alternative (stronger adherence):** Instead of the `@` reference above, you can inject the rules
+> directly into the system prompt via a shell alias. This keeps the rules in a privileged position
+> that survives long sessions without drift. See the
+> [System Prompt Rules Injection](#system-prompt-rules-injection) section in the
+> `claude_code_common` README for setup instructions. If using that approach, **remove** the
+> `@` reference above to avoid duplication.
+
 
 ### Foundational Development Guidelines and Standards
 Always fully read relevant guidelines below as needed, based on the type of work being done:

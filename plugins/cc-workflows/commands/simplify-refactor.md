@@ -25,7 +25,7 @@ ARGUMENTS: $ARGUMENTS
 
 ## Instructions
 
-- **Fully** read and understand the **Workflow Rules, Guardrails and Guidelines** section in CLAUDE.md before starting work
+- **Fully** read and understand the **Workflow Rules, Guardrails and Guidelines** section in CLAUDE.md (and/or system prompt) before starting work
 - **No functional changes** unless explicitly requested — preserve existing behavior
 - **No scope creep** — only refactor what's specified
 - **Tests must pass** before and after refactoring

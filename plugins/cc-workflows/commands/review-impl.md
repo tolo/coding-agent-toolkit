@@ -15,7 +15,7 @@ ADDITIONAL_CONTEXT: $ARGUMENTS
 
 ## Instructions
 
-- **Fully** read and understand the **Workflow Rules, Guardrails and Guidelines** section in CLAUDE.md before starting work, including but not limited to:
+- **Fully** read and understand the **Workflow Rules, Guardrails and Guidelines** section in CLAUDE.md (and/or system prompt) before starting work, including but not limited to:
   - **Foundational Rules and Guardrails**
   - **Foundational Development Guidelines and Standards** (e.g. Development, Architecture, UI/UX Guidelines etc.)
 - **Read-only analysis** - No code changes, commits, or modifications during analysis
@@ -96,98 +96,60 @@ Incorporate the sub-agent's findings into the gap analysis.
 
 Systematically identify all gaps between requirements and implementation:
 
-- **Functionality Gaps**
-  - Missing features or capabilities that were required
-  - Incomplete implementations (partially done features)
-  - Unfulfilled success criteria or acceptance criteria
-  - Missing error handling, edge cases, or validation
+- **Functionality Gaps** - Missing/incomplete features, unfulfilled acceptance criteria, missing error handling/edge cases/validation
 
-- **Integration Gaps**
-  - Missing integration points between components
-  - Incomplete data flows or communication paths
-  - Missing API endpoints, database migrations, or configuration
-  - Broken or incomplete dependencies between modules
+- **Integration Gaps** - Missing integration points, incomplete data flows, missing API endpoints/migrations/config, broken dependencies between modules
 
-- **Requirement Mismatches**
-  - Implemented features that don't match requirements
-  - Incorrect behavior or logic
-  - Performance, scalability, or security requirements not met
-  - Non-functional requirements (accessibility, internationalization, etc.) not addressed
+- **Requirement Mismatches** - Features that don't match requirements, incorrect behavior/logic, unmet non-functional requirements (performance, security, accessibility, i18n)
 
-- **Consistency Gaps**
-  - Inconsistencies with existing codebase patterns
-  - Style or convention violations
-  - Documentation gaps (missing docs for new features)
-  - Test coverage gaps (missing unit/integration/e2e tests)
+- **Consistency Gaps** - Deviations from codebase patterns/conventions, documentation gaps, test coverage gaps (unit/integration/e2e)
 
-- **Holistic Sanity Check**
-  - Zoom out and review the complete picture
-  - Does the implementation make sense as a whole?
-  - Are there obvious missing pieces when looking end-to-end?
-  - Would the feature actually work for end users?
-  - Are there hidden assumptions or technical debt introduced?
+- **Holistic Sanity Check** - Zoom out: Does the implementation make sense end-to-end? Would it actually work for users? Any hidden assumptions or tech debt introduced?
 
 **Gate**: All gaps comprehensively identified and documented
 
 
-### 5. Retrospective Review
+### 5. Retrospective & Deep Reflection
 
-Reflect on the implementation process, approach, and decisions to extract learnings and identify process improvements:
+#### Design & Architecture Reflection
+Think deeply and critically about the implementation choices made:
 
-- **Implementation Approach Analysis** - Evaluate the technical approach and methodology used. Was it sound? Were there better alternatives?
+- **Decision Analysis** - For each significant design/architecture choice: What alternatives existed? What trade-offs were made? With hindsight, was this the right call?
+- **Alternative Approaches** - Identify 2-3 fundamentally different ways the implementation could have been structured. Evaluate pros/cons vs the chosen approach.
+- **Hindsight Analysis** - If starting over with current knowledge, what would change? What assumptions proved wrong? What would a senior/staff engineer critique?
+- **Effort Allocation** - Where was effort misallocated? What was over-engineered vs under-invested?
+- **Simplicity Check** - Could the same outcome have been achieved with significantly less code, fewer abstractions, or simpler patterns?
 
-- **What Went Well** - Identify successful patterns, decisions, or practices that should be repeated in future work.
+#### Process Retrospective
+- **What Went Well** - Patterns, decisions, or practices worth repeating
+- **What Didn't Go Well** - Problems, inefficiencies, or missteps during implementation
+- **Deviation Analysis** - Compare actual vs planned implementation. Were deviations justified?
+- **Root Causes** - For significant issues, why did they occur? (unclear requirements, complexity, missing knowledge, etc.)
+- **Process Improvements** - Specific changes to prevent similar issues in future
+- **Knowledge Gaps** - Areas where lack of knowledge or documentation caused issues
 
-- **What Didn't Go Well** - Identify problems, inefficiencies, or missteps that occurred during implementation.
-
-- **Deviation Analysis** - Compare actual implementation against any original plans, designs, or architectural decisions. Understand why deviations occurred and whether they were justified.
-
-- **Root Cause Analysis** - For any significant gaps or issues found, perform root cause analysis to understand why they occurred (e.g., unclear requirements, technical complexity, time pressure, missing knowledge).
-
-- **Process Improvements** - Identify specific process, workflow, or practice improvements that could prevent similar issues in future implementations.
-
-- **Knowledge Gaps** - Document any areas where lack of knowledge or documentation led to issues.
-
-**Gate**: Retrospective complete with actionable insights documented
+**Gate**: Retrospective and deep reflection complete with actionable insights
 
 
 ### 6. Remediation Plan
 
-Create a comprehensive, prioritized plan for addressing all identified gaps and issues:
+Prioritized plan for addressing all identified gaps and issues:
 
-- **Issue Categorization** - Group all identified issues into logical categories:
+- **Issue Categorization** - Group by severity:
   - Critical: Blocks core functionality, security vulnerabilities, data loss risks
-  - High: Significant functionality gaps, major quality issues, architectural problems
-  - Medium: Minor functionality gaps, code quality issues, maintainability concerns
+  - High: Significant functionality gaps, major quality/architectural problems
+  - Medium: Minor functionality gaps, code quality, maintainability concerns
   - Low: Nice-to-have improvements, minor optimizations, cosmetic issues
 
-- **Dependency Analysis** - Identify dependencies between fixes. Which issues must be resolved before others? Which can be done in parallel?
+- **Dependencies & Sequencing** - Map dependencies between fixes. Sequence: blockers first, related fixes grouped, quick wins, then risk-balanced remainder.
 
-- **Risk Assessment** - Evaluate risk for each remediation item:
-  - Complexity: How difficult is the fix?
-  - Blast radius: How much code will be affected?
-  - Uncertainty: Are requirements/solutions clear?
-  - Breaking changes: Will this affect existing functionality?
+- **Risk Assessment** - Per item: complexity, blast radius, uncertainty, breaking change potential
 
-- **Sequencing Strategy** - Determine optimal order for addressing issues:
-  - Resolve blockers first (critical items that block other work)
-  - Group related fixes together for efficiency
-  - Consider quick wins that provide immediate value
-  - Balance risk vs. impact
+- **Remediation Steps** - Per issue: problem description, proposed solution, affected files, dependencies, acceptance criteria
 
-- **Remediation Steps** - For each issue/gap, define:
-  - Clear description of the problem
-  - Proposed solution approach
-  - Affected components/files
-  - Dependencies on other fixes
-  - Acceptance criteria
+- **Rollout Considerations** - Incremental vs big-bang delivery, rollback strategies, required testing/validation
 
-- **Rollout Considerations** - Consider how fixes should be delivered:
-  - Can issues be fixed incrementally or require big-bang approach?
-  - Are there rollback strategies for risky changes?
-  - What testing/validation is needed for each fix?
-
-**Gate**: Comprehensive, actionable remediation plan created
+**Gate**: Actionable remediation plan created
 
 
 ## Report
@@ -201,7 +163,7 @@ Generate markdown report with:
 - **Quality Review Findings** - Code quality, security, architecture, maintainability, UI/UX, performance issues
 - **Over-Engineering Analysis** - Unnecessary complexity, premature optimizations, excessive layering, feature bloat, technology overkill, pattern misapplication (with simpler alternatives)
 - **Gap Analysis Results** - Functionality gaps, integration gaps, requirement mismatches, consistency issues, missing tests/docs
-- **Retrospective Insights** - What went well/didn't go well, root causes, process improvements, lessons learned
+- **Retrospective & Reflection** - Design decision analysis, alternative approaches considered, what went well/didn't, root causes, lessons learned
 - **Remediation Plan** - Categorized/prioritized issues (Critical/High/Medium/Low), dependencies, sequencing, risk assessment, specific remediation steps, acceptance criteria
 - **Appendix** (if needed) - Code snippets, technical details, reference materials
 

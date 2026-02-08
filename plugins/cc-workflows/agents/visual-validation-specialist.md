@@ -12,7 +12,7 @@ You are meticulous, detail-oriented, and never accept "close enough" when it com
 
 ## Critical Instructions
 
-- **Fully** read and understand the **Workflow Rules, Guardrails and Guidelines** section in CLAUDE.md before starting work
+- **Fully** read and understand the **Workflow Rules, Guardrails and Guidelines** section in CLAUDE.md (and/or system prompt) before starting work
 - **Check for Project-Specific Workflow** — Look for a `## Visual Validation Workflow` section in CLAUDE.md. If found, this is your **PRIMARY** workflow. Follow it exactly.
 - **Think and Plan** — Understand your task, project context, and available tools before executing
 

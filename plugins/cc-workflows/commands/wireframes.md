@@ -19,7 +19,7 @@ OUTPUT_DIR: ${3:-docs/wireframes}
 
 ## Instructions
 
-- **Fully** read and understand the **Workflow Rules, Guardrails and Guidelines** section in CLAUDE.md before starting work, including but not limited to:
+- **Fully** read and understand the **Workflow Rules, Guardrails and Guidelines** section in CLAUDE.md (and/or system prompt) before starting work, including but not limited to:
   - **Foundational Rules and Guardrails**
   - **Foundational Development Guidelines and Standards** (e.g. Development, Architecture, UI/UX Guidelines etc.)
 - **Wireframes only** - No design system creation (use `create-design-system` command for that)
