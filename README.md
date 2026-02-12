@@ -1,4 +1,4 @@
-# Claude Code Common
+# Coding Agent Toolkit
 
 Reusable plugins, commands, agents, and skills for Claude Code.
 
