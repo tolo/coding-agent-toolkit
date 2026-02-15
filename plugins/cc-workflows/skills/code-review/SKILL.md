@@ -35,6 +35,7 @@ Comprehensive code review covering quality, security, architecture, and UI/UX as
 4. Use `tree -d -L 3` and `git ls-files | head -250` for codebase overview
 5. Identify applicable review types based on changed files (code, architecture, UI/UX)
 6. Read additional relevant guidelines and documentation (API, guides, reference, etc.) as needed
+7. **Verify against authoritative sources** - When reviewing technical choices, API usage, security patterns, or framework conventions, look up official documentation to verify findings are based on current facts (not outdated assumptions). Use web searches and Context7 MCP as needed.
 
 **Gate**: Scope determined, relevant files identified
 
@@ -138,6 +139,6 @@ Generate markdown report with:
 1. [Prioritized action items]
 ```
 
-Store report at: `<project_root>/docs/temp/<feature-name>-review-report-<YYYY-MM-DD>.md`
+Store report at: `<project_root>/.agent_temp/reviews/<feature-name>-code-review-<YYYY-MM-DD>.md`
 
 Return report location to user.

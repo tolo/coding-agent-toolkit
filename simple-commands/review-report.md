@@ -139,8 +139,7 @@ Generate markdown report:
 1. [Prioritized action items]
 ```
 
-Store report at: `<project_root>/docs/temp/<feature-name>-review-report-<YYYY-MM-DD>.md`
-(or `.agent_temp/` if docs/temp/ doesn't exist)
+Store report at: `<project_root>/.agent_temp/reviews/<feature-name>-code-review-<YYYY-MM-DD>.md`
 
 Return report location to user.
 

@@ -68,7 +68,7 @@ From _`REQUIREMENTS`_, identify:
 _If available, delegate using **foreground parallel sub-agents (`run_in_background=false`)** - multiple Task calls in one message._
 
 #### 2.2 Document Findings
-Save research to _`<project_root>/docs/temp/design-research/`_ only if substantial.
+Save research to _`<project_root>/.agent_temp/research/design/`_ only if substantial.
 
 
 **Gate**: Design direction established

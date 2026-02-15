@@ -68,11 +68,11 @@ After research completes, define _`COUNT`_ unique variations of the direction. E
 For each variation, use the **`frontend-design:frontend-design`** skill (if available) or **`cc-workflows:ui-ux-designer`** agent with:
 - The specific variation/interpretation to implement
 - Research findings as context
-- Output location: `docs/temp/ui-concepts/v{N}/`
+- Output location: `.agent_temp/ui-concepts/v{N}/`
 
 **Each showcase produces:**
 ```
-docs/temp/ui-concepts/v{N}/
+.agent_temp/ui-concepts/v{N}/
 ├── index.html      # Main showcase
 ├── styles.css      # Styling
 └── README.md       # Brief concept explanation
@@ -82,14 +82,14 @@ docs/temp/ui-concepts/v{N}/
 
 After all showcases complete:
 
-1. **Create gallery** at `docs/temp/ui-concepts/gallery.html`
+1. **Create gallery** at `.agent_temp/ui-concepts/gallery.html`
    - Links to all showcases with brief descriptions
    - Visual preview of each concept
 
 2. **Summarize results** for user:
    - List of created concepts with descriptions
    - Which variations best capture the direction
-   - Command to view: `open docs/temp/ui-concepts/gallery.html`
+   - Command to view: `open .agent_temp/ui-concepts/gallery.html`
 
 
 ## Notes

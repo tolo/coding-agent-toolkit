@@ -65,7 +65,7 @@ ARGUMENTS: $ARGUMENTS
 #### Additional Research - If Needed
 - Only perform research if the feature request lacks sufficient detail or context
 - Use **parallel sub-agents (foreground, i.e. `run_in_background=false`)** for research tasks - multiple Task calls in one message.
-- Save findings to _`<project_root>/docs/temp/research/{feature-name}/`_ **only** if substantial, and add links to generated FIS. Note: If only a file/URL is needed, do not create a research file, just add the reference.
+- Save findings to _`<project_root>/.agent_temp/research/{feature-name}/`_ **only** if substantial, and add links to generated FIS. Note: If only a file/URL is needed, do not create a research file, just add the reference.
 
 ##### 1. Codebase Research:
 - Search codebase for relevant files and similar patterns
@@ -119,7 +119,7 @@ Ask ONLY if implementation is blocked by ambiguity.
 **IMPORTANT**: Use the `Plan` agent to create the FIS.
 
 #### Gather Context (as references, not inline content)
-- Research docs from previous phase (link to files in `docs/temp/research/`)
+- Research docs from previous phase (link to files in `.agent_temp/research/`)
 - ADRs and architecture docs
 - File paths with line numbers for patterns to follow
 - UI wireframes/mockups (required for UI tasks)

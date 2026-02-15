@@ -180,7 +180,7 @@ Generate markdown report with:
 - **Prioritized Recommendations** - Critical/High/Medium/Low issues with specific suggestions
 - **Readiness Assessment** - Can implementation start? What must be fixed? Next steps
 
-Store report in: _`<project_root>/docs/temp/spec-reviews/<spec-name>-review-<coding-agent-name>-<YYYY-MM-DD>.md`_
+Store report in: _`<project_root>/.agent_temp/reviews/<spec-name>-plan-review-<YYYY-MM-DD>.md`_
 
 Inform user of report location when complete.
 

@@ -36,6 +36,7 @@ Gather and understand all requirements from multiple sources:
 - **Code Comments** - Review TODO comments, function documentation, or inline requirement notes
 - **ADDITIONAL_CONTEXT** - If specified via arguments, these requirements take precedence and should be the primary focus
 - **Read additional guidelines and documentation** - Read additional relevant guidelines and documentation (API, guides, reference, etc.) as needed
+- **Verify against authoritative sources** - When reviewing technical choices, API usage, security patterns, or framework conventions, look up official documentation to verify findings are based on current facts (not outdated assumptions). Use web searches and Context7 MCP as needed.
 
 Create a clear, consolidated view of:
 - What functionality should be implemented
@@ -167,6 +168,6 @@ Generate markdown report with:
 - **Remediation Plan** - Categorized/prioritized issues (Critical/High/Medium/Low), dependencies, sequencing, risk assessment, specific remediation steps, acceptance criteria
 - **Appendix** (if needed) - Code snippets, technical details, reference materials
 
-Store report in: `<project_root>/docs/temp/gap-analysis/<feature-name>-gap-analysis-<coding-agent-name>-<YYYY-MM-DD>.md`
+Store report in: `<project_root>/.agent_temp/reviews/<feature-name>-impl-review-<YYYY-MM-DD>.md`
 
 Inform user of report location when complete.
