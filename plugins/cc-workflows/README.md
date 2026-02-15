@@ -33,6 +33,28 @@ Example structure:
 
 See [CLAUDE.template.md](./../../CLAUDE.template.md) for a starter template, or this repository's [CLAUDE.md](./../../CLAUDE.md) for a full example.
 
+### Agent Teams (Optional)
+
+Some commands like `review-council` use [Agent Teams](https://code.claude.com/docs/en/agent-teams) for parallel multi-agent coordination.
+
+To enable Agent Teams (experimental):
+
+```json
+// ~/.claude/settings.json
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  }
+}
+```
+
+Or via environment variable:
+```bash
+export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
+```
+
+Commands automatically fall back to single-agent alternatives when Agent Teams unavailable.
+
 
 ## Workflow Overview
 
@@ -127,6 +149,7 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 | `review-plan` | Review requirements/specs/plans for completeness, clarity, feasibility | Pre-execution |
 | `review-code` | Code quality, security, architecture review (uses code-review skill) | Post-execution |
 | `review-impl` | Review implementation against requirements (includes code review + gap analysis) | Post-execution |
+| `review-council` | Multi-perspective review with Agent Teams (adaptive roster: 5-7 specialized reviewers + debate) | Post-execution |
 
 ### Utilities
 
@@ -191,6 +214,28 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 ```bash
 # When facing architectural choices
 /cc-workflows:trade-off-analysis "caching strategy for API responses"
+```
+
+### Multi-Perspective Review (Agent Teams)
+
+```bash
+# Adaptive review - analyzes scope and selects 5-7 relevant reviewers
+# Requires Agent Teams feature enabled
+/cc-workflows:review-council
+
+# Review specific PR with council
+/cc-workflows:review-council --pr 123
+
+# Focus on specific aspect
+/cc-workflows:review-council "security"
+
+# Reviewers auto-selected based on changes:
+# - Product features → Product Manager, Requirements Analyst, etc.
+# - Backend APIs → Security, Performance, API Designer, etc.
+# - Frontend UI → UX/Accessibility, Frontend Specialist, etc.
+# - Always includes Devil's Advocate + Synthesis Challenger (two-phase validation)
+
+# Falls back to /review-code if Agent Teams unavailable
 ```
 
 ## Agents

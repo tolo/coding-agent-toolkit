@@ -1,4 +1,11 @@
 {
+   "env": {
+     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+   },
+   "enableAllProjectMcpServers": true,
+   "plansDirectory": "docs/plans", 
+   "hooks": {    
+    }, 
     "permissions": {
         "allow": [
             "Bash(cat:*)",
@@ -83,6 +90,5 @@
         "additionalDirectories": [
             "~/agent_docs/"
         ]
-    },
-    "enableAllProjectMcpServers": true
+    }
 }
