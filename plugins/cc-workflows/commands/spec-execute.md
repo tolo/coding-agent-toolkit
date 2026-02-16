@@ -1,5 +1,6 @@
 ---
 description: Executes a Feature Implementation Specification that contains all implementation details
+argument-hint: <path-to-fis>
 ---
 
 # Execute Feature Implementation Specification
@@ -16,8 +17,7 @@ FIS_FILE_PATH: $ARGUMENTS
 - **Fully** read and understand the **Workflow Rules, Guardrails and Guidelines** section in CLAUDE.md (and/or system prompt) before starting work, including but not limited to:
   - **Foundational Rules and Guardrails** (absolute must-follow rules)
   - **Foundational Development Guidelines and Standards** (e.g. Development, Architecture, UI/UX Guidelines etc.)
-- **Spec generation only** - No code changes, commits, or modifications during execution of this command
-- **Complete Implementation**: 100% completion required - no partial work  
+- **Complete Implementation**: 100% completion required - no partial work
 - **FIS is source of truth** — follow it exactly
 - **Sub-agents for all tasks** — act as orchestrator and delegate all work to sub-agents
 
@@ -31,7 +31,7 @@ FIS_FILE_PATH: $ARGUMENTS
 **You do NOT:**
 - Write implementation code directly (delegate to sub-agents)
 - Let your context get bloated with implementation details
- Skip final steps due to context exhaustion
+- Skip final steps due to context exhaustion
 
 ### Sub-Agent Protocol
 
@@ -151,11 +151,11 @@ If success criteria not met or if previous step failed to successfully verify co
 3. Execute Steps 2-5 again
 
 
-## Report: Update Implementation Notes documents with important learnings and decsisions
+## Report: Update Implementation Notes documents with important learnings and decisions
 After completion, update `fis-implementation-notes.md` with important implementation notes, making sure to keep them very concise and to the point (avoid any unnecessary verbosity and code listings etc).
 
 Including details like:
-- Extremelty brief descripton of what was implemented and how parts integrate
+- Extremely brief description of what was implemented and how parts integrate
 - Key challenges faced and how they were overcome
 - Important decisions made and their rationale
 - Deviations from plan

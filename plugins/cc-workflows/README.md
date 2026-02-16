@@ -35,7 +35,7 @@ See [CLAUDE.template.md](./../../CLAUDE.template.md) for a starter template, or 
 
 ### Agent Teams (Optional)
 
-Some commands like `review-council` use [Agent Teams](https://code.claude.com/docs/en/agent-teams) for parallel multi-agent coordination.
+Some commands like `review-council` and `spec-execute-team` use [Agent Teams](https://code.claude.com/docs/en/agent-teams) for parallel multi-agent coordination.
 
 To enable Agent Teams (experimental):
 
@@ -70,7 +70,7 @@ Commands automatically fall back to single-agent alternatives when Agent Teams u
 │  clarify ────────────→ spec-create ──→ review-plan          │
 │                              │                              │
 │                              ▼                              │
-│                        spec-execute                         │
+│                  spec-execute / spec-execute-team            │
 │                              │                              │
 │                              ▼                              │
 │                        review-impl                          │
@@ -90,7 +90,7 @@ Commands automatically fall back to single-agent alternatives when Agent Teams u
 │                              ▼                              │
 │              ┌───────────────────────────┐                  │
 │              │ For each story:           │                  │
-│              │   spec-create → spec-exec │ ←── JIT specs    │
+│              │   spec-create → spec-exec(‑team) │ ← JIT specs │
 │              └───────────────────────────┘                  │
 │                              │                              │
 │                              ▼                              │
@@ -135,6 +135,7 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 | `spec-create` | Create single FIS from feature requirements (includes research) |
 | `roadmap` | Create lightweight implementation roadmap with story breakdown from PRD |
 | `spec-execute` | Execute FIS with validation loops until complete |
+| `spec-execute-team` | Execute FIS with Agent Team validation council (validate-fix loop) |
 
 ### Quick Path
 
@@ -214,6 +215,21 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 ```bash
 # When facing architectural choices
 /cc-workflows:trade-off-analysis "caching strategy for API responses"
+```
+
+### FIS Execution with Validation Council (Agent Teams)
+
+```bash
+# Execute FIS with team-based validation (validate-fix loop)
+# Requires Agent Teams feature enabled
+/cc-workflows:spec-execute-team docs/specs/user-export.md
+
+# Same as spec-execute but validation uses a 6-7 member council:
+# Code Reviewer, QA Test Engineer, Visual Validator (if UI),
+# Requirements Verifier, Devil's Advocate, Synthesis Challenger,
+# Issue Resolver — with automated fix loop (max 3 iterations)
+
+# Falls back to /spec-execute if Agent Teams unavailable
 ```
 
 ### Multi-Perspective Review (Agent Teams)

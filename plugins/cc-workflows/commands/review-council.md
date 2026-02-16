@@ -128,7 +128,7 @@ Review process (two-phase validation):
 PHASE 1 - Initial Review & Debate:
 Each specialist reviewer should:
 - Analyze the code through their specialized lens
-- Report findings with severity (HIGH/MEDIUM/LOW)
+- Report findings with severity (CRITICAL/HIGH/MEDIUM/LOW)
 - Provide specific file:line references
 - Use the /cc-workflows:code-review skill for the review
 
