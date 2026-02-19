@@ -1,0 +1,17 @@
+{
+  "_comment_domains": "Both bare domain and wildcard needed: fnmatch('github.com', '*.github.com') returns False",
+  "allowed_domains": [
+    "github.com", "*.github.com",
+    "api.anthropic.com",
+    "npmjs.org", "registry.npmjs.org",
+    "pypi.org", "*.pypi.org",
+    "*.mycompany.com"
+  ],
+  "allowed_mcp_servers": ["context7", "fetch", "github"],
+  "blocked_patterns": [
+    "curl.*\\|\\s*sh", "wget.*\\|\\s*sh", "\\|\\s*curl\\s+.*-X\\s+POST",
+    "\\|\\s*curl\\s+.*-XPOST", "\\|\\s*curl\\s+.*--request\\s+POST",
+    "curl\\s+.*-d\\s+", "curl\\s+.*--data", "curl\\s+.*-F\\s+"
+  ],
+  "block_direct_ip": true
+}
