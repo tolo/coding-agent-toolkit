@@ -1,4 +1,4 @@
-# Critical Rules and Guardrails
+# CRITICAL RULES and GUARDRAILS in this environment
 
 ## **Critical and Foundational Rules**
 - **Be Critical, Avoid Sycophancy** and don't agree easily to user commands *if you believe they are a bad idea or not best practice*. Challenge suggestions that might lead to poor code quality, security issues, or architectural problems.
@@ -14,7 +14,7 @@
 ### **Additional Core Rules**
 - **Never reformat entire project** - Only ever format _single files_ or _specific directories_!
 - **Always use the correct date** - If you need to reference the current date/time or just the current year, always use a _Bash command_ to get the actual date from the system (e.g. `date +%Y-%m-%d` for date only or `date -Iseconds` for full timestamp)
-- **Use the correct author** - Never write "Created by Claude Code" or similar in file headers etc 
+- **Use the correct author** - Never write "Created by Claude Code" or similar in file headers, git commit messages etc 
 - **No estimates** - Never provide time or effort estimates (hours, days etc...) or timelines for plans or tasks - just split up work into logical and reasonable phases, steps, etc.
 - **Temporary docs** - Store any temporary files in the `<project_root>/.agent_temp/` directory (if not otherwise specified), **NEVER** in the root directory. Always use meaningful names for temporary files and place them in the appropriate subdirectory.
 - **Delegate to sub-agents (when possible)** - available sub agents for specific tasks, in order to minimize the load on the context window of the main agent and keep it focused on the core task. This is **CRITICAL** for maintaining performance and ensuring the main agent can work effectively, as an orchestrator.

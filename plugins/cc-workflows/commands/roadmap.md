@@ -112,8 +112,10 @@ Phase 4: Polish (Parallel)
 For each story, define:
 - **ID**: Sequential identifier (S01, S02, etc.)
 - **Name**: Brief descriptive name
-- **Scope**: 2-3 sentences on what's included
-- **Acceptance criteria**: 3-5 testable outcomes
+- **Scope**: 3-5 sentences — what's included AND the general approach (e.g. "Implement X using Y pattern; Z is handled by...")
+- **Approach**: 1-2 sentences on the high-level technical direction (key pattern, library, or strategy to use)
+- **Acceptance criteria**: 3-6 testable outcomes — specific and unambiguous
+- **Key Notes** _(optional)_: Max 3 bullets for gotchas, constraints, or non-obvious decisions
 - **Dependencies**: Other story IDs that must complete first
 - **Phase**: Which implementation phase
 - **Parallel**: [P] if can run parallel with others in same phase
@@ -121,9 +123,8 @@ For each story, define:
 - **Asset refs**: Relevant wireframes, ADRs, design system sections
 
 **Do NOT include:**
-- Detailed implementation steps
-- File paths or code specifics
-- Full technical design
+- File paths, line numbers, or code specifics (that's for `/spec-create`)
+- Full technical design or pseudocode
 
 These come later via `/spec-create` when the story is ready for implementation.
 
@@ -156,11 +157,14 @@ Generate `roadmap.md` with a structure like the following (adapt phases and stru
 _Sequential execution - establishes base for all features_
 
 #### S01: [Story Name]
-**Scope**: [2-3 sentences]
+**Scope**: [3-5 sentences covering what is built and the general approach]
+**Approach**: [1-2 sentences — key pattern, library, or strategy]
 **Acceptance Criteria**:
 - [ ] [Criterion 1]
 - [ ] [Criterion 2]
 - [ ] [Criterion 3]
+**Key Notes**: _(optional)_
+- [Gotcha or constraint]
 **Assets**: [Wireframe refs, ADR refs if any]
 
 #### S02: [Story Name]

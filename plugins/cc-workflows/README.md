@@ -2,14 +2,28 @@
 
 Development workflows for Claude Code - from requirements to implementation with built-in quality gates.
 
+> **Note**: Hooks (security, notifications, context re-injection) have moved to [`hooks/`](../../hooks/) at the repo root as standalone scripts. See [hooks/README.md](../../hooks/README.md) for setup.
+
 ## Installation
 
-```bash
-# User scope (available in all projects)
-claude plugin install ./plugins/cc-workflows --scope user
+Add the parent repo as a [plugin marketplace](https://code.claude.com/docs/en/discover-plugins), then install:
 
-# Project scope (this project only)
-claude plugin install ./plugins/cc-workflows --scope project
+```bash
+# Add marketplace
+/plugin marketplace add tolo/coding-agent-toolkit
+
+# Install plugin
+/plugin install cc-workflows@coding-agent-toolkit
+```
+
+**Scope options** — installs at `user` scope (all projects) by default:
+```bash
+/plugin install cc-workflows@coding-agent-toolkit --scope project  # current project only
+```
+
+**Local install** — if you have the repo cloned:
+```bash
+claude plugin install ./plugins/cc-workflows
 ```
 
 ## Setup
@@ -70,7 +84,7 @@ Commands automatically fall back to single-agent alternatives when Agent Teams u
 │  clarify ────────────→ spec-create ──→ review-plan          │
 │                              │                              │
 │                              ▼                              │
-│                  spec-execute / spec-execute-team            │
+│                  spec-execute / spec-execute-team           │
 │                              │                              │
 │                              ▼                              │
 │                        review-impl                          │
@@ -88,10 +102,10 @@ Commands automatically fall back to single-agent alternatives when Agent Teams u
 │                       (story breakdown)                     │
 │                              │                              │
 │                              ▼                              │
-│              ┌───────────────────────────┐                  │
-│              │ For each story:           │                  │
-│              │   spec-create → spec-exec(‑team) │ ← JIT specs │
-│              └───────────────────────────┘                  │
+│            ┌──────────────────────────────────┐             │
+│            │ For each story:                  │             │
+│            │   spec-create → spec-exec(‑team) │ ← JIT specs │
+│            └──────────────────────────────────┘             │
 │                              │                              │
 │                              ▼                              │
 │                        review-impl                          │

@@ -1,4 +1,5 @@
 .DS_Store
 *.log
-docs/temp
+docs/temp/
+docs/specs/
 .agent_temp

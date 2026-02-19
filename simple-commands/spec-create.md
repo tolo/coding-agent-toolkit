@@ -104,13 +104,13 @@ Ask ONLY if implementation is blocked by ambiguity.
 **Gate**: FIS generated
 
 
-### Phase 4: Quality Validation
+### Phase 4: Self-Check
 
-#### Plan Review
-Use the `/review-plan` command to review the generated implementation plan for completeness, correctness, requirements coverage, edge cases, redundant aspects, etc.
-- Use the generated FIS as input.
-- Read the output (generated review report) carefully.
-- Address all identified issues and improve the FIS accordingly.
+Quick sanity check before saving:
+- [ ] FIS follows template structure
+- [ ] All tasks are atomic and have file:line references where relevant
+- [ ] ADR clearly states the decision
+- [ ] No over-specification — if a section feels padded, trim it
 
 #### Confidence Check
 Rate your FIS 1-10 for single-pass implementation success:
@@ -118,13 +118,9 @@ Rate your FIS 1-10 for single-pass implementation success:
 - **7-8**: Good detail, minor clarifications might be needed
 - **<7**: Missing context, unclear architecture, needs revision
 
-**If score <8**: Revise or ask for user clarification.
+**If score <7**: Revise or ask for user clarification.
 
-#### Final Checklist
-- [ ] FIS follows template structure exactly
-- [ ] Context includes specific file:line references
-- [ ] ADR clearly explains the decision
-- [ ] Validation strategy is actionable
+> **Optional**: Run `/review-plan` for thorough validation (recommended for large/complex features). Skip for small/clear features — issues surface during execution anyway.
 
 **Gate**: FIS validated
 

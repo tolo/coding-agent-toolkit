@@ -49,7 +49,7 @@ Always fully read relevant guidelines below as needed, based on the type of work
 ## Vital Documentation Resources
 - [Add references to other important documentation files here (don't @ them, just list the paths)]
 
-**IMPORTANT**: When lookup of documentation (such as API documentation, user guides, language references, etc.) is needed, or when user asks to lookup documentation directly, _always_ execute the documentation lookup in a separate background sub task (use the _`documentation-lookup`_ agent). This is **CRITICAL** to reduce the load on the main context window and ensure that the main agent can continue working without interruptions.
+**IMPORTANT**: When lookup of documentation (such as API documentation, user guides, language references, etc.) is needed, or when user asks to lookup documentation directly, _always_ execute the documentation lookup in a separate background sub task (use the _`cc-workflows:documentation-lookup`_ agent). This is **CRITICAL** to reduce the load on the main context window and ensure that the main agent can continue working without interruptions.
 
 
 ---
@@ -64,11 +64,11 @@ Always fully read relevant guidelines below as needed, based on the type of work
 
 ### Context7 MCP - Library and Framework Documentation Lookup (https://github.com/upstash/context7)
 Context7 MCP pulls up-to-date, version-specific documentation and code examples straight from the source.
-**Only** use Context7 MCP via the _`documentation-lookup`_ sub-agent for documentation retrieval tasks.
+**Only** use Context7 MCP via the _`cc-workflows:documentation-lookup`_ sub-agent for documentation retrieval tasks.
 
 ### Fetch (https://github.com/modelcontextprotocol/servers/tree/main/src/fetch)
 Retrieves and processes content from web pages, converting HTML to markdown for easier consumption.
-**Only** use Fetch MCP via the _`documentation-lookup`_ sub-agent for documentation retrieval tasks.
+**Only** use Fetch MCP via the _`cc-workflows:documentation-lookup`_ sub-agent for documentation retrieval tasks.
 
 ### Code Analysis and Style (Analysis, Linting and Formatting)
 

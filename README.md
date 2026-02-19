@@ -2,6 +2,20 @@
 
 Reusable plugins, commands, agents, and skills for Claude Code.
 
+## Hooks
+
+Standalone [Claude Code hooks](hooks/) for security, notifications, and workflow automation. Pick individually — copy to `~/.claude/hooks/` or reference directly from this repo. See [hooks/README.md](hooks/README.md) for setup.
+
+| Hook | Purpose |
+|------|---------|
+| `block-dangerous-commands.py` | Blocks destructive shell commands (rm -rf, fork bombs, etc.) |
+| `git-safety.py` | Blocks dangerous git operations (force push, reset --hard, etc.) |
+| `protect-files.py` | Multi-level file protection (no_access, read_only, no_delete) |
+| `url-allowlist.py` | Domain allowlisting for network access and MCP tools |
+| `notify.sh` | Desktop notifications on task completion |
+| `notify-elevenlabs.sh` | Voice notifications via ElevenLabs TTS |
+| `reinject-context.sh` | Re-injects critical rules after context compaction |
+
 ## Plugins
 
 | Plugin | Description |
@@ -10,17 +24,35 @@ Reusable plugins, commands, agents, and skills for Claude Code.
 
 ## Installation
 
-```bash
-# Install a plugin (user scope - all projects)
-claude plugin install ./plugins/cc-workflows --scope user
+Add this repo as a [plugin marketplace](https://code.claude.com/docs/en/discover-plugins), then install plugins from it:
 
-# Install a plugin (project scope - current project only)
-claude plugin install ./plugins/cc-workflows --scope project
+```bash
+# Add as marketplace
+/plugin marketplace add tolo/coding-agent-toolkit
+
+# Install plugin
+/plugin install cc-workflows@coding-agent-toolkit
 ```
+
+**Scope options** — plugins install at `user` scope (all projects) by default:
+```bash
+/plugin install cc-workflows@coding-agent-toolkit --scope project  # current project only
+```
+
+**Local install** — if you have the repo cloned:
+```bash
+claude plugin install ./plugins/cc-workflows
+```
+
+See the [Claude Code plugin docs](https://code.claude.com/docs/en/discover-plugins) for more details.
 
 ## Repository Structure
 
 ```
+├── hooks/
+│   ├── scripts/             # Standalone hook scripts
+│   ├── configs/             # Default hook configs
+│   └── README.md            # Setup instructions
 ├── plugins/
 │   └── cc-workflows/        # Main workflow plugin
 │       ├── commands/        # Slash commands
@@ -28,7 +60,8 @@ claude plugin install ./plugins/cc-workflows --scope project
 │       └── skills/          # Reusable skills
 └── docs/
     ├── rules/               # Critical rules and guardrails
-    └── guidelines/          # Development guidelines
+    ├── guidelines/          # Development guidelines
+    └── specs/               # Feature implementation specs
 ```
 
 ## System Prompt Rules Injection
