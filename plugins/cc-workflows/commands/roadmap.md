@@ -207,7 +207,7 @@ S01 ──→ S02 ──→ S05
    - Run `/spec-create` with story scope as input
    - Run `/spec-execute` on generated FIS
 3. Phase 2+ stories marked [P] can run in parallel after dependencies met
-4. Use `/review-impl` after completing all stories
+4. Use `/review-gap` after completing all stories
 </example-roadmap-format>
 
 **Gate**: Roadmap document complete
@@ -225,7 +225,7 @@ S01 ──→ S02 ──→ S05
 - [ ] Not over-granular (combined where sensible)
 
 #### Optional: Peer Review
-Use the `/cc-workflows:review-plan` command to validate roadmap for:
+Use the `/cc-workflows:review-doc` command to validate roadmap for:
 - Requirements coverage
 - Story scope clarity
 - Dependency correctness
@@ -258,4 +258,4 @@ After completion, suggest:
    gh issue create --title "S02: [Story Name]" --body "..." --milestone "[Project Name] MVP"
    # ... etc
    ```
-3. **Review roadmap**: `/cc-workflows:review-plan roadmap.md`
+3. **Review roadmap**: `/cc-workflows:review-doc roadmap.md`

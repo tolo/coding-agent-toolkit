@@ -84,7 +84,7 @@ Run each verification sub-step using **parallel sub-agents (foreground, i.e. `ru
 
 ##### 2.1. Code & Architecture Review
 - Static analysis, linting, type checking
-- Use the `/cc-workflows:code-review` skill for comprehensive review (code quality, security, architecture, UI/UX)
+- Use the `/cc-workflows:review-code` skill for comprehensive review (code quality, security, architecture, UI/UX)
 
 ##### 2.2. Run Tests
 - Execute all tests
@@ -114,7 +114,17 @@ As orchestrator (not delegated to sub-agent):
 - Update todos for next iteration
 - Execute another Implementation Loop
 
-**Gate**: All validations pass - builds correctly, tests pass, no review issues, no regressions
+**Gate**: All validations pass - builds correctly, tests pass, no review issues, no regressions.
+
+Include verification evidence in completion summary (as applicable):
+- **Build**: exit code or success/failure status
+- **Tests**: pass/fail counts (e.g., "42/42 pass")
+- **Linting/types**: error and warning counts
+- **Visual validation**: screenshot confirming UI matches expectations (if UI)
+- **Runtime**: confirmation app starts and key flows work
+
+> *Don't skip this: "the change is simple, it obviously works" is not evidence.
+> Code review ≠ running the code. If tests passed before your change, run them again after.*
 
 
 ### Phase 3: Completion (conditional)

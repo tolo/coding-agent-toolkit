@@ -15,7 +15,7 @@ _**TODO**: Add Project Overview, Architecture, Tech Stack, Structure etc. here._
 ## Workflow Rules, Guardrails and Guidelines
 
 ### Foundational Rules and Guardrails
-_Always fully read and understand this file before doing any work:_ @docs/rules/CRITICAL-RULES-AND-GUARDRAILS.md
+_Always fully understand and adhere to the "CRITICAL RULES and GUARDRAILS in this environment" (part of system prompt) before doing any work_.
 
 
 ### Foundational Development Guidelines and Standards

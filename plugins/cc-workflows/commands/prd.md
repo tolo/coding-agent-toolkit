@@ -238,7 +238,7 @@ Apply systematic prioritization to features:
 - [ ] No over-specification or gold-plating
 
 #### Launch Peer Review
-Use the `/cc-workflows:review-plan` command to validate PRD for:
+Use the `/cc-workflows:review-doc` command to validate PRD for:
 - Missing requirements or user stories
 - Over-engineered or unnecessarily complex features
 - Conflicting requirements

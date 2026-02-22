@@ -81,13 +81,13 @@ Commands automatically fall back to single-agent alternatives when Agent Teams u
 │  └───────────────────────────┬───────────────────────────┘  │
 │                              │                              │
 │  (optional)                  ▼         (optional)           │
-│  clarify ────────────→ spec-create ──→ review-plan          │
+│  clarify ────────────→ spec-create ──→ review-doc           │
 │                              │                              │
 │                              ▼                              │
 │                  spec-execute / spec-execute-team           │
 │                              │                              │
 │                              ▼                              │
-│                        review-impl                          │
+│                        review-gap                           │
 └─────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────┐
@@ -97,8 +97,8 @@ Commands automatically fall back to single-agent alternatives when Agent Teams u
 │  │ wireframes, design-system, trade-off-analysis         │  │
 │  └───────────────────────────┬───────────────────────────┘  │
 │                              │                              │
-│  (optional)                  ▼                              │
-│  clarify ──→ prd ─────→ roadmap ──────→ review-plan         │
+│    (optional)                ▼                              │
+│    clarify ──→ prd ─────→ roadmap ──────→ review-doc        │
 │                       (story breakdown)                     │
 │                              │                              │
 │                              ▼                              │
@@ -108,7 +108,7 @@ Commands automatically fall back to single-agent alternatives when Agent Teams u
 │            └──────────────────────────────────┘             │
 │                              │                              │
 │                              ▼                              │
-│                        review-impl                          │
+│                        review-gap                           │
 └─────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────┐
@@ -128,7 +128,7 @@ Commands automatically fall back to single-agent alternatives when Agent Teams u
 - `wireframes` / `design-system` - When UI design is needed
 - `trade-off-analysis` - When architectural decisions are needed
 
-## Commands
+## Commands / Skills
 
 Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 
@@ -159,11 +159,11 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 
 ### Review
 
-| Command | Purpose | When |
+| Command / Skill | Purpose | When |
 |---------|---------|------|
-| `review-plan` | Review requirements/specs/plans for completeness, clarity, feasibility | Pre-execution |
-| `review-code` | Code quality, security, architecture review (uses code-review skill) | Post-execution |
-| `review-impl` | Review implementation against requirements (includes code review + gap analysis) | Post-execution |
+| `review-code` | Comprehensive code review with checklists (code quality, security, architecture, UI/UX) | Post-execution |
+| `review-doc` | Document review for completeness, clarity, edge cases, and technical accuracy | Pre-execution |
+| `review-gap` | Gap analysis: implementation vs requirements (includes code review + remediation plan) | Post-execution |
 | `review-council` | Multi-perspective review with Agent Teams (adaptive roster: 5-7 specialized reviewers + debate) | Post-execution |
 
 ### Utilities
@@ -188,7 +188,7 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 /cc-workflows:spec-execute
 
 # 4. Final review (against requirements)
-/cc-workflows:review-impl
+/cc-workflows:review-gap
 ```
 
 ### Roadmap Workflow (MVP / multi-feature)
@@ -214,7 +214,7 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 # ... continue for each story
 
 # 5. Final review (against PRD requirements)
-/cc-workflows:review-impl
+/cc-workflows:review-gap
 ```
 
 ### Quick Fix from GitHub Issue
@@ -283,12 +283,6 @@ Specialized sub-agents for delegation (used internally by commands):
 | `visual-validation-specialist` | Full visual validation workflow (primary) |
 | `whimsy-injector` | Playful, unconventional UI/UX inspiration |
 
-## Skills
-
-| Skill | Purpose |
-|-------|---------|
-| `code-review` | Comprehensive review with checklists (code, security, architecture, UI/UX) |
-
 ## Key Concepts
 
 ### Feature Implementation Specification (FIS)
@@ -319,9 +313,9 @@ Verification includes code review, testing, and visual validation (when applicab
 
 ### Review Types
 
-- **Plan Review**: Is the spec complete and clear? (before execution)
-- **Code Review**: Is the code well-written? (after execution)
-- **Gap Analysis**: Does implementation match requirements? (after execution)
+- **Document Review** (`review-doc`): Is the spec complete and clear? (before execution)
+- **Code Review** (`review-code` skill): Is the code well-written? (after execution)
+- **Gap Analysis** (`review-gap`): Does implementation match requirements? (after execution)
 
 ## License
 

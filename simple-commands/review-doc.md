@@ -1,5 +1,5 @@
 ---
-description: Review specifications, plans, requirement documents, or other documentation for completeness, clarity, edge cases, and technical accuracy.
+description: Review specifications, plans, PRDs, or other documentation for completeness, clarity, and technical accuracy.
 argument-hint: [Path to spec/plan document(s) or additional review focus areas]
 ---
 
@@ -30,7 +30,7 @@ SPEC_PATH_OR_FOCUS: $ARGUMENTS
 ### Phase 1: Discovery and Context
 
 1. **Locate specification documents**
-   - If _`SPEC_PATH_OR_FOCUS`_ is provided, review those documents/areas   
+   - If _`SPEC_PATH_OR_FOCUS`_ is provided, review those documents/areas
    - List all documents found and their relationships
 
 2. **Build context**
@@ -66,7 +66,7 @@ Identify unclear, ambiguous, or contradictory specifications:
 2. **Implementation clarity** - Verify developers can implement without guessing, acceptance criteria are testable
 3. **Missing details** - Find TBD/TODO items, referenced missing documents, unvalidated assumptions
 4. **Consistency** - Verify consistency across sections, examples match specs, naming is consistent
-   - If the reviewed spec is a FIS (Feature Implementation Specification), ensure the spec follows the format an structure as defined in the `spec-create` command
+   - If the reviewed spec is a FIS (Feature Implementation Specification), ensure the spec follows the format and structure as defined in the `spec-create` command
 5. **Conciseness and Brevity** - Ensure specs are as brief and concise as possible without losing meaning. Unnecessary prose should be avoided, and code listings should be minimized (prefer using pseudo code when possible)
 6. **Maintain Important Details** - Ensure all important and essential details are preserved. Avoid removing or simplifying details that are critical to understanding the specification, such as diagrams, process flows, or complex requirements.
 
@@ -118,7 +118,7 @@ Ensure scope is well-defined and architecture is sound:
    - Challenge "nice-to-haves" masquerading as requirements
 
 2. **Architecture review**
-   - Use the `code-review` skill's architectural review guidance (if available)
+   - Use the `review-code` skill's architectural review guidance (if available)
    - Assess and evaluate aspects such as:
       - Architectural soundness, component separation, separation of concerns
       - Evaluate scalability, performance, maintainability
@@ -127,7 +127,7 @@ Ensure scope is well-defined and architecture is sound:
       - DDD patterns (bounded contexts, aggregates, domain events)
       - Pattern adherence (clean architecture, service architecture, API design, data architecture)
       - Anti-patterns, performance, scalability, resilience, security architecture
-   - Identify signs of over-engineering, such as: 
+   - Identify signs of over-engineering, such as:
       - **Unnecessary complexity**: Custom implementations when standard libraries/patterns exist, premature abstractions, overly generic solutions
       - **Premature optimization**: Performance optimizations without measured need, caching/pooling without proven bottlenecks
       - **Excessive layering**: Unnecessary indirection, wrapper classes without clear benefit, over-abstracted interfaces
@@ -180,7 +180,7 @@ Generate markdown report with:
 - **Prioritized Recommendations** - Critical/High/Medium/Low issues with specific suggestions
 - **Readiness Assessment** - Can implementation start? What must be fixed? Next steps
 
-Store report in: _`<project_root>/.agent_temp/reviews/<spec-name>-plan-review-<YYYY-MM-DD>.md`_
+Store report in: _`<project_root>/.agent_temp/reviews/<spec-name>-doc-review-<YYYY-MM-DD>.md`_
 
 Inform user of report location when complete.
 

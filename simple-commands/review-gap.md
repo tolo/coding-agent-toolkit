@@ -1,9 +1,9 @@
 ---
-description: Review implementation against requirements - includes code review and gap analysis with actionable report.
+description: "Gap analysis: review implementation against requirements with code review and actionable remediation plan."
 argument-hint: [Additional Context]
 ---
 
-# Review Implementation
+# Gap Analysis
 Comprehensive post-execution review that validates implementation against requirements, performs code review, and identifies gaps. Generates actionable report with findings and remediation plan.
 
 
@@ -20,7 +20,7 @@ ADDITIONAL_CONTEXT: $ARGUMENTS
   - **Foundational Development Guidelines and Standards** (e.g. Development, Architecture, UI/UX Guidelines etc.)
 - **Read-only analysis** - No code changes, commits, or modifications during analysis
 - **Be thorough** - Don't skip steps or rush analysis; completeness is critical
-- **Use `code-review` skill if available** - Delegate code review to the skill if your agent supports it
+- **Use `review-code` skill if available** - Delegate code review to the skill if your agent supports it
 - **Document everything** - All findings and recommendations must be captured in final report
 
 
@@ -80,7 +80,7 @@ Review general quality, soundness and adherence to guidelines, standards and bes
 - Use IDE diagnostics (`mcp__ide__getDiagnostics`) if available
 
 #### Comprehensive Code Review
-**Use the `code-review` skill if available** to perform thorough review covering:
+**Use the `review-code` skill if available** to perform thorough review covering:
 - Code quality (correctness, readability, best practices, performance)
 - Architecture (CUPID principles, DDD patterns, anti-patterns)
 - Security (OWASP Top 10, injection prevention, auth, data protection)
@@ -166,6 +166,6 @@ Generate markdown report with:
 - **Remediation Plan** - Categorized/prioritized issues (Critical/High/Medium/Low), dependencies, sequencing, risk assessment, specific remediation steps, acceptance criteria
 - **Appendix** (if needed) - Code snippets, technical details, reference materials
 
-Store report in: `<project_root>/.agent_temp/reviews/<feature-name>-impl-review-<YYYY-MM-DD>.md`
+Store report in: `<project_root>/.agent_temp/reviews/<feature-name>-gap-review-<YYYY-MM-DD>.md`
 
 Inform user of report location when complete.

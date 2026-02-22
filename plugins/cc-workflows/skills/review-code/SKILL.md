@@ -1,9 +1,9 @@
 ---
-name: code-review
+name: review-code
 description: Performs thorough code reviews covering code quality, security, architecture, and UI/UX. Use when reviewing code changes, PRs, implementations, or when asked to review, audit, or assess code quality. Generates detailed reports with prioritized findings.
 context: fork
 agent: general-purpose
-user-invocable: false
+user-invocable: true
 ---
 
 # Code Review Skill

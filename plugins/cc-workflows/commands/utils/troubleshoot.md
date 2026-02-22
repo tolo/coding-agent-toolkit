@@ -124,9 +124,19 @@ Execute fixes methodically and autonomously:
 - Ensure no sensitive data is exposed or logged
 - Run any security scanning tools available
 
-**Always** use **foreground parallel agents (`run_in_background=false`)** - multiple Task calls in one message - such as `cc-workflows:qa-test-engineer`, `cc-workflows:solution-architect`, `cc-workflows:ui-ux-designer`, `cc-workflows:build-troubleshooter`, and specialized technology agents as needed. For code review, use the `/cc-workflows:code-review` skill.
+**Always** use **foreground parallel agents (`run_in_background=false`)** - multiple Task calls in one message - such as `cc-workflows:qa-test-engineer`, `cc-workflows:solution-architect`, `cc-workflows:ui-ux-designer`, `cc-workflows:build-troubleshooter`, and specialized technology agents as needed. For code review, use the `/cc-workflows:review-code` skill.
 
-**Gate**: All validations pass - application builds/starts, all tests pass, code quality checks pass, no regressions, security validated
+**Gate**: All validations pass - application builds/starts, all tests pass, code quality checks pass, no regressions, security validated.
+
+Include verification evidence in completion summary (as applicable):
+- **Build**: exit code or success/failure status
+- **Tests**: pass/fail counts (e.g., "42/42 pass")
+- **Linting/types**: error and warning counts
+- **Visual validation**: screenshot confirming UI matches expectations (if UI)
+- **Runtime**: confirmation app starts and key flows work
+
+> *Don't skip this: "the change is simple, it obviously works" is not evidence.
+> Code review ≠ running the code. If tests passed before your change, run them again after.*
 
 ### 6. Documentation and Prevention
 
@@ -144,12 +154,17 @@ Execute fixes methodically and autonomously:
 
 ### 7. Iteration and Escalation
 
+> **BRIGHT LINE — 3-Fix Stop Condition:**
+> If 3 fix attempts targeting the same symptom or root cause have failed, **STOP immediately**.
+> Do NOT attempt fix #4. The problem is likely architectural, not tactical.
+> Surface the situation to the user with: what you tried, what failed, your hypothesis
+> about root cause, and proposed architectural alternatives.
+
 **7.1** - **Verification Loop**:
 - If any issues remain unresolved or new issues emerge, start another troubleshooting iteration
 - Re-run full detection process to ensure nothing was missed
 - **Update task tracking**: Use task management tools to create new todos for remaining issues
 
-**7.2** - **Escalation Criteria**:
-- If issues require architectural changes beyond scope of troubleshooting
+**7.2** - **Escalation Criteria** (beyond the 3-Fix Stop Condition):
 - If external dependencies or services are broken and need vendor support
 - If issues require user input or business decisions

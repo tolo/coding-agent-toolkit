@@ -77,7 +77,7 @@ Repeat: Implementation → Verification → Evaluation until all requirements me
 
 ##### 2.1. Code & Architecture Review
 - Run static analysis, linting, type checking
-- Use the `code-review` skill (if available) for comprehensive review
+- Use the `review-code` skill (if available) for comprehensive review
 - Review code quality, security, architecture adherence
 
 ##### 2.2. Run Tests
@@ -103,7 +103,17 @@ Repeat: Implementation → Verification → Evaluation until all requirements me
 - Request user clarification if needed
 - Execute another Implementation Loop
 
-**Gate**: All validations pass — builds correctly, tests pass, no review issues, no regressions
+**Gate**: All validations pass — builds correctly, tests pass, no review issues, no regressions.
+
+Include verification evidence in completion summary (as applicable):
+- **Build**: exit code or success/failure status
+- **Tests**: pass/fail counts (e.g., "42/42 pass")
+- **Linting/types**: error and warning counts
+- **Visual validation**: screenshot confirming UI matches expectations (if UI)
+- **Runtime**: confirmation app starts and key flows work
+
+> *Don't skip this: "the change is simple, it obviously works" is not evidence.
+> Code review ≠ running the code. If tests passed before your change, run them again after.*
 
 
 ### Phase 3: Completion (conditional)

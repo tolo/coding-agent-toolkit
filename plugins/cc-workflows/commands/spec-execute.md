@@ -33,6 +33,12 @@ FIS_FILE_PATH: $ARGUMENTS
 - Let your context get bloated with implementation details
 - Skip final steps due to context exhaustion
 
+**Context Injection Best Practice:**
+Before spawning each sub-agent, prefer extracting the relevant task text, key references,
+and ADR decision from the FIS and passing them directly in the prompt. This ensures
+sub-agents get exactly the context they need without re-reading the full FIS independently.
+When tasks are simple or context is small, referencing the FIS path is acceptable.
+
 ### Sub-Agent Protocol
 
 #### Input Template (provide to each sub-agent)
@@ -42,7 +48,7 @@ FIS_FILE_PATH: $ARGUMENTS
 
 ## FIS Reference
 Path: {FIS_FILE_PATH}
-Read sections: ADR, Critical Documentation & Context, relevant Implementation Notes
+{ADR decision, key constraints, and relevant references — inlined by orchestrator}
 
 ## Key References (from FIS)
 {List specific file:line references relevant to THIS task}
@@ -106,7 +112,7 @@ For each implementation task (TI01, TI02, etc.):
 Important: Correct implementation of requirements and acceptance criteria must be verified through tests and visual validation (when applicable).
 
 #### TV01 [P] — Level 1: Code Review
-The sub-agent for code review (general-purpose) should use the `/cc-workflows:code-review` skill for comprehensive review and analysis covering:
+The sub-agent for code review (general-purpose) should use the `/cc-workflows:review-code` skill for comprehensive review and analysis covering:
 
 - Static analysis, linting, formatting and type checking issues
 - Code quality (correctness, readability, best practices, performance, maintainability)
@@ -143,6 +149,12 @@ As orchestrator (not delegated to sub-agent):
 2. Verify ALL task checkboxes marked complete (- [x])
 3. Verify Final Validation Checklist items are satisfied
 4. Update FIS with completion status
+5. Include verification evidence in completion summary (as applicable):
+   - **Build**: exit code or success/failure status
+   - **Tests**: pass/fail counts (e.g., "42/42 pass")
+   - **Linting/types**: error and warning counts
+   - **Visual validation**: screenshot confirming UI matches expectations (if UI)
+   - **Runtime**: confirmation app starts and key flows work
 
 ### Step 6: Iteration (if needed)
 If success criteria not met or if previous step failed to successfully verify completion:

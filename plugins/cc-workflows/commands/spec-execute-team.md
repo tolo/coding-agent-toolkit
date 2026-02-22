@@ -37,6 +37,11 @@ FIS_FILE_PATH: $ARGUMENTS
 - Let your context get bloated with implementation details
 - Skip final steps due to context exhaustion
 
+**Context Injection Best Practice:**
+Before spawning each sub-agent, prefer extracting the relevant task text, key references,
+and ADR decision from the FIS and passing them directly in the prompt. This ensures
+sub-agents get exactly the context they need without re-reading the full FIS independently.
+When tasks are simple or context is small, referencing the FIS path is acceptable.
 
 ## Workflow
 
@@ -85,7 +90,7 @@ Create an Agent Team with the following members, mapped to FIS validation tasks:
 
 | Member | Maps to | Responsibility |
 |---|---|---|
-| **Code Reviewer** | TV01 | Use `/cc-workflows:code-review` skill. Static analysis, linting, formatting, type checking, code quality, architecture, security (OWASP Top 10), UI/UX review |
+| **Code Reviewer** | TV01 | Use `/cc-workflows:review-code` skill. Static analysis, linting, formatting, type checking, code quality, architecture, security (OWASP Top 10), UI/UX review |
 | **QA Test Engineer** | TV02 | Run and verify unit, integration, E2E tests. Assess coverage. Write missing tests for new functionality |
 | **Visual Validator** | TV03 | Screenshot comparison, design compliance, regression detection. Follow Visual Validation Workflow from CLAUDE.md. _Only include if FIS has UI changes_ |
 
@@ -122,7 +127,7 @@ Validation process (three phases + fix loop):
 
 PHASE 1 - Specialist Validation:
 Each core validator works in parallel through their specialized lens:
-- Code Reviewer: Run /cc-workflows:code-review skill, report findings with severity (CRITICAL/HIGH/MEDIUM/LOW) and file:line references
+- Code Reviewer: Run /cc-workflows:review-code skill, report findings with severity (CRITICAL/HIGH/MEDIUM/LOW) and file:line references
 - QA Test Engineer: Execute all tests, assess coverage, write missing tests, report failures and gaps
 - Visual Validator (if UI): Capture screenshots, compare against design specs, check for regressions
 - Requirements Verifier: Check each success criterion, verify acceptance criteria met, check scope boundaries
@@ -189,6 +194,12 @@ As orchestrator (not delegated):
 2. Verify ALL task checkboxes marked complete (- [x])
 3. Verify Final Validation Checklist items are satisfied
 4. Update FIS with completion status
+5. Include verification evidence in completion summary (as applicable):
+   - **Build**: exit code or success/failure status
+   - **Tests**: pass/fail counts (e.g., "42/42 pass")
+   - **Linting/types**: error and warning counts
+   - **Visual validation**: screenshot confirming UI matches expectations (if UI)
+   - **Runtime**: confirmation app starts and key flows work
 
 ### Step 7: Iteration (if needed)
 If success criteria not met or verification failed:

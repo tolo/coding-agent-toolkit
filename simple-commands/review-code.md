@@ -93,9 +93,9 @@ Assess:
 ### Phase 3: Analysis & Findings
 
 1. Categorize findings by priority:
-   - **🚨 CRITICAL**: Security vulnerabilities, data loss risks, broken functionality
-   - **⚠️ HIGH**: Performance issues, maintainability concerns, minor security issues
-   - **💡 SUGGESTIONS**: Improvements, optimizations, enhancements
+   - **CRITICAL**: Security vulnerabilities, data loss risks, broken functionality
+   - **HIGH**: Performance issues, maintainability concerns, minor security issues
+   - **SUGGESTIONS**: Improvements, optimizations, enhancements
 
 2. Identify obsolete/temporary files and code requiring cleanup
 3. Check for unmotivated complexity, over-engineering, or duplication
@@ -116,13 +116,13 @@ Generate markdown report:
 ## Summary
 [2-3 sentence overview of review scope and overall assessment]
 
-## 🚨 CRITICAL ISSUES
+## CRITICAL ISSUES
 [Each issue: Title, Impact, Location, Fix Required]
 
-## ⚠️ HIGH PRIORITY
+## HIGH PRIORITY
 [Each issue: Title, Impact, Location, Recommendation]
 
-## 💡 SUGGESTIONS
+## SUGGESTIONS
 [Brief list of improvements]
 
 ## Cleanup Required
@@ -228,9 +228,9 @@ Return report location to user.
 - [ ] Resource cleanup (connections, files, memory)
 
 ### Issue Classification
-- **🚨 CRITICAL**: Data loss/corruption risks, breaking changes, critical bugs
-- **⚠️ HIGH**: Performance issues, maintainability concerns, incorrect error handling
-- **💡 SUGGESTIONS**: Code style, refactoring opportunities, test coverage gaps
+- **CRITICAL**: Data loss/corruption risks, breaking changes, critical bugs
+- **HIGH**: Performance issues, maintainability concerns, incorrect error handling
+- **SUGGESTIONS**: Code style, refactoring opportunities, test coverage gaps
 
 
 ---
@@ -322,10 +322,10 @@ Based on [OWASP Top 10:2025](https://owasp.org/Top10/2025/).
 - [ ] Errors logged server-side, generic messages to users
 
 ### Issue Classification
-- **🚨 CRITICAL**: RCE, SQL injection, auth bypass, privilege escalation, credential exposure
-- **⚠️ HIGH**: Stored XSS, CSRF, IDOR, session fixation, missing headers, vulnerable deps
-- **🔶 MEDIUM**: Reflected XSS, info disclosure, missing rate limiting, verbose errors
-- **💡 LOW**: Best practice deviations, defense-in-depth improvements
+- **CRITICAL**: RCE, SQL injection, auth bypass, privilege escalation, credential exposure
+- **HIGH**: Stored XSS, CSRF, IDOR, session fixation, missing headers, vulnerable deps
+- **MEDIUM**: Reflected XSS, info disclosure, missing rate limiting, verbose errors
+- **LOW**: Best practice deviations, defense-in-depth improvements
 
 
 ---
@@ -436,9 +436,9 @@ Based on [OWASP Top 10:2025](https://owasp.org/Top10/2025/).
 - [ ] No sensitive data in logs
 
 ### Issue Classification
-- **🚨 CRITICAL**: Architectural violations causing serious issues, security vulns, data loss risks
-- **⚠️ HIGH**: Anti-patterns requiring refactoring, maintainability concerns, coupling issues
-- **💡 SUGGESTIONS**: Refactoring opportunities, pattern improvements, optimizations
+- **CRITICAL**: Architectural violations causing serious issues, security vulns, data loss risks
+- **HIGH**: Anti-patterns requiring refactoring, maintainability concerns, coupling issues
+- **SUGGESTIONS**: Refactoring opportunities, pattern improvements, optimizations
 
 
 ---
@@ -554,6 +554,6 @@ Based on [OWASP Top 10:2025](https://owasp.org/Top10/2025/).
 - [ ] 60fps animations
 
 ### Issue Classification
-- **🔴 IMMEDIATE**: Text truncation blocking tasks, elements outside safe areas, touch targets <44pt, broken layouts, critical a11y violations
-- **⚠️ HIGH**: Inconsistent spacing, minor alignment issues, >3 step paths, missing feedback, >3s load
-- **💡 ENHANCEMENT**: Visual refinements, micro-interaction improvements, animation polish
+- **IMMEDIATE**: Text truncation blocking tasks, elements outside safe areas, touch targets <44pt, broken layouts, critical a11y violations
+- **HIGH**: Inconsistent spacing, minor alignment issues, >3 step paths, missing feedback, >3s load
+- **ENHANCEMENT**: Visual refinements, micro-interaction improvements, animation polish

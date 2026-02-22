@@ -5,11 +5,37 @@
 - **Be Concise and Clear** - In all interactions (including generated reports, plans, commit messages etc.), be extremely concise and sacrifice grammar for brevity. Focus on clarity, pragmatism, and actionability - always avoid unnecessary prose and verbosity.
 - **Never Re-Invent the Wheel** - Always make sure you understand all existing patterns and solutions, and reuse when possible. Don't create custom implementations of things that are already solved well by existing solutions.
 - **Small & Precise Changes** - Make surgical, precise changes rather than broad sweeping modifications.
+
+  > *Common rationalizations to reject: "While I'm here, I'll also clean up X" / "This
+  > refactor is needed to make the fix work" / "The surrounding code needs restructuring."
+  > Make the surgical change. Boy Scout improvements are limited to: fixing obvious bugs,
+  > typos, dead code removal, and trivial fixes in files you're already modifying — not
+  > refactoring or restructuring.*
+
 - **Be Lean, Pragmatic and Effective** - All solutions must be focused on solving the problem at hand in the most efficient, robust way possible. _Never_ over-engineer or add unnecessary complexity (i.e. use a KISS, YAGNI and DRY approach).
 - **Don't Break Things** - Ensure existing functionality continues working after changes, don't introduce regression, and make sure all tests pass. Adopt a **fix-forward approach** - address issues immediately.
+
+  > **BRIGHT LINE — No Bypassing Safety Checks:**
+  > Never use `--no-verify`, `--force`, or other flags that bypass safety checks.
+  > Never skip, comment out, or delete failing tests to make them "pass."
+  > Fix-forward only: when a check fails, fix the root cause — never circumvent it.
+
 - **Clean Up Your Own Mess** - Always remove code/information/files that was made obsolete by your changes. Never replace removed code with comments like `// REMOVED...` etc. Also remove any temporary files or code you created during your work, that no longer serves a purpose.
-- **Leave Things Better Than You Found Them (Boy Scout Rule)** - Always improve code quality, readability, robustness, structure, and maintainability when working on any part of the codebase (but keep the changes small). Also fix any obvious bugs, analyzer/linting issues, warnings or other "pre-existing" issues (even "not related to our changes") you encounter while working, in code, test, or documentation.
+
+  > **BRIGHT LINE — No Orphan Code:**
+  > Before declaring work done: delete all orphaned code, temp files, and obsolete artifacts
+  > you created. Never leave `// REMOVED`, `// OLD`, or similar tombstone comments.
+  > If you added it and it's no longer needed, delete it completely.
+
+- **Leave Things Better Than You Found Them (Boy Scout Rule)** - Always improve code quality, readability, robustness, structure, and maintainability when working on any part of the codebase (but keep the changes small). Also fix any obvious bugs, analyzer/linting issues, warnings or other "pre-existing" issues (even "not related to our changes") you encounter while working, in code, test, or documentation. _(scope bounded by the Small & Precise rationalization above)_
 - **Use Visual Validation** - For UI changes, always capture screenshots and compare against expectations. *Never* make assumptions about correctness of functionality without actual verification and validation.
+
+- **Evidence Before Claims** — Never state that something is complete, working, or fixed without running the actual verification command and including its output.
+
+  > **BRIGHT LINE — Verify Before Claiming:**
+  > Before any "done" or "fixed" claim: run the verification command → read its full output →
+  > include key results in your response. Orchestrators should run top-level verification
+  > (build, tests) before claiming overall completion.
 
 ### **Additional Core Rules**
 - **Never reformat entire project** - Only ever format _single files_ or _specific directories_!

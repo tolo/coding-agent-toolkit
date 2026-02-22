@@ -130,7 +130,7 @@ Each specialist reviewer should:
 - Analyze the code through their specialized lens
 - Report findings with severity (CRITICAL/HIGH/MEDIUM/LOW)
 - Provide specific file:line references
-- Use the /cc-workflows:code-review skill for the review
+- Use the /cc-workflows:review-code skill for the review
 
 Devil's Advocate should:
 - Challenge ALL findings from specialist reviewers

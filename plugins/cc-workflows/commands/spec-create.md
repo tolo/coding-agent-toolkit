@@ -134,6 +134,7 @@ Ask ONLY if implementation is blocked by ambiguity.
 2. Mark parallelizable tasks with [P]
 3. Reference patterns, don't reproduce them
 4. Stay within 300-500 line target
+5. Replace `<path-to-this-file>` in the self-executing callout with the actual FIS output path
 
 
 ### 4. Self-Check
@@ -152,7 +153,7 @@ Rate your FIS 1-10 for single-pass implementation success:
 
 **If score <7**: Revise or ask for user clarification.
 
-> **Optional**: Run `/cc-workflows:review-plan` for thorough validation (recommended for large/complex features). Skip for small/clear features — issues surface during execution anyway.
+> **Optional**: Run `/cc-workflows:review-doc` for thorough validation (recommended for large/complex features). Skip for small/clear features — issues surface during execution anyway.
 
 
 ## Output
@@ -193,7 +194,6 @@ Use the template below to generate the Feature Implementation Specification.
 > - ❌ Verbose prose or explanations — be terse and actionable
 > - ❌ Repeating information available elsewhere — reference it
 > - ❌ Over-engineering or out-of-scope functionality
-
 
 
 ## Feature Overview and Goal

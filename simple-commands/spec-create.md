@@ -120,7 +120,7 @@ Rate your FIS 1-10 for single-pass implementation success:
 
 **If score <7**: Revise or ask for user clarification.
 
-> **Optional**: Run `/review-plan` for thorough validation (recommended for large/complex features). Skip for small/clear features — issues surface during execution anyway.
+> **Optional**: Run `/review-doc` for thorough validation (recommended for large/complex features). Skip for small/clear features — issues surface during execution anyway.
 
 **Gate**: FIS validated
 
@@ -303,7 +303,7 @@ _Examples:_
 ## Validation Strategy
 
 ### Level 1: Code Review and Analysis
-Use the `code-review` skill (if available) to perform comprehensive review and analysis covering:
+Use the `review-code` skill (if available) to perform comprehensive review and analysis covering:
 
 - Static analysis, linting, formatting and type checking issues
 - Code quality (correctness, readability, best practices, performance, maintainability)

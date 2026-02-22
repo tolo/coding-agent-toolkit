@@ -1,6 +1,9 @@
 ---
-description: Review specifications, plans, requirement documents, or other documentation for completeness, clarity, edge cases, and technical accuracy.
-argument-hint: [Path to spec/plan document(s) or additional review focus areas]
+name: review-doc
+description: Reviews specifications, plans, PRDs, requirement documents, or other documentation for completeness, clarity, edge cases, and technical accuracy. Generates detailed report with prioritized findings and readiness assessment.
+context: fork
+agent: general-purpose
+user-invocable: true
 ---
 
 # Review Spec, Plan, Requirements, or Other Documents
@@ -118,7 +121,7 @@ Ensure scope is well-defined and architecture is sound:
    - Challenge "nice-to-haves" masquerading as requirements
 
 2. **Architecture review**
-   - Use the `/cc-workflows:code-review` skill's architectural review guidance
+   - Use the `/cc-workflows:review-code` skill's architectural review guidance
    - Assess and evaluate aspects such as:
       - Architectural soundness, component separation, separation of concerns
       - Evaluate scalability, performance, maintainability
@@ -127,7 +130,7 @@ Ensure scope is well-defined and architecture is sound:
       - DDD patterns (bounded contexts, aggregates, domain events)
       - Pattern adherence (clean architecture, service architecture, API design, data architecture)
       - Anti-patterns, performance, scalability, resilience, security architecture
-   - Identify signs of over-engineering, such as: 
+   - Identify signs of over-engineering, such as:
       - **Unnecessary complexity**: Custom implementations when standard libraries/patterns exist, premature abstractions, overly generic solutions
       - **Premature optimization**: Performance optimizations without measured need, caching/pooling without proven bottlenecks
       - **Excessive layering**: Unnecessary indirection, wrapper classes without clear benefit, over-abstracted interfaces
@@ -180,7 +183,7 @@ Generate markdown report with:
 - **Prioritized Recommendations** - Critical/High/Medium/Low issues with specific suggestions
 - **Readiness Assessment** - Can implementation start? What must be fixed? Next steps
 
-Store report in: _`<project_root>/.agent_temp/reviews/<spec-name>-plan-review-<YYYY-MM-DD>.md`_
+Store report in: _`<project_root>/.agent_temp/reviews/<spec-name>-doc-review-<YYYY-MM-DD>.md`_
 
 Inform user of report location when complete.
 

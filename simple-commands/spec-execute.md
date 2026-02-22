@@ -16,7 +16,7 @@ FIS_FILE_PATH: $ARGUMENTS
 - **Fully** read and understand the **Workflow Rules, Guardrails and Guidelines** section as defined in AGENTS.md, etc. before starting work, including but not limited to:
   - **Foundational Rules and Guardrails**
   - **Foundational Development Guidelines and Standards** (e.g. Development, Architecture, UI/UX Guidelines etc.)
-- Use `code-review` skill for validation if available
+- Use `review-code` skill for validation if available
 - **Complete Implementation**: 100% completion required - no partial work
 - **Fix-forward approach** - address issues immediately
 - The FIS is the source of truth - follow it exactly
@@ -69,6 +69,12 @@ Execute the validation tasks (TV01-TV04) as defined in the FIS *Validation Strat
 - Verify ALL success criteria in FIS are met
 - Verify ALL task checkboxes marked complete (- [x])
 - Verify *Final Validation Checklist* items satisfied
+- Include verification evidence in completion summary (as applicable):
+  - **Build**: exit code or success/failure status
+  - **Tests**: pass/fail counts (e.g., "42/42 pass")
+  - **Linting/types**: error and warning counts
+  - **Visual validation**: screenshot confirming UI matches expectations (if UI)
+  - **Runtime**: confirmation app starts and key flows work
 
 #### Additional Iterations
 If success criteria not met:
