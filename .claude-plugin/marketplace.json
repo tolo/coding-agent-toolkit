@@ -12,7 +12,7 @@
       "name": "cc-workflows",
       "source": "./plugins/cc-workflows",
       "strict": false,
-      "version": "0.7.0",
+      "version": "0.7.1",
       "description": "Claude Code workflows: requirements clarification, spec generation/execution, code review, trade-off analysis, and design tools",
       "author": {
         "name": "Tobias"
