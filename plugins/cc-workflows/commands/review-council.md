@@ -7,7 +7,7 @@ argument-hint: [Optional - specific files, PR number, or focus area]
 
 Multi-perspective code review where specialized reviewers challenge each other's findings through debate, producing validated, high-confidence issues.
 
-**Uses Agent Teams** - Falls back to `/review-code` if Teams unavailable.
+**Uses Agent Teams** - Falls back to `/cc-workflows:review-code` if Teams unavailable.
 
 
 ## Variables
@@ -28,7 +28,7 @@ ARGUMENTS: $ARGUMENTS
 ## Instructions
 
 - **Fully** read and understand the **Workflow Rules, Guardrails and Guidelines** section in CLAUDE.md (and/or system prompt) before starting work
-- **Requires Agent Teams** - Falls back to `/review-code` if unavailable
+- **Requires Agent Teams** - Falls back to `/cc-workflows:review-code` if unavailable
 - **Multi-perspective validation** - Findings must survive two-phase challenge (Devil's Advocate → Synthesis Challenger)
 - **Read-only analysis** - No code changes, commits, or modifications during review
 
@@ -39,7 +39,7 @@ ARGUMENTS: $ARGUMENTS
 
 If Agent Teams not available (experimental feature not enabled):
 - Inform user that review-council requires Agent Teams
-- Automatically fall back to `/review-code` with same arguments
+- Automatically fall back to `/cc-workflows:review-code` with same arguments
 - Exit
 
 ### 2. Analyze Review Scope

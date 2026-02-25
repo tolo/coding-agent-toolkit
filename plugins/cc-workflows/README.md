@@ -243,7 +243,7 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 # Requirements Verifier, Devil's Advocate, Synthesis Challenger,
 # Issue Resolver — with automated fix loop (max 3 iterations)
 
-# Falls back to /spec-execute if Agent Teams unavailable
+# Falls back to /cc-workflows:spec-execute if Agent Teams unavailable
 ```
 
 ### Multi-Perspective Review (Agent Teams)
@@ -265,7 +265,7 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 # - Frontend UI → UX/Accessibility, Frontend Specialist, etc.
 # - Always includes Devil's Advocate + Synthesis Challenger (two-phase validation)
 
-# Falls back to /review-code if Agent Teams unavailable
+# Falls back to /cc-workflows:review-code if Agent Teams unavailable
 ```
 
 ## Agents

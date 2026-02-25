@@ -5,7 +5,7 @@ argument-hint: [Specs directory containing PRD]
 
 # Create Implementation Roadmap
 
-Transform PRD into lightweight implementation roadmap with story breakdown. Stories are scoped and sequenced but NOT fully specified - use `/spec-create` just-in-time before implementing each story.
+Transform PRD into lightweight implementation roadmap with story breakdown. Stories are scoped and sequenced but NOT fully specified - use `/cc-workflows:spec-create` just-in-time before implementing each story.
 
 **Philosophy**: Detailed specs decay quickly. This command creates just enough structure to sequence work and track progress, while deferring detailed specification to implementation time.
 
@@ -28,7 +28,7 @@ OUTPUT_DIR: `INPUT_DIR`
 - **Lightweight planning** - Stories define scope, not implementation details
 - **No over-engineering** - Minimum stories to cover requirements
 - **Progressive implementation** - Organize into logical phases (examples provided are templates, adapt to project)
-- **JIT specification** - Detailed specs come later via `/spec-create`
+- **JIT specification** - Detailed specs come later via `/cc-workflows:spec-create`
 
 
 ## Workflow
@@ -43,7 +43,7 @@ OUTPUT_DIR: `INPUT_DIR`
 - Design system
 - Wireframes
 
-If PRD missing, **STOP** and recommend `/prd` first.
+If PRD missing, **STOP** and recommend `/cc-workflows:prd` first.
 
 **Gate**: PRD validated
 
@@ -123,10 +123,10 @@ For each story, define:
 - **Asset refs**: Relevant wireframes, ADRs, design system sections
 
 **Do NOT include:**
-- File paths, line numbers, or code specifics (that's for `/spec-create`)
+- File paths, line numbers, or code specifics (that's for `/cc-workflows:spec-create`)
 - Full technical design or pseudocode
 
-These come later via `/spec-create` when the story is ready for implementation.
+These come later via `/cc-workflows:spec-create` when the story is ready for implementation.
 
 **Gate**: All stories defined
 
@@ -204,10 +204,10 @@ S01 ──→ S02 ──→ S05
 
 1. Execute Phase 1 stories sequentially (S01 → S02 → ...)
 2. For each story ready to implement:
-   - Run `/spec-create` with story scope as input
-   - Run `/spec-execute` on generated FIS
+   - Run `/cc-workflows:spec-create` with story scope as input
+   - Run `/cc-workflows:spec-execute` on generated FIS
 3. Phase 2+ stories marked [P] can run in parallel after dependencies met
-4. Use `/review-gap` after completing all stories
+4. Use `/cc-workflows:review-gap` after completing all stories
 </example-roadmap-format>
 
 **Gate**: Roadmap document complete
@@ -247,7 +247,7 @@ Inform user of output location when complete.
 
 After completion, suggest:
 
-1. **Start implementation**: `/spec-create` for first story (S01)
+1. **Start implementation**: `/cc-workflows:spec-create` for first story (S01)
 2. **Create GitHub issues** (if requested):
    ```bash
    # Create milestone

@@ -222,7 +222,7 @@ Inform user of report location when complete.
 ## Follow-Up Actions
 
 After completion, ask user if they'd like to:
-1. Proceed to PRD creation (`/prd`)
+1. Proceed to PRD creation (`/cc-workflows:prd`)
 2. Create implementation plan
 3. Review specific areas in more depth
 4. Share with stakeholders for validation

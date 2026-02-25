@@ -7,7 +7,7 @@ argument-hint: <path-to-fis>
 
 Execute a fully-defined FIS document as an **orchestrator**, delegating implementation to sub-agents and validation to an **Agent Team** (Validation Council) that reviews, debates, fixes, and re-validates in a loop until clean.
 
-**Uses Agent Teams** - Falls back to `/spec-execute` if Teams unavailable.
+**Uses Agent Teams** - Falls back to `/cc-workflows:spec-execute` if Teams unavailable.
 
 
 ## Variables
@@ -49,7 +49,7 @@ When tasks are simple or context is small, referencing the FIS path is acceptabl
 
 If Agent Teams not available (experimental feature not enabled):
 - Inform user that spec-execute-team requires Agent Teams
-- Automatically fall back to `/spec-execute` with same arguments
+- Automatically fall back to `/cc-workflows:spec-execute` with same arguments
 - Exit
 
 ### Step 2: Load FIS and Prepare

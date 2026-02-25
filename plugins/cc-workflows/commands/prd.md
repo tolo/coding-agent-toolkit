@@ -39,7 +39,7 @@ OUTPUT_DIR: `<project_root>/docs/specs/`
 
 2. **Validate prerequisites**
    - Requirements should be reasonably refined (not raw ideas)
-   - If input is too vague, recommend `/clarify` first
+   - If input is too vague, recommend `/cc-workflows:clarify` first
 
 3. **Initial gap analysis** - Document:
    - What's explicitly stated
@@ -366,7 +366,7 @@ Inform user of report location when complete.
 ## Follow-Up Actions
 
 After completion, ask user if they'd like to:
-1. Create implementation roadmap (`/roadmap`)
-2. Create wireframes (`/wireframes`)
+1. Create implementation roadmap (`/cc-workflows:roadmap`)
+2. Create wireframes (`/cc-workflows:wireframes`)
 3. Review specific sections in more depth
 4. Share with stakeholders for validation
