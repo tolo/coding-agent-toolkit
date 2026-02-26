@@ -37,8 +37,10 @@ ARGUMENTS: $ARGUMENTS
 
 ### 1. Check Agent Teams Availability
 
-If Agent Teams not available (experimental feature not enabled):
-- Inform user that review-council requires Agent Teams
+Verify Agent Teams are available by checking that the `TeamCreate` tool exists in your available tools.
+
+If the `TeamCreate` tool is NOT available (experimental feature not enabled):
+- Inform user that review-council requires Agent Teams (`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`)
 - Automatically fall back to `/cc-workflows:review-code` with same arguments
 - Exit
 
@@ -114,14 +116,24 @@ Choose 5-7 reviewers from this roster based on scope analysis:
 
 ### 4. Create Review Council
 
-Create agent team with selected reviewers:
+**IMPORTANT — Use Agent Team tools, NOT regular sub-agents.**
+You MUST use the `TeamCreate` tool to create an actual Agent Team. Do NOT use the `Task` tool alone (without `team_name`) — that spawns isolated sub-agents that cannot communicate with each other, which defeats the purpose of the council's adversarial debate workflow.
 
-**Council composition template:**
+**Required tool sequence:**
+1. `TeamCreate` — Create the team (e.g., `team_name: "review-council"`)
+2. `TaskCreate` — Create tasks for each review phase (specialist reviews, debate, synthesis)
+3. `Task` with `team_name` param — Spawn each reviewer INTO the team (e.g., `Task(team_name: "review-council", name: "security-sentinel", ...)`)
+4. `TaskUpdate` — Track task assignments and completion
+5. `SendMessage` — Coordinate inter-agent debate and findings exchange
+6. `SendMessage(type: "shutdown_request")` — Gracefully shut down each reviewer when done
+7. `TeamDelete` — Clean up team resources
+
+**Reviewer spawn template** (use as prompt when calling `Task` for each reviewer):
 ```
-Create a code review team with {N} reviewers for: {SCOPE}
+Review Council for: {SCOPE}
+Team: review-council (use TaskList, TaskUpdate, SendMessage to coordinate)
 
-Selected reviewers:
-{List each selected reviewer with their focus areas from the roster above}
+Your role: {reviewer name and focus areas from roster}
 
 Review process (two-phase validation):
 
@@ -208,7 +220,9 @@ Where `{scope}` is kebab-case identifier: file name (e.g., `auth-module`), PR nu
 
 ### 7. Clean Up
 
-Request graceful shutdown of all council members and clean up team resources.
+1. Use `SendMessage(type: "shutdown_request")` for each council reviewer
+2. Wait for shutdown confirmations
+3. Use `TeamDelete` to remove team and task files
 
 ## Report Location
 

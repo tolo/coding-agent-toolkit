@@ -60,7 +60,7 @@ Structured development workflows — from requirements to implementation with bu
 │  clarify ────────────→ spec-create ──→ review-doc    │
 │                              │                       │
 │                              ▼                       │
-│                 spec-execute / spec-execute-team     │
+│                         spec-execute                 │
 │                              │                       │
 │                              ▼                       │
 │                         review-gap                   │
@@ -86,7 +86,7 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 | `spec-create` | Create implementation spec from feature requirements |
 | `roadmap` | Create implementation roadmap with story breakdown from PRD |
 | `spec-execute` | Execute spec with validation loops until complete |
-| `spec-execute-team` | Execute spec with Agent Team validation council |
+| `roadmap-execute-team` | Execute entire roadmap through Agent Team pipeline |
 | `quick-implement` | Fast path for small features/fixes (supports `--issue` for GitHub) |
 | `review-code` | Comprehensive code review (quality, security, architecture, UI/UX) |
 | `review-gap` | Gap analysis: implementation vs requirements |

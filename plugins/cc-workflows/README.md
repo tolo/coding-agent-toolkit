@@ -49,7 +49,7 @@ See [CLAUDE.template.md](./../../CLAUDE.template.md) for a starter template, or 
 
 ### Agent Teams (Optional)
 
-Some commands like `review-council` and `spec-execute-team` use [Agent Teams](https://code.claude.com/docs/en/agent-teams) for parallel multi-agent coordination.
+Some commands like `review-council` and `roadmap-execute-team` use [Agent Teams](https://code.claude.com/docs/en/agent-teams) for parallel multi-agent coordination.
 
 To enable Agent Teams (experimental):
 
@@ -84,7 +84,7 @@ Commands automatically fall back to single-agent alternatives when Agent Teams u
 │  clarify ────────────→ spec-create ──→ review-doc           │
 │                              │                              │
 │                              ▼                              │
-│                  spec-execute / spec-execute-team           │
+│                         spec-execute                        │
 │                              │                              │
 │                              ▼                              │
 │                        review-gap                           │
@@ -101,12 +101,13 @@ Commands automatically fall back to single-agent alternatives when Agent Teams u
 │    clarify ──→ prd ─────→ roadmap ──────→ review-doc        │
 │                       (story breakdown)                     │
 │                              │                              │
-│                              ▼                              │
-│            ┌──────────────────────────────────┐             │
-│            │ For each story:                  │             │
-│            │   spec-create → spec-exec(‑team) │ ← JIT specs │
-│            └──────────────────────────────────┘             │
-│                              │                              │
+│                   ┌─────────┴──────────┐                    │
+│                   ▼                    ▼                     │
+│            Manual per-story    roadmap-execute-team          │
+│            (spec-create →      (Agent Team pipeline:        │
+│             spec-execute →      parallel story execution)   │
+│             review-gap)                                     │
+│                   └─────────┬──────────┘                    │
 │                              ▼                              │
 │                        review-gap                           │
 └─────────────────────────────────────────────────────────────┘
@@ -149,7 +150,7 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 | `spec-create` | Create single FIS from feature requirements (includes research) |
 | `roadmap` | Create lightweight implementation roadmap with story breakdown from PRD |
 | `spec-execute` | Execute FIS with validation loops until complete |
-| `spec-execute-team` | Execute FIS with Agent Team validation council (validate-fix loop) |
+| `roadmap-execute-team` | Execute entire roadmap through Agent Team pipeline (spec-create → spec-execute → review-gap per story) |
 
 ### Quick Path
 
@@ -205,13 +206,14 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 # 3. Generate implementation roadmap (story breakdown)
 /cc-workflows:roadmap docs/specs/dashboard/
 
-# 4. For each story: create spec JIT, then execute
+# 4a. Execute all stories via Agent Team pipeline (recommended)
+/cc-workflows:roadmap-execute-team docs/specs/dashboard/
+
+# 4b. OR manually per story: create spec JIT, then execute
 /cc-workflows:spec-create "S01: Project Setup" # from roadmap
 /cc-workflows:spec-execute
-
-/cc-workflows:spec-create "S02: Core Data Layer"
-/cc-workflows:spec-execute
-# ... continue for each story
+/cc-workflows:review-gap
+# ... repeat for each story
 
 # 5. Final review (against PRD requirements)
 /cc-workflows:review-gap
@@ -231,19 +233,19 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 /cc-workflows:trade-off-analysis "caching strategy for API responses"
 ```
 
-### FIS Execution with Validation Council (Agent Teams)
+### Roadmap Execution with Agent Team Pipeline
 
 ```bash
-# Execute FIS with team-based validation (validate-fix loop)
+# Execute entire roadmap through parallelized Agent Team pipeline
 # Requires Agent Teams feature enabled
-/cc-workflows:spec-execute-team docs/specs/user-export.md
+/cc-workflows:roadmap-execute-team docs/specs/dashboard/
 
-# Same as spec-execute but validation uses a 6-7 member council:
-# Code Reviewer, QA Test Engineer, Visual Validator (if UI),
-# Requirements Verifier, Devil's Advocate, Synthesis Challenger,
-# Issue Resolver — with automated fix loop (max 3 iterations)
+# Spawns Spec Creators, Implementers, and Reviewers that work
+# through all stories: spec-create → spec-execute → review-gap
+# Respects phase ordering, dependencies, and [P] parallel markers
+# Team size scales with story count (3-8 agents)
 
-# Falls back to /cc-workflows:spec-execute if Agent Teams unavailable
+# Falls back to manual per-story execution if Agent Teams unavailable
 ```
 
 ### Multi-Perspective Review (Agent Teams)

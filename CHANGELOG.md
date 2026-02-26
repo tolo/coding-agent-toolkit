@@ -7,6 +7,16 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 
 ---
 
+## 2026-02-26 — cc-workflows [0.8.0]
+
+### Added
+- **`roadmap-execute-team`**: New command — executes entire implementation roadmap through Agent Team pipeline (spec-create → spec-execute → review-gap per story). Dynamic team sizing (3-8 agents), phase-aware dependency management, parallel story execution. Supersedes `spec-execute-team`
+
+### Removed
+- **`spec-execute-team`**: Superseded by `roadmap-execute-team` — Agent Teams are better leveraged for full roadmap parallelization than single-FIS validation
+
+---
+
 ## 2026-02-22 — cc-workflows [0.7.0]
 
 ### Added
