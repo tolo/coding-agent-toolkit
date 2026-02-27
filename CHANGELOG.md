@@ -7,6 +7,18 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 
 ---
 
+## 2026-02-27 — cc-workflows [0.9.0]
+
+### Changed
+- **Command renames for clarity**: `roadmap` → `plan`, `roadmap-execute-team` → `plan-execute-team`, `spec-create` → `spec`, `spec-execute` → `implement`, `simplify-refactor` → `refactor`
+- **`plan`**: Removed "Approach" and "Key Notes" fields from story definitions — technical approach and implementation gotchas are now deferred to `spec` (cleaner separation of concerns between plan and spec)
+- **`plan`**: Story scope field narrowed to what's included/excluded only (no implementation approach)
+
+### Added
+- **CLAUDE.md**: Added `simple-commands/` section noting agent-agnostic command versions for non-Claude-Code agents
+
+---
+
 ## 2026-02-26 — cc-workflows [0.8.0]
 
 ### Added

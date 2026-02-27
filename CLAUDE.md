@@ -30,6 +30,12 @@ Always fully read relevant guidelines below as needed, based on the type of work
 
 ---
 
+## Simple Commands
+
+`simple-commands/` contains agent-agnostic versions of workflow commands for non-Claude-Code agents (Codex CLI, Aider, Cursor, etc.).
+
+---
+
 ## Vital Documentation Resources
 - [Add references to other important documentation files here]
 

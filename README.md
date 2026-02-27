@@ -16,7 +16,7 @@ The centerpiece is the **[cc-workflows](#cc-workflows-plugin)** plugin — struc
 /plugin install cc-workflows@coding-agent-toolkit
 ```
 
-This gives you slash commands like `/spec-create`, `/spec-execute`, `/review-code`, `/quick-implement`, and more. See [cc-workflows commands](#commands) below.
+This gives you slash commands like `/spec`, `/implement`, `/review-code`, `/quick-implement`, and more. See [cc-workflows commands](#commands) below.
 
 ### 2. Set up your project's CLAUDE.md
 
@@ -57,10 +57,10 @@ Structured development workflows — from requirements to implementation with bu
 │  FEATURE WORKFLOW (see cc-workflows README for more) │
 │                                                      │
 │  (optional)                            (optional)    │
-│  clarify ────────────→ spec-create ──→ review-doc    │
+│  clarify ────────────→ spec ─────────→ review-doc    │
 │                              │                       │
 │                              ▼                       │
-│                         spec-execute                 │
+│                         implement                    │
 │                              │                       │
 │                              ▼                       │
 │                         review-gap                   │
@@ -73,7 +73,7 @@ Structured development workflows — from requirements to implementation with bu
 └──────────────────────────────────────────────────────┘
 ```
 
-For the full roadmap workflow (MVP / multi-feature), see the [cc-workflows README](plugins/cc-workflows/).
+For the full plan workflow (MVP / multi-feature), see the [cc-workflows README](plugins/cc-workflows/).
 
 ### Commands / Skills
 
@@ -83,10 +83,10 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 |---------|---------|
 | `clarify` | Transform vague ideas into clear, actionable requirements |
 | `prd` | Create comprehensive PRD from refined requirements |
-| `spec-create` | Create implementation spec from feature requirements |
-| `roadmap` | Create implementation roadmap with story breakdown from PRD |
-| `spec-execute` | Execute spec with validation loops until complete |
-| `roadmap-execute-team` | Execute entire roadmap through Agent Team pipeline |
+| `spec` | Create implementation spec from feature requirements |
+| `plan` | Create implementation plan with story breakdown from PRD |
+| `implement` | Execute spec with validation loops until complete |
+| `plan-execute-team` | Execute entire plan through Agent Team pipeline |
 | `quick-implement` | Fast path for small features/fixes (supports `--issue` for GitHub) |
 | `review-code` | Comprehensive code review (quality, security, architecture, UI/UX) |
 | `review-gap` | Gap analysis: implementation vs requirements |
@@ -100,8 +100,8 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 
 ```bash
 # Implement a feature from scratch
-/spec-create "user data export as CSV and JSON"
-/spec-execute
+/spec "user data export as CSV and JSON"
+/implement
 /review-gap
 
 # Quick fix from GitHub issue
@@ -242,7 +242,7 @@ codex exec --prompt simple-commands/review-code.md
 codex exec --prompt plugins/cc-workflows/skills/review-code/SKILL.md
 
 # Or copy into your agent's custom prompts directory
-cp simple-commands/spec-create.md ~/.your-agent/prompts/
+cp simple-commands/spec.md ~/.your-agent/prompts/
 cp plugins/cc-workflows/skills/review-code/SKILL.md ~/.your-agent/prompts/review-code.md
 ```
 

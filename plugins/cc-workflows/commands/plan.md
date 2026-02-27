@@ -1,11 +1,11 @@
 ---
-description: Creates implementation roadmap with story breakdown from PRD. Lightweight planning - detailed specs created JIT per story.
+description: Creates implementation plan with story breakdown from PRD. Lightweight planning - detailed specs created JIT per story.
 argument-hint: [Specs directory containing PRD]
 ---
 
-# Create Implementation Roadmap
+# Create Implementation Plan
 
-Transform PRD into lightweight implementation roadmap with story breakdown. Stories are scoped and sequenced but NOT fully specified - use `/cc-workflows:spec-create` just-in-time before implementing each story.
+Transform PRD into lightweight implementation plan with story breakdown. Stories are scoped and sequenced but NOT fully specified - use `/cc-workflows:spec` just-in-time before implementing each story.
 
 **Philosophy**: Detailed specs decay quickly. This command creates just enough structure to sequence work and track progress, while deferring detailed specification to implementation time.
 
@@ -28,7 +28,7 @@ OUTPUT_DIR: `INPUT_DIR`
 - **Lightweight planning** - Stories define scope, not implementation details
 - **No over-engineering** - Minimum stories to cover requirements
 - **Progressive implementation** - Organize into logical phases (examples provided are templates, adapt to project)
-- **JIT specification** - Detailed specs come later via `/cc-workflows:spec-create`
+- **JIT specification** - Detailed specs come later via `/cc-workflows:spec`
 
 
 ## Workflow
@@ -112,31 +112,29 @@ Phase 4: Polish (Parallel)
 For each story, define:
 - **ID**: Sequential identifier (S01, S02, etc.)
 - **Name**: Brief descriptive name
-- **Scope**: 3-5 sentences — what's included AND the general approach (e.g. "Implement X using Y pattern; Z is handled by...")
-- **Approach**: 1-2 sentences on the high-level technical direction (key pattern, library, or strategy to use)
+- **Scope**: 2-4 sentences — what's included and excluded (no implementation approach — that's for `/cc-workflows:spec`)
 - **Acceptance criteria**: 3-6 testable outcomes — specific and unambiguous
-- **Key Notes** _(optional)_: Max 3 bullets for gotchas, constraints, or non-obvious decisions
 - **Dependencies**: Other story IDs that must complete first
 - **Phase**: Which implementation phase
 - **Parallel**: [P] if can run parallel with others in same phase
 - **Risk**: Low/Medium/High with brief note if Medium+
 - **Asset refs**: Relevant wireframes, ADRs, design system sections
 
-**Do NOT include:**
-- File paths, line numbers, or code specifics (that's for `/cc-workflows:spec-create`)
+**Do NOT include** (these are deferred to `/cc-workflows:spec`):
+- Technical approach, patterns, or library choices
+- File paths, line numbers, or code specifics
+- Implementation gotchas or constraints with workarounds
 - Full technical design or pseudocode
-
-These come later via `/cc-workflows:spec-create` when the story is ready for implementation.
 
 **Gate**: All stories defined
 
 
-### 4. Create Roadmap Document
+### 4. Create Plan Document
 
-Generate `roadmap.md` with a structure like the following (adapt phases and structure to fit the project):
+Generate `plan.md` with a structure like the following (adapt phases and structure to fit the project):
 
-<example-roadmap-format>
-# Implementation Roadmap: [Project Name]
+<example-plan-format>
+# Implementation Plan: [Project Name]
 
 ## Overview
 - **Total stories**: [N]
@@ -157,14 +155,11 @@ Generate `roadmap.md` with a structure like the following (adapt phases and stru
 _Sequential execution - establishes base for all features_
 
 #### S01: [Story Name]
-**Scope**: [3-5 sentences covering what is built and the general approach]
-**Approach**: [1-2 sentences — key pattern, library, or strategy]
+**Scope**: [2-4 sentences covering what is built and what's excluded]
 **Acceptance Criteria**:
 - [ ] [Criterion 1]
 - [ ] [Criterion 2]
 - [ ] [Criterion 3]
-**Key Notes**: _(optional)_
-- [Gotcha or constraint]
 **Assets**: [Wireframe refs, ADR refs if any]
 
 #### S02: [Story Name]
@@ -204,13 +199,13 @@ S01 ──→ S02 ──→ S05
 
 1. Execute Phase 1 stories sequentially (S01 → S02 → ...)
 2. For each story ready to implement:
-   - Run `/cc-workflows:spec-create` with story scope as input
-   - Run `/cc-workflows:spec-execute` on generated FIS
+   - Run `/cc-workflows:spec` with story scope as input
+   - Run `/cc-workflows:implement` on generated FIS
 3. Phase 2+ stories marked [P] can run in parallel after dependencies met
 4. Use `/cc-workflows:review-gap` after completing all stories
-</example-roadmap-format>
+</example-plan-format>
 
-**Gate**: Roadmap document complete
+**Gate**: Plan document complete
 
 
 ### 5. Validation
@@ -225,7 +220,7 @@ S01 ──→ S02 ──→ S05
 - [ ] Not over-granular (combined where sensible)
 
 #### Optional: Peer Review
-Use the `/cc-workflows:review-doc` command to validate roadmap for:
+Use the `/cc-workflows:review-doc` command to validate plan for:
 - Requirements coverage
 - Story scope clarity
 - Dependency correctness
@@ -237,7 +232,7 @@ Use the `/cc-workflows:review-doc` command to validate roadmap for:
 
 ```
 OUTPUT_DIR/
-└── roadmap.md    # Implementation roadmap
+└── plan.md    # Implementation plan
 ```
 
 Inform user of output location when complete.
@@ -247,7 +242,7 @@ Inform user of output location when complete.
 
 After completion, suggest:
 
-1. **Start implementation**: `/cc-workflows:spec-create` for first story (S01)
+1. **Start implementation**: `/cc-workflows:spec` for first story (S01)
 2. **Create GitHub issues** (if requested):
    ```bash
    # Create milestone
@@ -258,4 +253,4 @@ After completion, suggest:
    gh issue create --title "S02: [Story Name]" --body "..." --milestone "[Project Name] MVP"
    # ... etc
    ```
-3. **Review roadmap**: `/cc-workflows:review-doc roadmap.md`
+3. **Review plan**: `/cc-workflows:review-doc plan.md`

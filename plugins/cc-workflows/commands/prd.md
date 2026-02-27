@@ -366,7 +366,7 @@ Inform user of report location when complete.
 ## Follow-Up Actions
 
 After completion, ask user if they'd like to:
-1. Create implementation roadmap (`/cc-workflows:roadmap`)
+1. Create implementation plan (`/cc-workflows:plan`)
 2. Create wireframes (`/cc-workflows:wireframes`)
 3. Review specific sections in more depth
 4. Share with stakeholders for validation

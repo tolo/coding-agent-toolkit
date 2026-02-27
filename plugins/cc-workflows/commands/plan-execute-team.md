@@ -1,17 +1,17 @@
 ---
-description: Executes an entire implementation roadmap through an Agent Team pipeline (spec-create → spec-execute → review-gap per story)
-argument-hint: <path-to-roadmap-directory>
+description: Executes an entire implementation plan through an Agent Team pipeline (spec → implement → review-gap per story)
+argument-hint: <path-to-plan-directory>
 ---
 
-# Execute Roadmap with Agent Team Pipeline
+# Execute Plan with Agent Team Pipeline
 
-Execute ALL stories in an implementation roadmap (from `/cc-workflows:roadmap`) through a parallelized Agent Team pipeline: **spec-create → spec-execute → review-gap** per story.
+Execute ALL stories in an implementation plan (from `/cc-workflows:plan`) through a parallelized Agent Team pipeline: **spec → implement → review-gap** per story.
 
 **Uses Agent Teams** — Falls back to sequential execution (manual per-story loop) if Teams unavailable.
 
 
 ## Variables
-ROADMAP_DIR: $ARGUMENTS
+PLAN_DIR: $ARGUMENTS
 
 
 ## Instructions
@@ -20,14 +20,14 @@ ROADMAP_DIR: $ARGUMENTS
 - **Fully** read and understand the **Workflow Rules, Guardrails and Guidelines** section in CLAUDE.md (and/or system prompt) before starting work, including but not limited to:
   - **Foundational Rules and Guardrails** (absolute must-follow rules)
   - **Foundational Development Guidelines and Standards** (e.g. Development, Architecture, UI/UX Guidelines etc.)
-- **Complete Implementation**: All stories in roadmap must be implemented
-- **Roadmap is source of truth** — follow phase ordering, dependencies, and parallel markers exactly
+- **Complete Implementation**: All stories in plan must be implemented
+- **Plan is source of truth** — follow phase ordering, dependencies, and parallel markers exactly
 - **Agent Team for pipeline** — use Agent Teams for parallel story execution
-- **Per-story pipeline**: spec-create → spec-execute → review-gap (with fix loop)
+- **Per-story pipeline**: spec → implement → review-gap (with fix loop)
 
 ### Orchestrator Role
 **You are the orchestrator.** Your job is to:
-- Parse the roadmap and extract stories, phases, dependencies, parallel markers
+- Parse the plan and extract stories, phases, dependencies, parallel markers
 - Size and create the Agent Team
 - Create pipeline tasks with correct dependency chains
 - Monitor progress via TaskList and coordinate agents
@@ -47,15 +47,15 @@ ROADMAP_DIR: $ARGUMENTS
 Verify Agent Teams are available by checking that the `TeamCreate` tool exists in your available tools.
 
 If the `TeamCreate` tool is NOT available (experimental feature not enabled):
-- Inform user that roadmap-execute-team requires Agent Teams (`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`)
-- Suggest manual alternative: execute stories sequentially with `/cc-workflows:spec-create` → `/cc-workflows:spec-execute` → `/cc-workflows:review-gap` per story
+- Inform user that plan-execute-team requires Agent Teams (`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`)
+- Suggest manual alternative: execute stories sequentially with `/cc-workflows:spec` → `/cc-workflows:implement` → `/cc-workflows:review-gap` per story
 - Exit
 
 
 ### Step 2: Parse Roadmap
 
-1. Read `ROADMAP_DIR/roadmap.md`
-2. If roadmap file missing, **STOP** and recommend `/cc-workflows:roadmap` first
+1. Read `PLAN_DIR/plan.md`
+2. If plan file missing, **STOP** and recommend `/cc-workflows:plan` first
 3. Extract:
    - **Stories**: ID, name, scope, acceptance criteria, dependencies
    - **Phases**: Phase groupings and execution order
@@ -81,7 +81,7 @@ Scale team based on total story count:
 You MUST use the `TeamCreate` tool. Do NOT use `Task` alone (without `team_name`).
 
 **Required tool sequence:**
-1. `TeamCreate` — Create the team (e.g., `team_name: "roadmap-pipeline"`)
+1. `TeamCreate` — Create the team (e.g., `team_name: "plan-pipeline"`)
 2. `TaskCreate` — Create pipeline tasks per story
 3. `Task` with `team_name` param — Spawn each teammate INTO the team
 4. `TaskUpdate` — Set dependencies, assignments, track completion
@@ -91,9 +91,9 @@ You MUST use the `TeamCreate` tool. Do NOT use `Task` alone (without `team_name`
 
 #### Agent Roles
 
-**Spec Creators** — Claim `spec-{story_id}` tasks and run `/cc-workflows:spec-create` with story scope as input. Output: FIS document.
+**Spec Creators** — Claim `spec-{story_id}` tasks and run `/cc-workflows:spec` with story scope as input. Output: FIS document.
 
-**Implementers** — Claim `impl-{story_id}` tasks (blocked by corresponding spec task) and run `/cc-workflows:spec-execute` on the generated FIS. Output: implemented story.
+**Implementers** — Claim `impl-{story_id}` tasks (blocked by corresponding spec task) and run `/cc-workflows:implement` on the generated FIS. Output: implemented story.
 
 **Reviewers** — Claim `review-{story_id}` tasks (blocked by corresponding impl task) and run `/cc-workflows:review-gap` per story. If issues found: fix them, then re-validate. Output: validated story.
 
@@ -101,19 +101,19 @@ Each agent loops: **claim task → execute → mark done → claim next**.
 
 #### Spawn Template
 
-Use this as prompt context when spawning each teammate via `Task(team_name: "roadmap-pipeline", name: "<role-N>", ...)`:
+Use this as prompt context when spawning each teammate via `Task(team_name: "plan-pipeline", name: "<role-N>", ...)`:
 
 ```
 Role: {Spec Creator | Implementer | Reviewer}
-Team: roadmap-pipeline
-Roadmap: {ROADMAP_DIR}/roadmap.md
+Team: plan-pipeline
+Plan: {PLAN_DIR}/plan.md
 
 Your workflow (loop until no tasks remain):
 1. Check TaskList for available tasks matching your role ({spec-*|impl-*|review-*})
 2. Claim an unblocked, unassigned task via TaskUpdate (set owner to your name)
 3. Execute:
-   - Spec Creator: Run /cc-workflows:spec-create with story scope from roadmap. Save FIS to {ROADMAP_DIR}/
-   - Implementer: Run /cc-workflows:spec-execute on the FIS for this story
+   - Spec Creator: Run /cc-workflows:spec with story scope from plan. Save FIS to {PLAN_DIR}/
+   - Implementer: Run /cc-workflows:implement on the FIS for this story
    - Reviewer: Run /cc-workflows:review-gap for this story. Fix any issues found, then re-validate
 4. Mark task completed via TaskUpdate
 5. Check TaskList for next available task
@@ -128,7 +128,7 @@ Important:
 
 ### Step 5: Phase Loop
 
-For each phase in the roadmap:
+For each phase in the plan:
 
 #### 5a. Create Pipeline Tasks
 
@@ -142,7 +142,7 @@ For each story in the current phase, create 3 tasks:
 Use `TaskUpdate(addBlockedBy)`:
 - `impl-{story_id}` blocked by `spec-{story_id}`
 - `review-{story_id}` blocked by `impl-{story_id}`
-- Cross-story dependencies from roadmap: if S05 depends on S03, then `spec-S05` blocked by `review-S03`
+- Cross-story dependencies from plan: if S05 depends on S03, then `spec-S05` blocked by `review-S03`
 
 #### 5c. Monitor Progress
 
@@ -151,7 +151,7 @@ Use `TaskUpdate(addBlockedBy)`:
 
 #### 5d. Update Roadmap
 
-- Check off completed story acceptance criteria in `roadmap.md`
+- Check off completed story acceptance criteria in `plan.md`
 - Move to next phase only after ALL stories in current phase are complete
 
 **Create Phase N+1 tasks only after Phase N is fully complete.**
@@ -185,7 +185,7 @@ Phase 2 (Parallel [P]): S03[P], S04[P], S05 (depends on S03)
 
 Spawn a sub-agent to update project documentation:
 - README updates (if applicable)
-- Any docs referenced in the roadmap
+- Any docs referenced in the plan
 
 
 ### Step 8: Clean Up
@@ -208,9 +208,9 @@ Spawn a sub-agent to update project documentation:
 If Agent Teams unavailable (Step 1 check fails), suggest the manual equivalent:
 
 ```bash
-# For each story in roadmap order:
-/cc-workflows:spec-create "S01: [Story Name]"
-/cc-workflows:spec-execute
+# For each story in plan order:
+/cc-workflows:spec "S01: [Story Name]"
+/cc-workflows:implement
 /cc-workflows:review-gap
 # ... repeat for each story
 ```

@@ -49,7 +49,7 @@ See [CLAUDE.template.md](./../../CLAUDE.template.md) for a starter template, or 
 
 ### Agent Teams (Optional)
 
-Some commands like `review-council` and `roadmap-execute-team` use [Agent Teams](https://code.claude.com/docs/en/agent-teams) for parallel multi-agent coordination.
+Some commands like `review-council` and `plan-execute-team` use [Agent Teams](https://code.claude.com/docs/en/agent-teams) for parallel multi-agent coordination.
 
 To enable Agent Teams (experimental):
 
@@ -81,31 +81,31 @@ Commands automatically fall back to single-agent alternatives when Agent Teams u
 │  └───────────────────────────┬───────────────────────────┘  │
 │                              │                              │
 │  (optional)                  ▼         (optional)           │
-│  clarify ────────────→ spec-create ──→ review-doc           │
+│  clarify ────────────→   spec   ────→ review-doc            │
 │                              │                              │
 │                              ▼                              │
-│                         spec-execute                        │
+│                          implement                          │
 │                              │                              │
 │                              ▼                              │
 │                        review-gap                           │
 └─────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────┐
-│  ROADMAP WORKFLOW (MVP / multi-feature)                     │
+│  PLAN WORKFLOW (MVP / multi-feature)                        │
 │                                                             │
 │  ┌───────────────────── RECOMMENDED: ────────────────────┐  │
 │  │ wireframes, design-system, trade-off-analysis         │  │
 │  └───────────────────────────┬───────────────────────────┘  │
 │                              │                              │
 │    (optional)                ▼                              │
-│    clarify ──→ prd ─────→ roadmap ──────→ review-doc        │
+│    clarify ──→ prd ─────→  plan  ───────→ review-doc        │
 │                       (story breakdown)                     │
 │                              │                              │
 │                   ┌─────────┴──────────┐                    │
-│                   ▼                    ▼                     │
-│            Manual per-story    roadmap-execute-team          │
-│            (spec-create →      (Agent Team pipeline:        │
-│             spec-execute →      parallel story execution)   │
+│                   ▼                    ▼                    │
+│            Manual per-story    plan-execute-team            │
+│            (spec →             (Agent Team pipeline:        │
+│             implement →         parallel story execution)   │
 │             review-gap)                                     │
 │                   └─────────┬──────────┘                    │
 │                              ▼                              │
@@ -121,10 +121,10 @@ Commands automatically fall back to single-agent alternatives when Agent Teams u
 
 **When to use which:**
 - **Feature workflow**: Single feature, complex changes, multi-file modifications
-- **Roadmap workflow**: MVP, new project, multi-feature work
+- **Plan workflow**: MVP, new project, multi-feature work
 - **Quick path**: Bug fixes, small features, GitHub issues
 
-**Pre-activities** (feed into spec-create, prd, or roadmap):
+**Pre-activities** (feed into spec, prd, or plan):
 - `clarify` - When requirements are vague
 - `wireframes` / `design-system` - When UI design is needed
 - `trade-off-analysis` - When architectural decisions are needed
@@ -147,10 +147,10 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 
 | Command | Purpose |
 |---------|---------|
-| `spec-create` | Create single FIS from feature requirements (includes research) |
-| `roadmap` | Create lightweight implementation roadmap with story breakdown from PRD |
-| `spec-execute` | Execute FIS with validation loops until complete |
-| `roadmap-execute-team` | Execute entire roadmap through Agent Team pipeline (spec-create → spec-execute → review-gap per story) |
+| `spec` | Create single FIS from feature requirements (includes research) |
+| `plan` | Create lightweight implementation plan with story breakdown from PRD |
+| `implement` | Execute FIS with validation loops until complete |
+| `plan-execute-team` | Execute entire plan through Agent Team pipeline (spec → implement → review-gap per story) |
 
 ### Quick Path
 
@@ -183,16 +183,16 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 /cc-workflows:clarify "users should be able to export their data"
 
 # 2. Generate implementation spec (includes research)
-/cc-workflows:spec-create <requirements from step 1>
+/cc-workflows:spec <requirements from step 1>
 
 # 3. Execute the spec
-/cc-workflows:spec-execute
+/cc-workflows:implement
 
 # 4. Final review (against requirements)
 /cc-workflows:review-gap
 ```
 
-### Roadmap Workflow (MVP / multi-feature)
+### Plan Workflow (MVP / multi-feature)
 
 ```bash
 # 1. Clarify and create PRD
@@ -203,15 +203,15 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 /cc-workflows:wireframes
 /cc-workflows:design-system
 
-# 3. Generate implementation roadmap (story breakdown)
-/cc-workflows:roadmap docs/specs/dashboard/
+# 3. Generate implementation plan (story breakdown)
+/cc-workflows:plan docs/specs/dashboard/
 
 # 4a. Execute all stories via Agent Team pipeline (recommended)
-/cc-workflows:roadmap-execute-team docs/specs/dashboard/
+/cc-workflows:plan-execute-team docs/specs/dashboard/
 
 # 4b. OR manually per story: create spec JIT, then execute
-/cc-workflows:spec-create "S01: Project Setup" # from roadmap
-/cc-workflows:spec-execute
+/cc-workflows:spec "S01: Project Setup" # from plan
+/cc-workflows:implement
 /cc-workflows:review-gap
 # ... repeat for each story
 
@@ -233,15 +233,15 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 /cc-workflows:trade-off-analysis "caching strategy for API responses"
 ```
 
-### Roadmap Execution with Agent Team Pipeline
+### Plan Execution with Agent Team Pipeline
 
 ```bash
-# Execute entire roadmap through parallelized Agent Team pipeline
+# Execute entire plan through parallelized Agent Team pipeline
 # Requires Agent Teams feature enabled
-/cc-workflows:roadmap-execute-team docs/specs/dashboard/
+/cc-workflows:plan-execute-team docs/specs/dashboard/
 
 # Spawns Spec Creators, Implementers, and Reviewers that work
-# through all stories: spec-create → spec-execute → review-gap
+# through all stories: spec → implement → review-gap
 # Respects phase ordering, dependencies, and [P] parallel markers
 # Team size scales with story count (3-8 agents)
 
@@ -289,24 +289,24 @@ Specialized sub-agents for delegation (used internally by commands):
 
 ### Feature Implementation Specification (FIS)
 
-A structured document generated by `spec-create` containing everything needed for autonomous implementation:
+A structured document generated by `spec` containing everything needed for autonomous implementation:
 - Requirements and acceptance criteria
 - Technical approach and architecture
 - File changes and dependencies
 - Validation checklist
 
-### Implementation Roadmap
+### Implementation Plan
 
-A lightweight planning document generated by `roadmap` that breaks down PRD into stories:
+A lightweight planning document generated by `plan` that breaks down PRD into stories:
 - Story scope and acceptance criteria (high-level)
 - Dependencies and execution sequence
 - Phase organization (Foundation → Features → Integration → Polish)
 
-Detailed FIS specs are created just-in-time via `spec-create` when each story is ready for implementation.
+Detailed FIS specs are created just-in-time via `spec` when each story is ready for implementation.
 
 ### Implementation Loop
 
-Both `spec-execute` and `quick-implement` use an iterative cycle:
+Both `implement` and `quick-implement` use an iterative cycle:
 ```
 Implement → Verify → Evaluate → (repeat if needed)
 ```
