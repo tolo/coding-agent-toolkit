@@ -1,20 +1,5 @@
 {
   "name": "cc-workflows", 
   "strict": false,
-  "version": "0.9.0",
-  "description": "Claude Code workflows: requirements clarification, spec generation/execution, code review, trade-off analysis, and design tools",
-  "author": {
-    "name": "Tobias"
-  },
-  "license": "MIT",
-  "keywords": [
-    "workflow",
-    "specification",
-    "code-review",
-    "implementation",
-    "requirements",
-    "trade-off-analysis",
-    "wireframes",
-    "design-system"
-  ]
+  "version": "0.9.0"
 }

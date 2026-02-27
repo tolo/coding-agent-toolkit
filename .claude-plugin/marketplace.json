@@ -10,7 +10,22 @@
   "plugins": [
     {
       "name": "cc-workflows",
-      "source": "./plugins/cc-workflows"      
+      "source": "./plugins/cc-workflows",
+      "description": "Claude Code workflows: requirements clarification, spec generation/execution, code review, trade-off analysis, and design tools",
+      "author": {
+        "name": "Tobias"
+      },
+      "license": "MIT",
+      "keywords": [
+        "workflow",
+        "specification",
+        "code-review",
+        "implementation",
+        "requirements",
+        "trade-off-analysis",
+        "wireframes",
+        "design-system"
+      ]
     }
   ]
 }
