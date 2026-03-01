@@ -1,5 +1,5 @@
 ---
-name: review-doc
+name: cc-workflows:review-doc
 description: Reviews specifications, plans, PRDs, requirement documents, or other documentation for completeness, clarity, edge cases, and technical accuracy. Generates detailed report with prioritized findings and readiness assessment.
 context: fork
 agent: general-purpose

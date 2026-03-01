@@ -47,7 +47,7 @@ PLAN_DIR: $ARGUMENTS
 Verify Agent Teams are available by checking that the `TeamCreate` tool exists in your available tools.
 
 If the `TeamCreate` tool is NOT available (experimental feature not enabled):
-- Inform user that plan-execute-team requires Agent Teams (`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`)
+- Inform user that implement-plan requires Agent Teams (`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`)
 - Suggest manual alternative: execute stories sequentially with `/cc-workflows:spec` → `/cc-workflows:implement` → `/cc-workflows:review-gap` per story
 - Exit
 
@@ -149,9 +149,10 @@ Use `TaskUpdate(addBlockedBy)`:
 - Poll `TaskList` periodically until all review tasks for the current phase are complete
 - Handle agent messages (failures, questions, status updates)
 
-#### 5d. Update Roadmap
+#### 5d. Update Plan
 
 - Check off completed story acceptance criteria in `plan.md`
+- Add FIS reference to each completed story (e.g. `**FIS**: docs/specs/story-name.md`)
 - Move to next phase only after ALL stories in current phase are complete
 
 **Create Phase N+1 tasks only after Phase N is fully complete.**

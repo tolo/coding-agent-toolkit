@@ -86,7 +86,7 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 | `spec` | Create implementation spec from feature requirements |
 | `plan` | Create implementation plan with story breakdown from PRD |
 | `implement` | Execute spec with validation loops until complete |
-| `plan-execute-team` | Execute entire plan through Agent Team pipeline |
+| `implement-plan` | Execute entire plan through Agent Team pipeline |
 | `quick-implement` | Fast path for small features/fixes (supports `--issue` for GitHub) |
 | `review-code` | Comprehensive code review (quality, security, architecture, UI/UX) |
 | `review-gap` | Gap analysis: implementation vs requirements |

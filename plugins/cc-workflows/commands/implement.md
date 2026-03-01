@@ -163,12 +163,15 @@ If success criteria not met or if previous step failed to successfully verify co
 3. Execute Steps 2-5 again
 
 
-## Report: Update Implementation Notes documents with important learnings and decisions
-After completion, update `fis-implementation-notes.md` with important implementation notes, making sure to keep them very concise and to the point (avoid any unnecessary verbosity and code listings etc).
+## Post-Completion: Update Related Documents
+After completion, update any documents related to this implementation:
 
-Including details like:
-- Extremely brief description of what was implemented and how parts integrate
-- Key challenges faced and how they were overcome
-- Important decisions made and their rationale
-- Deviations from plan
+**Implementation notes** — update `fis-implementation-notes.md` (concise, no code listings):
+- Brief description of what was implemented and how parts integrate
+- Key challenges and how they were overcome
+- Important decisions and deviations from spec
 - Unresolved issues or future suggestions
+
+**Source documents** — if this FIS originated from a plan or other tracking document, update it:
+- Check off completed acceptance criteria / story status
+- Note any scope changes or deviations

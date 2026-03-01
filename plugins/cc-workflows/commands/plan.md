@@ -201,8 +201,11 @@ S01 ──→ S02 ──→ S05
 2. For each story ready to implement:
    - Run `/cc-workflows:spec` with story scope as input
    - Run `/cc-workflows:implement` on generated FIS
+   - Check off completed acceptance criteria in this plan
 3. Phase 2+ stories marked [P] can run in parallel after dependencies met
 4. Use `/cc-workflows:review-gap` after completing all stories
+
+> **Status tracking**: After each story is implemented and reviewed, update its acceptance criteria checkboxes in this plan. `/cc-workflows:implement-plan` does this automatically; for manual per-story execution, the orchestrating agent or user is responsible.
 </example-plan-format>
 
 **Gate**: Plan document complete

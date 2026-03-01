@@ -49,7 +49,7 @@ See [CLAUDE.template.md](./../../CLAUDE.template.md) for a starter template, or 
 
 ### Agent Teams (Optional)
 
-Some commands like `review-council` and `plan-execute-team` use [Agent Teams](https://code.claude.com/docs/en/agent-teams) for parallel multi-agent coordination.
+Some commands like `review-council` and `implement-plan` use [Agent Teams](https://code.claude.com/docs/en/agent-teams) for parallel multi-agent coordination.
 
 To enable Agent Teams (experimental):
 
@@ -103,7 +103,7 @@ Commands automatically fall back to single-agent alternatives when Agent Teams u
 │                              │                              │
 │                   ┌─────────┴──────────┐                    │
 │                   ▼                    ▼                    │
-│            Manual per-story    plan-execute-team            │
+│            Manual per-story    implement-plan            │
 │            (spec →             (Agent Team pipeline:        │
 │             implement →         parallel story execution)   │
 │             review-gap)                                     │
@@ -150,7 +150,7 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 | `spec` | Create single FIS from feature requirements (includes research) |
 | `plan` | Create lightweight implementation plan with story breakdown from PRD |
 | `implement` | Execute FIS with validation loops until complete |
-| `plan-execute-team` | Execute entire plan through Agent Team pipeline (spec → implement → review-gap per story) |
+| `implement-plan` | Execute entire plan through Agent Team pipeline (spec → implement → review-gap per story) |
 
 ### Quick Path
 
@@ -207,7 +207,7 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 /cc-workflows:plan docs/specs/dashboard/
 
 # 4a. Execute all stories via Agent Team pipeline (recommended)
-/cc-workflows:plan-execute-team docs/specs/dashboard/
+/cc-workflows:implement-plan docs/specs/dashboard/
 
 # 4b. OR manually per story: create spec JIT, then execute
 /cc-workflows:spec "S01: Project Setup" # from plan
@@ -238,7 +238,7 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 ```bash
 # Execute entire plan through parallelized Agent Team pipeline
 # Requires Agent Teams feature enabled
-/cc-workflows:plan-execute-team docs/specs/dashboard/
+/cc-workflows:implement-plan docs/specs/dashboard/
 
 # Spawns Spec Creators, Implementers, and Reviewers that work
 # through all stories: spec → implement → review-gap
