@@ -104,11 +104,11 @@ Structure all findings into comprehensive requirements document:
 3. **Functional requirements** - Core flows, alternate paths, user stories
 4. **UI wireframes** _(if applicable)_ - Simple ASCII wireframes for core screens
 5. **Edge cases** - Scenarios with expected behavior
-5. **Error handling** - Error types, messages, recovery actions
-6. **Non-functional requirements** - Performance, security, accessibility
-7. **Success criteria** - Testable acceptance criteria
-8. **Dependencies** - External systems, integrations
-9. **Open questions** - Any remaining items for later phases
+6. **Error handling** - Error types, messages, recovery actions
+7. **Non-functional requirements** - Performance, security, accessibility
+8. **Success criteria** - Testable acceptance criteria
+9. **Dependencies** - External systems, integrations
+10. **Open questions** - Any remaining items for later phases
 
 **Gate**: Requirements document complete and structured
 
@@ -222,7 +222,8 @@ Inform user of report location when complete.
 ## Follow-Up Actions
 
 After completion, ask user if they'd like to:
-1. Proceed to PRD creation (`/cc-workflows:prd`)
-2. Create implementation plan
-3. Review specific areas in more depth
-4. Share with stakeholders for validation
+1. Create feature spec (`/cc-workflows:spec`) — for single features
+2. Proceed to PRD creation (`/cc-workflows:prd`) — for multi-feature / MVP scope
+3. Create implementation plan
+4. Review specific areas in more depth
+5. Share with stakeholders for validation

@@ -38,7 +38,7 @@ SCOPE: $ARGUMENTS
 - Document current branch and commit hash
 - Note any pending changes or uncommitted work
 - Identify scope of components/features that might be affected (from `SCOPE`)
-- - **Read additional guidelines and documentation** - Read additional relevant guidelines and documentation (API, guides, reference, etc.) as needed
+- **Read additional guidelines and documentation** - Read additional relevant guidelines and documentation (API, guides, reference, etc.) as needed
 
 **Gate**: Baseline documented
 

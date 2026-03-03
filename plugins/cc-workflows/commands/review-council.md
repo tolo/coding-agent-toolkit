@@ -195,6 +195,9 @@ Date: {YYYY-MM-DD}
 ## Executive Summary
 {Brief overview of what was reviewed, total issues found, validated count}
 
+## CRITICAL Severity (Validated through debate)
+{Blocking issues: security vulnerabilities, data loss, core functionality broken}
+
 ## HIGH Severity (Validated through debate)
 {Issues that survived Devil's Advocate challenge}
 

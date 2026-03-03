@@ -22,6 +22,7 @@ SPEC_PATH_OR_FOCUS: $ARGUMENTS
 - **Read-only review** - No modifications to specs during analysis
 - **Be thorough and critical** - Challenge assumptions, find edge cases, identify ambiguities
 - **Favor simplicity** - Actively identify over-engineering; recommend simplest solution (KISS, YAGNI, DRY)
+- **Proportional review** - Calibrate the depth and expectations of your review to the project's actual scale, stage, and goals. A simple CLI tool, a prototype, or an MVP does not need the same scrutiny as an enterprise SaaS platform. Never recommend patterns, processes, or infrastructure that are disproportionate to the project's scope and ambition. If the document doesn't mention something (e.g. i18n, monitoring, rollback), consider whether it's actually needed before flagging it as missing.
 - **The words "spec" and "specification" in this command** refers to any specification, plan, requirement document, PRD, technical design, or other documentation that is the focus of the review
 
 
@@ -39,19 +40,25 @@ SPEC_PATH_OR_FOCUS: $ARGUMENTS
    - Note dependencies, constraints, and assumptions
    - **Read additional guidelines and documentation** - Read additional relevant guidelines and documentation (API, guides, reference, etc.) as needed
 
-**Gate**: All relevant specs identified and context understood
+3. **Understand project scale and vision**
+   - Determine the project's nature (CLI tool, library, web app, SaaS, internal tool, prototype, etc.)
+   - Determine the project's stage (greenfield, MVP, early product, mature product, etc.)
+   - Understand the overall vision and goals — what is the project trying to achieve?
+   - Use this understanding to calibrate all subsequent review phases proportionally
+
+**Gate**: All relevant specs identified, context understood, and project scale/vision established
 
 
 ### Phase 2: Completeness Review
 
-Verify specification covers all necessary aspects:
+Verify specification covers all necessary aspects _(only flag items as missing if they are actually relevant to the project's scale, stage, and goals)_:
 
 1. **Functional requirements** - Features, workflows, use cases, success/error states
-2. **Non-functional requirements** - Performance, security, accessibility, i18n, compatibility
+2. **Non-functional requirements** - Performance, security, accessibility, i18n, compatibility _(only those relevant to the project)_
 3. **Technical specifications** - Data models, APIs, integrations, error handling, monitoring
 4. **Edge cases and errors** - Validation rules, timeouts, retries, error messages, boundary conditions
 5. **Testing strategy** - Acceptance criteria, test approach, test scenarios
-6. **Operations** - Deployment, configuration, monitoring, rollback, maintenance
+6. **Operations** - Deployment, configuration, monitoring, rollback, maintenance _(only if applicable to the project's stage)_
 
 Document all missing or incomplete areas.
 
@@ -117,16 +124,15 @@ Ensure scope is well-defined and architecture is sound:
    - Identify scope creep risks, phase boundaries
    - Challenge "nice-to-haves" masquerading as requirements
 
-2. **Architecture review**
+2. **Architecture review** _(calibrate to project scale — skip aspects that are irrelevant to the project's nature and stage)_
    - Use the `review-code` skill's architectural review guidance (if available)
-   - Assess and evaluate aspects such as:
+   - Assess and evaluate **only aspects relevant to the project's scale and goals**, such as:
       - Architectural soundness, component separation, separation of concerns
       - Evaluate scalability, performance, maintainability
       - Review integration points, API contracts, data flows
-      - CUPID principles (Composable, Unix philosophy, Predictable, Idiomatic, Domain-aligned)
-      - DDD patterns (bounded contexts, aggregates, domain events)
-      - Pattern adherence (clean architecture, service architecture, API design, data architecture)
-      - Anti-patterns, performance, scalability, resilience, security architecture
+      - Where applicable: CUPID principles, DDD patterns, clean architecture, service architecture
+      - Anti-patterns, performance, resilience, security architecture
+   - **Do not recommend patterns or architecture disproportionate to the project** — e.g., don't suggest DDD/bounded contexts for a simple library, or microservices for a tool that works fine as a monolith
    - Identify signs of over-engineering, such as:
       - **Unnecessary complexity**: Custom implementations when standard libraries/patterns exist, premature abstractions, overly generic solutions
       - **Premature optimization**: Performance optimizations without measured need, caching/pooling without proven bottlenecks

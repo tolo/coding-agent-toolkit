@@ -270,6 +270,17 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 # Falls back to /cc-workflows:review-code if Agent Teams unavailable
 ```
 
+## External Dependencies (Optional)
+
+Some commands optionally use skills from other plugins when available:
+
+| Plugin | Used by | Purpose |
+|--------|---------|---------|
+| `code-simplifier` | `refactor`, `implement`, `quick-implement` | Code cleanup and simplification |
+| `frontend-design` | `wireframes` (via `ui-ux-designer` agent) | Design implementation |
+
+Commands work without these plugins but skip the corresponding steps.
+
 ## Agents
 
 Specialized sub-agents for delegation (used internally by commands):

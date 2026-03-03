@@ -29,7 +29,7 @@ ARGUMENTS: $ARGUMENTS
 - **No functional changes** unless explicitly requested — preserve existing behavior
 - **No scope creep** — only refactor what's specified
 - **Tests must pass** before and after refactoring
-- Delegate refactoring work to `code-simplifier:code-simplifier` agent
+- Delegate refactoring work to `code-simplifier:code-simplifier` agent (if available)
 
 
 ## Workflow
@@ -57,7 +57,7 @@ ARGUMENTS: $ARGUMENTS
 
 ### Phase 2: Analysis
 
-Use the `code-simplifier:code-simplifier` agent to analyze the scoped code for:
+Use the `code-simplifier:code-simplifier` agent (if available) to analyze the scoped code for:
 - Unnecessary complexity, over-abstraction
 - Code duplication (DRY violations)
 - Dead code, unused imports/variables
@@ -70,7 +70,7 @@ Produce a prioritized list of improvements. Ask user for confirmation before pro
 
 ### Phase 3: Refactoring
 
-Delegate to `code-simplifier:code-simplifier` agent:
+Delegate to `code-simplifier:code-simplifier` agent (if available):
 - Execute improvements from the prioritized list
 - Work file-by-file or by logical unit
 - For independent changes, use **parallel sub-agents (foreground, i.e. `run_in_background=false`)**

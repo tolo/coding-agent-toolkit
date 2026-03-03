@@ -14,7 +14,16 @@ Execute ALL stories in an implementation plan (from `/cc-workflows:plan`) throug
 PLAN_DIR: $ARGUMENTS
 
 
+## Usage
+
+```
+/implement-plan PLAN_DIR="path/to/plan"
+```
+
+
 ## Instructions
+
+Make sure `PLAN_DIR` is provided — otherwise **STOP** immediately and ask the user to provide the path to the plan directory.
 
 ### Core Rules
 - **Fully** read and understand the **Workflow Rules, Guardrails and Guidelines** section in CLAUDE.md (and/or system prompt) before starting work, including but not limited to:
@@ -51,8 +60,10 @@ If the `TeamCreate` tool is NOT available (experimental feature not enabled):
 - Suggest manual alternative: execute stories sequentially with `/cc-workflows:spec` → `/cc-workflows:implement` → `/cc-workflows:review-gap` per story
 - Exit
 
+**Gate**: Agent Teams confirmed available
 
-### Step 2: Parse Roadmap
+
+### Step 2: Parse Plan
 
 1. Read `PLAN_DIR/plan.md`
 2. If plan file missing, **STOP** and recommend `/cc-workflows:plan` first
@@ -63,16 +74,20 @@ If the `TeamCreate` tool is NOT available (experimental feature not enabled):
    - **Dependencies**: Cross-story dependency graph
 4. Build execution plan respecting phase ordering and dependency chains
 
+**Gate**: Plan parsed and phases identified
+
 
 ### Step 3: Size Team
 
 Scale team based on total story count:
 
-| Roadmap Size | Stories | Spec Creators | Implementers | Reviewers | Total |
+| Plan Size | Stories | Spec Creators | Implementers | Reviewers | Total |
 |---|---|---|---|---|---|
 | Small | 1-4 | 1 | 1 | 1 | 3 |
 | Medium | 5-10 | 2 | 2 | 2 | 6 |
 | Large | 11+ | 3 | 3 | 2 | 8 |
+
+**Gate**: Team sized based on story count
 
 
 ### Step 4: Create Team and Spawn Agents
@@ -82,8 +97,8 @@ You MUST use the `TeamCreate` tool. Do NOT use `Task` alone (without `team_name`
 
 **Required tool sequence:**
 1. `TeamCreate` — Create the team (e.g., `team_name: "plan-pipeline"`)
-2. `TaskCreate` — Create pipeline tasks per story
-3. `Task` with `team_name` param — Spawn each teammate INTO the team
+2. `Task` with `team_name` param — Spawn each teammate INTO the team
+3. `TaskCreate` — Create pipeline tasks per phase (in Step 5)
 4. `TaskUpdate` — Set dependencies, assignments, track completion
 5. `SendMessage` — Inter-agent coordination
 6. `SendMessage(type: "shutdown_request")` — Graceful shutdown when done
@@ -95,7 +110,7 @@ You MUST use the `TeamCreate` tool. Do NOT use `Task` alone (without `team_name`
 
 **Implementers** — Claim `impl-{story_id}` tasks (blocked by corresponding spec task) and run `/cc-workflows:implement` on the generated FIS. Output: implemented story.
 
-**Reviewers** — Claim `review-{story_id}` tasks (blocked by corresponding impl task) and run `/cc-workflows:review-gap` per story. If issues found: fix them, then re-validate. Output: validated story.
+**Reviewers** — Claim `review-{story_id}` tasks (blocked by corresponding impl task) and run `/cc-workflows:review-gap` per story. If issues found: fix them, then re-validate. **Max 2 fix attempts** — if issues persist after 2 rounds, escalate to the orchestrator via `SendMessage` instead of continuing the loop. Output: validated story.
 
 Each agent loops: **claim task → execute → mark done → claim next**.
 
@@ -112,18 +127,22 @@ Your workflow (loop until no tasks remain):
 1. Check TaskList for available tasks matching your role ({spec-*|impl-*|review-*})
 2. Claim an unblocked, unassigned task via TaskUpdate (set owner to your name)
 3. Execute:
-   - Spec Creator: Run /cc-workflows:spec with story scope from plan. Save FIS to {PLAN_DIR}/
+   - Spec Creator: Run /cc-workflows:spec with story scope from plan. Save FIS to docs/specs/ (per spec.md convention)
    - Implementer: Run /cc-workflows:implement on the FIS for this story
-   - Reviewer: Run /cc-workflows:review-gap for this story. Fix any issues found, then re-validate
+   - Reviewer: Run /cc-workflows:review-gap for this story. Fix any issues found, then re-validate (max 2 fix attempts — escalate to orchestrator if issues persist)
 4. Mark task completed via TaskUpdate
 5. Check TaskList for next available task
 6. If no tasks available, notify orchestrator via SendMessage
 
 Important:
+- Wait for tasks to appear in `TaskList` before claiming work
 - Read the Workflow Rules, Guardrails and Guidelines in CLAUDE.md before starting
 - Follow existing codebase patterns
 - Report failures immediately via SendMessage to orchestrator
+- For build or test failures, use `cc-workflows:build-troubleshooter` agent to diagnose the root cause before reporting
 ```
+
+**Gate**: Team created and all agents spawned
 
 
 ### Step 5: Phase Loop
@@ -157,6 +176,8 @@ Use `TaskUpdate(addBlockedBy)`:
 
 **Create Phase N+1 tasks only after Phase N is fully complete.**
 
+**Gate**: All stories in current phase completed and verified
+
 #### Pipeline Flow Example
 
 ```
@@ -167,6 +188,8 @@ Phase 2 (Parallel [P]): S03[P], S04[P], S05 (depends on S03)
   spec-S03 → impl-S03 → review-S03 → spec-S05 → impl-S05 → review-S05
   spec-S04 → impl-S04 → review-S04   (parallel with S03)
 ```
+
+**Gate**: All phases complete, all stories implemented and reviewed
 
 
 ### Step 6: Final Verification
@@ -181,12 +204,17 @@ Phase 2 (Parallel [P]): S03[P], S04[P], S05 (depends on S03)
    - **Tests**: pass/fail counts (e.g., "42/42 pass")
    - **Linting/types**: error and warning counts
 
+**Gate**: Build, tests, and integration verification all pass
+
 
 ### Step 7: Documentation Update
 
-Spawn a sub-agent to update project documentation:
-- README updates (if applicable)
-- Any docs referenced in the plan
+Spawn a **general-purpose sub-agent** to update project documentation. Scope the update to:
+- **README**: reflect any new features, changed APIs, or updated setup steps from the implementation
+- **CHANGELOG**: add entries for all implemented stories (following existing changelog format)
+- **Affected docs**: update any documentation files directly referenced or impacted by the plan's changes
+
+**Gate**: Documentation updated
 
 
 ### Step 8: Clean Up

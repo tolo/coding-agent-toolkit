@@ -30,8 +30,6 @@ Before running:
 - **Fully** read and understand the **Workflow Rules, Guardrails and Guidelines** section in CLAUDE.md (and/or system prompt) before starting work, including but not limited to:
   - **Foundational Rules and Guardrails**
   - **Foundational Development Guidelines and Standards** (e.g. Development, Architecture, UI/UX Guidelines etc.)
-- **Autonomously and iteratively** implement with comprehensive verification
-- **Iterate** until all requirements met, no defects remain, all reviews pass
 - **Execute systematic research**, deliver actionable insights.
 - **Favor simplicity** - Actively identify over-engineering; recommend simplest solution (KISS, YAGNI, DRY)
 - **Conciseness and Brevity** - Ensure created documents are as brief and concise as possible without losing meaning. Unnecessary prose should be avoided, and code listings should be minimized (prefer using pseudo code when possible)
@@ -57,7 +55,7 @@ Before running:
    - Understand existing patterns, conventions, tech stack
    - Identify problem being solved, success criteria, scope boundaries
    - Note dependencies, constraints, and assumptions
-   - - **Read additional guidelines and documentation** - Read additional relevant guidelines and documentation (API, guides, reference, etc.) as needed
+   - **Read additional guidelines and documentation** - Read additional relevant guidelines and documentation (API, guides, reference, etc.) as needed
 
 **Gate**: All relevant specs identified and context understood
 

@@ -7,6 +7,26 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 
 ---
 
+## 2026-03-03 — cc-workflows [0.9.2]
+
+### Fixed
+- **Stale references**: `FEATURE_REQUEST` → `ARGUMENTS` in `spec`, `create-design-system` → `design-system` in `wireframes`, `create-wireframes` → `wireframes` in `design-system`
+- **Missing guards**: `code-simplifier` agent references now conditional "(if available)" in `refactor`, `implement`, `quick-implement`
+- **`implement-plan`**: "Roadmap" → "Plan" terminology, race condition (tasks created before agents spawned), FIS output path → `docs/specs/`
+- **Typos**: "stuctures", "Extremelty", "descripton", "the simply", double-dash bullets in `trade-off-analysis` and `troubleshoot`
+- **`review-gap`**: MCP tool name `mcp__ide__getDiagnostics` → `mcp__ide_getDiagnostics`
+- **`clarify`**: Duplicate step numbering in Section 3
+
+### Added
+- **`implement-plan`**: `## Usage` section, input validation guard, 8 `**Gate**` checkpoint markers, reviewer fix loop cap (max 2 attempts), `build-troubleshooter` reference in spawn template, scoped Step 7 documentation update
+- **`spec`**, **`implement`**: Input validation guards (STOP if required argument missing)
+- **`review-council`**: CRITICAL severity section in report template
+- **`clarify`**: `spec` as follow-up option (for single features)
+- **`review-gap`**: `[Optional]` marker on Phase 5 (Retrospective)
+- **README**: External Dependencies section (`code-simplifier`, `frontend-design` plugins)
+
+---
+
 ## 2026-02-27 — cc-workflows [0.9.0]
 
 ### Changed

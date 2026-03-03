@@ -23,7 +23,7 @@ OUTPUT_DIR: ${3:-docs/design-system}
   - **Foundational Rules and Guardrails**
   - **Foundational Development Guidelines and Standards** (e.g. Development, Architecture, UI/UX Guidelines etc.)
 - **Favor simplicity** - recommend simplest solution (KISS, YAGNI, DRY)
-- **Design system only** - No wireframes or page layouts (use `create-wireframes` command for that)
+- **Design system only** - No wireframes or page layouts (use `wireframes` command for that)
 - **Delegate to sub-agents** for research and review tasks (if available)
 
 

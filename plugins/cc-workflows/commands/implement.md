@@ -14,6 +14,7 @@ FIS_FILE_PATH: $ARGUMENTS
 ## Instructions
 
 ### Core Rules
+- **Make sure `FIS_FILE_PATH` is provided** — otherwise **STOP** immediately and ask the user to provide the path to the Feature Implementation Specification.
 - **Fully** read and understand the **Workflow Rules, Guardrails and Guidelines** section in CLAUDE.md (and/or system prompt) before starting work, including but not limited to:
   - **Foundational Rules and Guardrails** (absolute must-follow rules)
   - **Foundational Development Guidelines and Standards** (e.g. Development, Architecture, UI/UX Guidelines etc.)
@@ -141,7 +142,7 @@ Use the `cc-workflows:qa-test-engineer` sub-agent to execute tests fow new and e
 As orchestrator (not delegated to sub-agent):
 - Review all sub-agent results
 - Check for functionality gaps or requirement mismatches
-- Use `code-simplifier:code-simplifier` agent to look for simplification, maintainability, and general quality of life improvement opportunities
+- Use `code-simplifier:code-simplifier` agent (if available) to look for simplification, maintainability, and general quality of life improvement opportunities
 
 ### Step 5: Verify Completion
 **Orchestrator performs directly:**

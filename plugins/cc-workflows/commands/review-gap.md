@@ -77,7 +77,7 @@ Review general quality, soundness and adherence to guidelines, standards and bes
 
 #### Code Analysis
 - Run static analysis, linting, type checking as per project guidelines
-- Use IDE diagnostics (`mcp__ide__getDiagnostics`) if available
+- Use IDE diagnostics (`mcp__ide_getDiagnostics`) if available
 
 #### Comprehensive Code Review
 Spawn a **sub-agent** (via Task tool, `subagent_type: "general-purpose"`) to perform the code review.
@@ -110,7 +110,7 @@ Systematically identify all gaps between requirements and implementation:
 **Gate**: All gaps comprehensively identified and documented
 
 
-### 5. Retrospective & Deep Reflection
+### 5. [Optional] Retrospective & Deep Reflection
 
 #### Design & Architecture Reflection
 Think deeply and critically about the implementation choices made:

@@ -99,7 +99,7 @@ Run each verification sub-step using **parallel sub-agents (foreground, i.e. `ru
 As orchestrator (not delegated to sub-agent):
 - Review all sub-agent results
 - Check for functionality gaps or requirement mismatches
-- Use `code-simplifier:code-simplifier` agent to look for simplification, maintainability, and general quality of life improvement opportunities
+- Use `code-simplifier:code-simplifier` agent (if available) to look for simplification, maintainability, and general quality of life improvement opportunities
 
 #### Step 3: Evaluation
 
@@ -146,7 +146,7 @@ Include verification evidence in completion summary (as applicable):
 After completed implementation, create an *Implementation Notes* section at the end of the original spec document, if present, or create a new implementation notes file (e.g. `<feature-name>-implementation-notes-<YYYY-MM-DD>.md`).
 
 The _implementation notes_ should be very concise and to the point (avoid any unnecessary verbosity and code listings etc). include details like: 
-- Extremelty brief descripton of what was implemented and how parts integrate
+- Extremely brief description of what was implemented and how parts integrate
 - Key challenges faced and how they were overcome
 - Important decisions made and their rationale
 - Deviations from plan

@@ -24,6 +24,7 @@ ARGUMENTS: $ARGUMENTS
 
 ## Instructions
 
+- **Make sure `ARGUMENTS` is provided** — otherwise **STOP** immediately and ask the user to provide the feature requirements.
 - **Fully** read and understand the **Workflow Rules, Guardrails and Guidelines** section in CLAUDE.md (and/or system prompt) before starting work, including but not limited to:
   - **Foundational Rules and Guardrails**
   - **Foundational Development Guidelines and Standards** (e.g. Development, Architecture, UI/UX Guidelines etc.)
@@ -77,7 +78,7 @@ ARGUMENTS: $ARGUMENTS
 - Recommended agents to use: `cc-workflows:research-specialist`, `cc-workflows:solution-architect`
 
 ##### 2. External Research:
-If _`FEATURE_REQUEST`_ includes references to research already conducted, then use those as your primary research sources.
+If _`ARGUMENTS`_ includes references to research already conducted, then use those as your primary research sources.
 
 _Otherwise - if no such references are present_ - perform external research:
     - Search for similar features/patterns online
@@ -89,7 +90,7 @@ _Otherwise - if no such references are present_ - perform external research:
     - Recommended agents to use: `cc-workflows:research-specialist`, `cc-workflows:solution-architect`, `cc-workflows:ui-ux-designer`
 
 ##### 3. Research Multiple Architectural Approaches and Trade-offs
-If _`FEATURE_REQUEST`_ includes a reference to an ADR or other architecture decision document, the simply use that as the architecture.
+If _`ARGUMENTS`_ includes a reference to an ADR or other architecture decision document, then simply use that as the architecture.
 
 _Otherwise - if no such reference is present_ - perform architecture research:
     - Analyze 1-3 different approaches with trade-offs
@@ -100,7 +101,7 @@ _Otherwise - if no such reference is present_ - perform architecture research:
     - Recommended agents to use: `cc-workflows:solution-architect`
 
 ##### 4. UI Designs Research (when applicable)
-If _`FEATURE_REQUEST`_ includes references to UI research already conducted, then use those as your primary research sources.
+If _`ARGUMENTS`_ includes references to UI research already conducted, then use those as your primary research sources.
 
 _Otherwise - if no such references are present_ - perform UI research:
     - Explore existing UI patterns and components
@@ -346,7 +347,7 @@ _Examples:_
 - [ ] **All validation levels** completed successfully
 - [ ] Code **builds / compiles** and **all** tests pass without errors
 - [ ] **No** analysis, linting/type errors or critical code style issues
-- [ ] Code follows existing codebase patterns, naming conventions and stuctures
+- [ ] Code follows existing codebase patterns, naming conventions and structures
 - [ ] **All** temporary, refactored, migrated or obsolete code/files removed and cleaned up
 - [ ] No commented-out code left behind
 </spec-template>

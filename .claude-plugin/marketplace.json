@@ -12,7 +12,7 @@
       "name": "cc-workflows",
       "source": "./plugins/cc-workflows",
       "strict": false,
-      "version": "0.9.1",
+      "version": "0.9.2",
       "description": "Claude Code workflows: requirements clarification, spec generation/execution, code review, trade-off analysis, and design tools",
       "author": {
         "name": "Tobias"
@@ -28,6 +28,26 @@
         "wireframes",
         "design-system"
       ]
+    },
+    {
+      "name": "dart-lsp",
+      "source": "./plugins/dart-lsp",
+      "strict": false,
+      "version": "1.0.0",
+      "description": "Dart language server for code intelligence in Dart/Flutter projects",
+      "author": {
+        "name": "Tobias"
+      },
+      "category": "development",
+      "lspServers": {
+        "dart": {
+          "command": "dart",
+          "args": ["language-server"],
+          "extensionToLanguage": {
+            ".dart": "dart"
+          }
+        }
+      }
     }
   ]
 }
