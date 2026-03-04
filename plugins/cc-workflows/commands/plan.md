@@ -25,6 +25,7 @@ OUTPUT_DIR: `INPUT_DIR`
 - **Fully** read and understand the **Workflow Rules, Guardrails and Guidelines** section in CLAUDE.md (and/or system prompt) before starting work, including but not limited to:
   - **Foundational Rules and Guardrails**
   - **Foundational Development Guidelines and Standards** (e.g. Development, Architecture, UI/UX Guidelines etc.)
+- **Orchestrate, don't do everything yourself** - Delegate research, analysis, and exploration to sub-agents (see Workflow below)
 - **Lightweight planning** - Stories define scope, not implementation details
 - **No over-engineering** - Minimum stories to cover requirements
 - **Progressive implementation** - Organize into logical phases (examples provided are templates, adapt to project)
@@ -49,6 +50,12 @@ If PRD missing, **STOP** and recommend `/cc-workflows:prd` first.
 
 
 ### 2. Requirements Analysis
+
+**Delegate** codebase exploration to sub-agents to keep your context lean:
+
+- Spawn an **Explore agent** to analyze codebase structure, existing patterns, and relevant files
+
+Collect sub-agent results and synthesize into a unified understanding of:
 
 #### Understand the PRD
 - All requirements and user stories
@@ -112,6 +119,8 @@ Phase 4: Polish (Parallel)
 For each story, define:
 - **ID**: Sequential identifier (S01, S02, etc.)
 - **Name**: Brief descriptive name
+- **Status**: Tracking field — initially `Pending` (updated to `In Progress` / `Done` during execution)
+- **FIS**: Reference to generated spec — initially `—` (updated to file path when `/cc-workflows:spec` creates the FIS)
 - **Scope**: 2-4 sentences — what's included and excluded (no implementation approach — that's for `/cc-workflows:spec`)
 - **Acceptance criteria**: 3-6 testable outcomes — specific and unambiguous
 - **Dependencies**: Other story IDs that must complete first
@@ -143,11 +152,11 @@ Generate `plan.md` with a structure like the following (adapt phases and structu
 
 ## Story Catalog
 
-| ID | Name | Phase | Dependencies | Parallel | Risk |
-|----|------|-------|--------------|----------|------|
-| S01 | [Name] | Foundation | - | No | Low |
-| S02 | [Name] | Foundation | S01 | No | Low |
-| S03 | [Name] | Core | S01, S02 | [P] | Medium |
+| ID | Name | Phase | Dependencies | Parallel | Risk | Status |
+|----|------|-------|--------------|----------|------|--------|
+| S01 | [Name] | Foundation | - | No | Low | Pending |
+| S02 | [Name] | Foundation | S01 | No | Low | Pending |
+| S03 | [Name] | Core | S01, S02 | [P] | Medium | Pending |
 
 ## Phase Breakdown
 
@@ -155,6 +164,8 @@ Generate `plan.md` with a structure like the following (adapt phases and structu
 _Sequential execution - establishes base for all features_
 
 #### S01: [Story Name]
+**Status**: Pending
+**FIS**: —
 **Scope**: [2-4 sentences covering what is built and what's excluded]
 **Acceptance Criteria**:
 - [ ] [Criterion 1]
@@ -199,13 +210,14 @@ S01 ──→ S02 ──→ S05
 
 1. Execute Phase 1 stories sequentially (S01 → S02 → ...)
 2. For each story ready to implement:
-   - Run `/cc-workflows:spec` with story scope as input
+   - Run `/cc-workflows:spec` with story scope as input → update **FIS** field with generated spec path
    - Run `/cc-workflows:implement` on generated FIS
    - Check off completed acceptance criteria in this plan
+   - Update **Status** field (Pending → In Progress → Done)
 3. Phase 2+ stories marked [P] can run in parallel after dependencies met
 4. Use `/cc-workflows:review-gap` after completing all stories
 
-> **Status tracking**: After each story is implemented and reviewed, update its acceptance criteria checkboxes in this plan. `/cc-workflows:implement-plan` does this automatically; for manual per-story execution, the orchestrating agent or user is responsible.
+> **Status tracking**: After each story's spec is created, update the **FIS** field with the spec file path. After implementation and review, check off acceptance criteria and set **Status** to Done. Update the Story Catalog table status accordingly. `/cc-workflows:implement-plan` does this automatically; for manual per-story execution, the orchestrating agent or user is responsible.
 </example-plan-format>
 
 **Gate**: Plan document complete
@@ -223,7 +235,7 @@ S01 ──→ S02 ──→ S05
 - [ ] Not over-granular (combined where sensible)
 
 #### Optional: Peer Review
-Use the `/cc-workflows:review-doc` command to validate plan for:
+Use the `/cc-workflows:review-doc` skill to validate plan for:
 - Requirements coverage
 - Story scope clarity
 - Dependency correctness

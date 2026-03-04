@@ -1,16 +1,26 @@
 # GPT-Specific Prompt Engineering Guidelines
 
-GPT-5+ specific behaviors, optimizations, and patterns.
+GPT-5.x+ specific behaviors, optimizations, and patterns.
 
 **See Also**: [General Guidelines](PROMPT-ENGINEERING-GUIDELINES.md) - Model-agnostic core patterns
 
-**Last Updated**: 2025-11-14
+**Last Updated**: 2026-03-03
 
 ---
 
-## Core GPT-5 Capabilities
+## GPT-5.x Model Family
 
-GPT-5 represents substantial leap in:
+| Model | ID | Status | Context | Knowledge Cutoff | Input/Output (per 1M) |
+|-------|-----|--------|---------|-------------------|----------------------|
+| GPT-5 | `gpt-5` | Previous | 128K | Oct 2024 | $2/$8 |
+| GPT-5.1 | `gpt-5.1` | Available | 256K | Mar 2025 | $2/$8 |
+| GPT-5.2 | `gpt-5.2` | Flagship | 256K | Sep 2025 | $3/$12 |
+| GPT-5.2 Pro | `gpt-5.2-pro` | Responses API only | 256K | Sep 2025 | $5/$20 |
+| GPT-5.3-Codex | `gpt-5.3-codex` | Best agentic coding | 256K | Dec 2025 | $3/$12 |
+
+### Core Capabilities
+
+The GPT-5.x family represents substantial leaps in:
 - Agentic task performance
 - Coding capabilities (leads all frontier models)
 - Raw intelligence
@@ -131,26 +141,66 @@ providing temperature in both Fahrenheit and Celsius."
 
 ## Reasoning Effort Parameter
 
-`reasoning_effort` controls how hard model thinks and how willingly it calls tools.
+`reasoning_effort` controls how hard the model thinks and how willingly it calls tools.
 
-**Default**: `medium`
+### Values by Model
 
-**When to adjust**:
-- **Low/Medium**: Simple, clear tasks; minimize latency
-- **High**: Complex, multi-step tasks; ensure best outputs
-- **Peak performance**: Break separable tasks across multiple turns (one turn per task)
+| Model | Values | Default |
+|-------|--------|---------|
+| GPT-5 | `minimal`, `low`, `medium`, `high` | `medium` |
+| GPT-5.1+ | `none`, `low`, `medium`, `high` | `none` |
+| GPT-5.2+ | `none`, `low`, `medium`, `high`, `xhigh` | `none` |
+
+> **Breaking Change**: Default changed from `medium` (GPT-5) to `none` (GPT-5.1+). Existing prompts relying on default medium reasoning may produce degraded results without explicit `reasoning_effort` parameter.
+
+### When to Adjust
+- **`none`/`low`**: Simple lookups, routing, classification
+- **`medium`**: Standard tasks, clear instructions
+- **`high`**: Complex multi-step reasoning, analysis
+- **`xhigh`** (GPT-5.2+): Critical tasks requiring maximum depth — research, complex debugging, architectural decisions
+
+### Peak Performance
+Break separable tasks across multiple turns (one turn per task) rather than increasing reasoning effort for compound tasks.
+
+---
+
+## Developer Role
+
+GPT-5.1+ supersedes the `system` role with `developer` in the Responses API.
+
+**Cleanest approach**: Use the `instructions` parameter directly:
+```json
+{
+  "model": "gpt-5.2",
+  "instructions": "You are a helpful coding assistant...",
+  "input": "Fix the bug in auth.py"
+}
+```
+
+**Message-based approach** (when needed):
+```json
+{
+  "input": [
+    {"role": "developer", "content": "System-level instructions here"},
+    {"role": "user", "content": "User message"}
+  ]
+}
+```
+
+> `system` role still works for backward compatibility but `developer` is preferred for new code.
 
 ---
 
 ## Responses API
 
-**Strong recommendation**: Use Responses API for GPT-5 agentic flows.
+**Strong recommendation**: Use Responses API for GPT-5.x agentic flows.
 
 **Benefits**:
 - Improved agentic flows
 - Lower costs
 - More efficient token usage
 - Reasoning context persisted between tool calls
+- Encrypted reasoning items — model can reference its own reasoning without exposing it to the caller
 
 **Performance Gains**:
 Example: Tau-Bench Retail score 73.9% → 78.2% by:
@@ -158,6 +208,162 @@ Example: Tau-Bench Retail score 73.9% → 78.2% by:
 2. Including `previous_response_id` to pass back previous reasoning
 
 **Why**: Model refers to previous reasoning traces, conserves CoT tokens, eliminates need to reconstruct plan after each tool call.
+
+**Context Compaction**: Use the `/responses/compact` endpoint to shrink context mid-session without losing the conversation thread. Useful for long-running agent sessions approaching context limits.
+
+**For long sessions**: Prefer the Conversations API (below) over chaining `previous_response_id` — conversations have no TTL and provide durable state management.
+
+---
+
+## Conversations API
+
+Durable conversation threads with no TTL — preferred over `previous_response_id` for long-running sessions.
+
+**When to use**:
+- Multi-turn agent sessions requiring persistent state
+- Sessions spanning hours/days (no expiration)
+- When context compaction is needed mid-session
+
+**Key features**:
+- `/responses/compact` endpoint for context shrinking without losing thread
+- No TTL on conversations (vs `previous_response_id` which expires)
+- Automatic state management
+
+**Example**:
+```json
+{
+  "model": "gpt-5.2",
+  "conversation_id": "conv_abc123",
+  "input": "Continue working on the auth module"
+}
+```
+
+---
+
+## Strict Mode on Tool Definitions
+
+Always set `strict: true` on all function/tool definitions:
+
+```json
+{
+  "type": "function",
+  "function": {
+    "name": "get_weather",
+    "strict": true,
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "location": {"type": "string"}
+      },
+      "required": ["location"],
+      "additionalProperties": false
+    }
+  }
+}
+```
+
+**Why**: Enables constrained decoding — model output guaranteed to match schema. Eliminates JSON parsing errors and schema violations.
+
+---
+
+## Scope Discipline (GPT-5.2+)
+
+GPT-5.2 can over-generate — producing more output than requested. Use scope constraints:
+
+```xml
+<design_and_scope_constraints>
+- Implement ONLY what is explicitly requested
+- Do not add features, refactor surrounding code, or "improve" beyond scope
+- When ambiguous, implement the minimal interpretation
+- If scope is unclear, ask for clarification rather than guessing
+</design_and_scope_constraints>
+```
+
+**When needed**: Code generation, document drafting, any task where output length/scope matters.
+
+---
+
+## Verbosity Control
+
+GPT-5 `verbosity` API parameter influences final answer length (not thinking length).
+
+### API Parameter
+```json
+{"verbosity": "low"}  // or "medium" (default), "high"
+```
+
+### Natural Language Override
+While API parameter sets global default, GPT-5+ responds to natural-language overrides for specific contexts:
+
+**Example** (from Cursor):
+```
+Set verbosity=low globally
+
+For code tools only:
+"Write code for clarity first. Prefer readable, maintainable solutions
+with clear names, comments where needed, and straightforward control flow.
+Use high verbosity for writing code and code tools."
+```
+
+**Result**: Concise status updates + readable code diffs
+
+### Output Verbosity Spec (GPT-5.2+)
+
+For precise control over output length:
+
+```xml
+<output_verbosity_spec>
+- Status updates: 1 sentence max
+- Explanations: 2-3 bullet points max
+- Code comments: Inline only, no block comments unless complex logic
+- Summaries: 3 sentences max
+- Error reports: Problem + fix, no preamble
+</output_verbosity_spec>
+```
+
+---
+
+## Long-Context Re-Grounding
+
+For inputs exceeding ~10K tokens, add explicit re-grounding to prevent drift:
+
+```xml
+<long_context_handling>
+- After reading large context blocks, summarize key points before acting
+- Reference specific sections/line numbers when making changes
+- Re-state the original task goal before generating output
+- If context contains contradictions, flag them rather than silently choosing
+</long_context_handling>
+```
+
+**When needed**: Large codebases, long documents, multi-file analysis.
+
+---
+
+## Hallucination and Ambiguity Handling
+
+### Uncertainty Protocol
+```xml
+<uncertainty_and_ambiguity>
+- When uncertain about facts, say so explicitly — never fabricate
+- When multiple interpretations exist, state the most likely and proceed
+- When referencing external APIs/docs, verify against provided context
+- Distinguish between "I know" and "I infer" in reasoning
+</uncertainty_and_ambiguity>
+```
+
+### High-Risk Self-Check
+For critical outputs (production code, financial data, medical info):
+
+```xml
+<high_risk_self_check>
+Before finalizing output:
+1. Re-read the original request
+2. Verify all claims against provided context
+3. Flag any assumptions made
+4. Confirm output matches requested format
+</high_risk_self_check>
+```
 
 ---
 
@@ -226,27 +432,6 @@ Use self-reflection for quality:
 </ui_ux_best_practices>
 </code_editing_rules>
 ```
-
----
-
-## Verbosity Control
-
-GPT-5 `verbosity` API parameter influences final answer length (not thinking length).
-
-### Natural Language Override
-While API parameter sets global default, GPT-5 responds to natural-language overrides for specific contexts:
-
-**Example** (from Cursor):
-```
-Set verbosity=low globally
-
-For code tools only:
-"Write code for clarity first. Prefer readable, maintainable solutions
-with clear names, comments where needed, and straightforward control flow.
-Use high verbosity for writing code and code tools."
-```
-
-**Result**: Concise status updates + readable code diffs
 
 ---
 
@@ -320,9 +505,25 @@ Allows clear referencing of previous categories elsewhere in prompt.
 
 | Parameter | Purpose | Values |
 |-----------|---------|--------|
-| `reasoning_effort` | How hard model thinks | low, medium (default), high |
-| `verbosity` | Final answer length | low, medium (default), high |
+| `reasoning_effort` | How hard model thinks | `none` (default 5.1+), `low`, `medium`, `high`, `xhigh` (5.2+) |
+| `verbosity` | Final answer length | `low`, `medium` (default), `high` |
 | `previous_response_id` | Reuse reasoning context | Response ID from previous call |
+| `conversation_id` | Durable conversation thread | Conversation ID for persistent sessions |
+| `strict` | Constrained decoding on tools | `true` (recommended) / `false` |
+
+---
+
+## Migration Guide
+
+When upgrading between GPT-5.x models, follow this 5-step process:
+
+1. **Switch model ID**: Update `model` parameter (e.g., `gpt-5` → `gpt-5.2`)
+2. **Pin reasoning effort**: Explicitly set `reasoning_effort` — don't rely on defaults (changed from `medium` to `none` in 5.1+)
+3. **Run evals**: Compare output quality on your test suite before and after
+4. **Use Prompt Optimizer**: OpenAI's built-in tool to adapt prompts for new model behavior
+5. **Iterate**: Adjust prompts based on eval results; most prompts need only minor tuning
+
+> **Common migration issue**: GPT-5 prompts that relied on default `medium` reasoning will appear "lazy" on GPT-5.1+ due to `none` default. Always pin `reasoning_effort` explicitly.
 
 ---
 
@@ -334,6 +535,8 @@ Allows clear referencing of previous categories elsewhere in prompt.
 | **Over-Restricting Autonomy** | Too many limitations on capable model | Start permissive, add constraints only when needed |
 | **Ignoring Responses API** | Missing 5-10% performance gains | Use Responses API with `previous_response_id` |
 | **Global Verbosity Everywhere** | Same verbosity for code, summaries, etc. | Set global default, override with natural language for specific contexts |
+| **Scope Over-Generation** | GPT-5.2 produces more than requested | Use `<design_and_scope_constraints>` block |
+| **Reasoning Effort Default Mismatch** | Prompts assume `medium` default, get `none` on 5.1+ | Always explicitly set `reasoning_effort` |
 
 ---
 
@@ -351,8 +554,12 @@ Allows clear referencing of previous categories elsewhere in prompt.
 
 ### Official Documentation
 - [GPT-5 Prompting Guide](https://cookbook.openai.com/examples/gpt-5/gpt-5_prompting_guide)
+- [GPT-5.1 Prompting Guide](https://cookbook.openai.com/examples/gpt-5-1/gpt-5-1_prompting_guide)
+- [GPT-5.2 Prompting Guide](https://cookbook.openai.com/examples/gpt-5-2/gpt-5-2_prompting_guide)
+- [GPT-5.3-Codex Guide](https://cookbook.openai.com/examples/gpt-5-3-codex/prompting_guide)
 - [Prompt Engineering Guide](https://platform.openai.com/docs/guides/prompt-engineering)
 - [Responses API Documentation](https://platform.openai.com/docs/api-reference/responses)
+- [Conversations API Documentation](https://platform.openai.com/docs/api-reference/conversations)
 
 ### Production Examples
 - [Cursor's GPT-5 Integration](https://cursor.com/blog/gpt-5) - Real-world prompt tuning

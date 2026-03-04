@@ -1,10 +1,10 @@
 # Claude-Specific Prompt Engineering Guidelines
 
-Claude 4.5+ specific behaviors, optimizations, and patterns.
+Claude 4.5/4.6+ specific behaviors, optimizations, and patterns.
 
 **See Also**: [General Guidelines](PROMPT-ENGINEERING-GUIDELINES.md) - Model-agnostic core patterns
 
-**Last Updated**: 2025-11-14
+**Last Updated**: 2026-03-03
 
 ---
 
@@ -25,10 +25,10 @@ Claude is specifically tuned for XML tags - prefer XML over Markdown:
 
 ---
 
-## Claude 4.5 Behaviors
+## Claude 4.5/4.6 Behaviors
 
 ### Action vs Suggestion
-Claude 4.5 follows instructions with **surgical precision** - be directive:
+Claude 4.5/4.6 follows instructions with **surgical precision** - be directive:
 
 **For action** (Claude implements):
 ```
@@ -67,12 +67,33 @@ Only proceed with edits when explicitly requested.
 
 ---
 
+## Breaking Changes in Claude 4.6
+
+### Prefill Removal
+Claude 4.6 no longer supports assistant message prefill — requests with prefilled assistant content return HTTP 400.
+
+**Migration paths**:
+- **Structured output**: Use `output_config.format` with `json_schema` type
+- **Style/format control**: Use system instructions to guide output format
+- **Tool forcing**: Use `tool_choice` parameter
+
+### Parameter Restrictions
+- `temperature` + `top_p` together now returns an error on Claude 4+ (pick one)
+- Tool parameter JSON escaping behavior differs — test tool schemas after upgrading
+
+### New Stop Reasons
+Claude 4.5+ introduces two new stop reasons:
+- `refusal` — model declined the request
+- `model_context_window_exceeded` — input exceeded context limit
+
+---
+
 ## Context Awareness
 
 **See [General Guidelines > Context Management](PROMPT-ENGINEERING-GUIDELINES.md#context-management) for full strategy.**
 
 ### Claude-Specific Behavior
-Claude 4.5 tracks remaining context window ("token budget") throughout conversations.
+Claude 4.5/4.6 tracks remaining context window ("token budget") throughout conversations.
 
 **Natural wrapping**: Without guidance, Claude may wrap up work as it approaches context limit.
 
@@ -91,7 +112,7 @@ Complete tasks fully regardless of remaining context.
 **See [General Guidelines > Context Management > State Management](PROMPT-ENGINEERING-GUIDELINES.md#state-management) for general approach.**
 
 ### Claude-Specific Strengths
-Claude 4.5 excels at long-horizon reasoning with exceptional state tracking.
+Claude 4.5/4.6 excels at long-horizon reasoning with exceptional state tracking.
 
 ### Multi-Context Window Tasks
 
@@ -127,7 +148,7 @@ Remind: "Unacceptable to remove/edit tests - could lead to missing functionality
 ```
 
 **Starting Fresh vs Compaction**
-Claude 4.5 discovers state from filesystem excellently:
+Claude 4.5/4.6 discovers state from filesystem excellently:
 ```markdown
 When starting fresh context:
 - Call pwd; only read/write files in this directory
@@ -147,7 +168,7 @@ Continue working systematically until you complete this task.
 
 ## Communication Style
 
-Claude 4.5 has more concise, natural communication style:
+Claude 4.5/4.6 has more concise, natural communication style:
 
 **Characteristics**:
 - **More direct**: Fact-based progress reports, not self-celebratory
@@ -159,56 +180,204 @@ Claude 4.5 has more concise, natural communication style:
 After completing a task with tool use, provide a quick summary of work done.
 ```
 
+### Overtriggering Warning (Opus 4.5/4.6)
+Opus models can overtrigger on emphatic instructions. Dial back aggressive language:
+
+❌ **Over-emphatic**: `CRITICAL: You MUST ALWAYS use the search tool before responding. NEVER skip this step.`
+
+✅ **Balanced**: `Search for relevant context before responding. Skip only when the answer is clearly within your training data.`
+
+Strong models follow instructions well without aggressive emphasis — excessive `MUST`/`NEVER`/`CRITICAL` can cause rigid, suboptimal behavior.
+
 ---
 
 ## Extended Thinking
 
-### When to Use
-- Complex, multi-step reasoning
-- Deep problem analysis
-- Tasks requiring exploration of multiple approaches
+### Adaptive Thinking (Claude 4.6 — Recommended)
 
-### Thinking Budget
-- **Minimum**: 1024 tokens
-- **Recommended**: Start at minimum, increase incrementally
-- **High budgets** (>32K): Use batch processing to avoid timeouts
+Opus 4.6 deprecates `budget_tokens` in favor of adaptive thinking:
 
-### Prompting
+```json
+{
+  "thinking": {"type": "adaptive"},
+  "output_config": {"effort": "high"}
+}
+```
+
+The model dynamically allocates thinking tokens based on task complexity. Combined with the `effort` parameter, this replaces manual budget management.
+
+### Manual Extended Thinking (Sonnet 4.6)
+
+Sonnet 4.6 supports both adaptive and manual extended thinking:
+
+```json
+{
+  "thinking": {"type": "enabled", "budget_tokens": 10000}
+}
+```
+
+### Effort Levels
+
+| Effort | Use Case | Thinking Behavior |
+|--------|----------|-------------------|
+| `low` | Simple lookups, classification | Minimal or no thinking |
+| `medium` | Standard tasks, code edits | Moderate thinking |
+| `high` | Complex reasoning, debugging | Deep analysis |
+| `max` | Research, architecture, critical decisions | Maximum depth |
+
+### Recommended Configurations
+
+**Coding workloads** (most tasks):
+```json
+{"thinking": {"type": "adaptive"}, "output_config": {"effort": "high"}}
+```
+
+**Chat/conversational**:
+```json
+{"thinking": {"type": "adaptive"}, "output_config": {"effort": "medium"}}
+```
+
+**Autonomous agents / computer use**:
+```json
+{"thinking": {"type": "adaptive"}, "output_config": {"effort": "high"}}
+```
+Use adaptive thinking for agents — the model allocates more thinking for complex steps and less for simple ones, optimizing cost across long trajectories.
+
+### When to Use Adaptive Thinking
+- Autonomous agents with variable task complexity
+- Computer use sessions (bimodal: some steps trivial, some complex)
+- Workloads where manual budget tuning is impractical
+- When you want the model to "think as much as needed"
+
+### Prompting Extended Thinking
 **Start with general instructions**:
 ```markdown
 Think thoroughly and in great detail about this problem.
 Consider multiple approaches, show complete reasoning.
-Try different methods if first approach doesn't work.
 ```
 
-**Why**: Claude's creativity may exceed human's ability to prescribe optimal thinking process.
-
-**Add specifics only if needed** based on thinking output.
+**Why**: Claude's creativity may exceed a human's ability to prescribe optimal thinking process. Add specifics only if thinking output shows gaps.
 
 ### Multishot Pattern
-Include examples using `<thinking>` or `<scratchpad>` tags:
+Include examples using `<thinking>` or `<scratchpad>` tags — Claude generalizes the pattern.
 
-```markdown
-Problem 1: What is 15% of 80?
+---
 
-<thinking>
-To find 15% of 80:
-1. Convert 15% to decimal: 0.15
-2. Multiply: 0.15 × 80 = 12
-</thinking>
+## Structured Outputs (GA)
 
-Answer: 12
+### Output Config Format
+Force model output to match a JSON schema:
 
-Now solve: What is 35% of 240?
+```json
+{
+  "output_config": {
+    "format": {
+      "type": "json_schema",
+      "json_schema": {
+        "name": "response",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "answer": {"type": "string"},
+            "confidence": {"type": "number"}
+          },
+          "required": ["answer", "confidence"]
+        }
+      }
+    }
+  }
+}
 ```
 
-Claude generalizes the pattern.
+### Strict Tool Definitions
+Set `strict: true` on tool `input_schema` for guaranteed schema compliance:
 
-### Self-Reflection for Quality
-```markdown
-Write factorial function.
-Before finishing, verify with test cases for n=0, n=1, n=5, n=10 and fix issues.
+```json
+{
+  "name": "get_weather",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "location": {"type": "string"}
+    },
+    "required": ["location"]
+  },
+  "strict": true
+}
 ```
+
+> **Deprecation**: `output_format` parameter is deprecated — use `output_config.format` instead.
+
+---
+
+## Effort Parameter (GA)
+
+Control how much effort the model puts into its response:
+
+```json
+{
+  "output_config": {
+    "effort": "high"
+  }
+}
+```
+
+| Level | Use Case |
+|-------|----------|
+| `low` | Simple lookups, routing, classification |
+| `medium` | Standard tasks, conversational responses |
+| `high` | Complex reasoning, code generation, analysis |
+| `max` | Research, critical decisions, deep debugging |
+
+No beta header required. Works with all Claude 4.5+ models.
+
+---
+
+## Citations API (GA)
+
+Extract cited passages from source documents:
+
+```json
+{
+  "messages": [{"role": "user", "content": [
+    {"type": "document", "source": {"type": "text", "data": "..."}},
+    {"type": "text", "text": "What does the document say about X?"}
+  ]}],
+  "citations": {"enabled": true}
+}
+```
+
+Response includes `cited_text` blocks referencing source documents. Cited text does not count toward output token usage.
+
+---
+
+## 1M Context Window (Beta)
+
+Enable with beta header:
+```
+anthropic-beta: context-1m-2025-08-07
+```
+
+- Available on Sonnet 4.6 and Opus 4.6
+- Standard pricing up to 200K tokens
+- Long-context pricing above 200K (check current rates)
+- Best for large codebases, long documents, extensive context
+
+---
+
+## Advanced Tool Use (Beta)
+
+Enable with beta header:
+```
+anthropic-beta: advanced-tool-use-2025-11-20
+```
+
+### Features
+- **Tool Search**: Model can search through large tool collections efficiently
+- **Programmatic Tool Calling**: Dynamic tool invocation based on runtime conditions
+- **Tool Use Examples**: Provide example tool calls to guide model behavior
+
+Best for agents with large tool inventories (>20 tools) or dynamic tool sets.
 
 ---
 
@@ -229,11 +398,11 @@ Throughout execution:
 
 ## Model Selection
 
-| Model | Use When | Cost | Speed |
-|-------|----------|------|-------|
-| **Haiku 4** | Simple tasks; clear logic; utilities; orchestrators | Lowest | Fastest |
-| **Sonnet 4.5** | Complex reasoning; multi-phase workflows; analysis | Medium | Medium |
-| **Opus 4** | Very complex tasks; critical architectural decisions | Highest | Slowest |
+| Model | ID | Use When | Input/Output (per 1M) | Speed |
+|-------|-----|----------|----------------------|-------|
+| **Haiku 4.5** | `claude-haiku-4-5-20251001` | Simple tasks; clear logic; utilities; orchestrators | $1/$5 | Fastest |
+| **Sonnet 4.6** | `claude-sonnet-4-6` | Complex reasoning; multi-phase workflows; analysis | $3/$15 | Medium |
+| **Opus 4.6** | `claude-opus-4-6` | Very complex tasks; critical architectural decisions | $5/$25 | Slowest |
 
 ---
 
@@ -255,7 +424,7 @@ Explain WHY behaviors matter:
 Claude generalizes from explanations.
 
 ### Incremental Progress
-Claude 4.5 focuses on "making steady advances on a few things at a time rather than attempting everything at once."
+Claude 4.5/4.6 focuses on "making steady advances on a few things at a time rather than attempting everything at once."
 
 **Prompt for this**:
 ```markdown
@@ -280,7 +449,7 @@ Focus on incremental progress:
 
 ## Key Insights
 
-> "Claude 4.5 models excel at long-horizon reasoning with exceptional state tracking, making steady advances on a few things at a time."
+> "Claude 4.5/4.6 models excel at long-horizon reasoning with exceptional state tracking, making steady advances on a few things at a time."
 
 > "Context engineering is the art and science of curating what will go into the limited context window."
 
@@ -293,6 +462,10 @@ Focus on incremental progress:
 ### Official Documentation
 - [Claude 4 Best Practices](https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/claude-4-best-practices)
 - [Extended Thinking Tips](https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/extended-thinking-tips)
+- [Structured Outputs](https://docs.anthropic.com/en/docs/build-with-claude/structured-outputs)
+- [Adaptive Thinking](https://docs.anthropic.com/en/docs/build-with-claude/extended-thinking#adaptive)
+- [Citations](https://docs.anthropic.com/en/docs/build-with-claude/citations)
+- [Claude 4.6 Migration Guide](https://docs.anthropic.com/en/docs/resources/claude-4-6-migration)
 - [Effective Context Engineering](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
 - [Building Effective Agents](https://docs.anthropic.com/en/docs/agents-and-tools/building-effective-agents)
 

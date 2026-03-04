@@ -173,6 +173,14 @@ After completion, update any documents related to this implementation:
 - Important decisions and deviations from spec
 - Unresolved issues or future suggestions
 
-**Source documents** — if this FIS originated from a plan or other tracking document, update it:
-- Check off completed acceptance criteria / story status
+**Source plan** — if this FIS originated from a plan (`plan.md`), update the plan:
+- Set the story's **Status** field to `Done`
+- Set the story's **FIS** field to the FIS file path (if not already set by `/cc-workflows:spec`)
+- Check off completed acceptance criteria checkboxes (`- [ ]` → `- [x]`)
+- Update the Story Catalog table status column to `Done`
 - Note any scope changes or deviations
+
+**FIS status** — update the FIS document itself:
+- Mark all completed task checkboxes (`- [ ]` → `- [x]`)
+- Mark all completed success criteria checkboxes
+- Mark all Final Validation Checklist items as checked

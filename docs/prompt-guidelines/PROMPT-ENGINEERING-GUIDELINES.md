@@ -4,7 +4,7 @@ Model-agnostic patterns for building reliable autonomous agents and slash comman
 
 **Model-Specific**: [Claude](PROMPT-ENGINEERING-GUIDELINES-CLAUDE.md) | [GPT](PROMPT-ENGINEERING-GUIDELINES-GPT.md)
 
-**Last Updated**: 2025-11-14
+**Last Updated**: 2026-03-03
 
 ---
 
@@ -62,7 +62,7 @@ Balance specificity and flexibility:
 - Open-ended exploration → Guiding principles + examples
 
 ### 3. Be Explicit and Direct
-Modern frontier LLMs (Claude 4.5+, GPT-5+) need clear instructions:
+Modern frontier LLMs (Claude 4.6+, GPT-5.2+) need clear instructions:
 - State exactly what you want, not hints
 - Explain WHY behavior matters (models generalize from context)
 - Use examples (models pay close attention to details)
@@ -248,6 +248,14 @@ For complex reasoning:
 4. Solve systematically
 5. Combine solutions
 
+### Reasoning Models vs Standard
+Reasoning models (o-series, Claude with extended thinking) have built-in chain-of-thought — **do not** add explicit "think step by step" prompting, as it wastes tokens and can degrade output.
+
+- **Reasoning models**: Direct task instructions only. Model handles its own thinking process.
+- **Standard models**: Still benefit from explicit CoT prompting ("think step by step", "break this down").
+
+When unsure, test both approaches with your specific model and task.
+
 ---
 
 ## Context Management
@@ -288,6 +296,17 @@ Warning: Never remove tests - causes missing functionality
 2. Keep recent N messages full
 3. Clear old tool results
 4. Reinitiate with summary + recent
+
+### Prompt Caching
+Both major providers support automatic prompt caching with ~90% cost savings on cached tokens.
+
+**Pattern**: Place static content first, dynamic content last:
+1. System prompt (cached)
+2. Tool definitions (cached)
+3. Reference documents (cached)
+4. Dynamic conversation history (not cached)
+
+This ordering maximizes cache hit rates. No code changes needed — caching is automatic when content prefix matches between requests.
 
 ### Sub-Agent Architecture
 **Main Agent** (orchestrator): High-level planning, coordination, lightweight state
@@ -334,6 +353,15 @@ Examples:
 **DO**: Return error message via tool result
 
 Models understand and retry correctly when given clear error messages.
+
+### Structured Outputs
+Both major providers now support constrained decoding for guaranteed schema compliance:
+- **`strict: true`** on tool/function definitions — model output guaranteed to match schema
+- **`json_schema`** output format — force entire response into a JSON schema
+
+This eliminates JSON parsing errors and schema violations in production. See model-specific docs for implementation details:
+- [Claude: Structured Outputs](PROMPT-ENGINEERING-GUIDELINES-CLAUDE.md#structured-outputs-ga)
+- [GPT: Strict Mode](PROMPT-ENGINEERING-GUIDELINES-GPT.md#strict-mode-on-tool-definitions)
 
 ---
 
@@ -533,8 +561,8 @@ Error recovery?
 ## Further Reading
 
 ### Model-Specific Guidelines
-- [Claude-Specific](PROMPT-ENGINEERING-GUIDELINES-CLAUDE.md) - Claude 4.5+ behaviors, XML preference, extended thinking
-- [GPT-Specific](PROMPT-ENGINEERING-GUIDELINES-GPT.md) - GPT-5+ behaviors, agentic eagerness, reasoning effort
+- [Claude-Specific](PROMPT-ENGINEERING-GUIDELINES-CLAUDE.md) - Claude 4.6+ behaviors, XML preference, extended thinking
+- [GPT-Specific](PROMPT-ENGINEERING-GUIDELINES-GPT.md) - GPT-5.2+ behaviors, agentic eagerness, reasoning effort
 
 ### Official Documentation
 
@@ -542,10 +570,13 @@ Error recovery?
 - [Effective Context Engineering](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
 - [Prompt Engineering Overview](https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/overview)
 - [Building Effective Agents](https://docs.anthropic.com/en/docs/agents-and-tools/building-effective-agents)
+- [Claude 4.6 Migration Guide](https://docs.anthropic.com/en/docs/resources/claude-4-6-migration)
 
 **OpenAI**:
 - [GPT-5 Prompting Guide](https://cookbook.openai.com/examples/gpt-5/gpt-5_prompting_guide)
 - [Prompt Engineering Guide](https://platform.openai.com/docs/guides/prompt-engineering)
+- [GPT-5.1 Prompting Guide](https://cookbook.openai.com/examples/gpt-5-1/gpt-5-1_prompting_guide)
+- [GPT-5.2 Prompting Guide](https://cookbook.openai.com/examples/gpt-5-2/gpt-5-2_prompting_guide)
 
 ### Research Papers
 - "ReAct: Synergizing Reasoning and Acting in Language Models" (2023)

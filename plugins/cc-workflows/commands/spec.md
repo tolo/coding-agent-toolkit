@@ -161,6 +161,10 @@ Rate your FIS 1-10 for single-pass implementation success:
 Save FIS as: _`<project_root>/docs/specs/{feature-name}.md`_
 - If from GitHub issue: include issue reference in filename, e.g. `issue-123-feature-name.md`
 
+**Update source plan** — if this spec was created for a story from a `plan.md`:
+- Set the story's **FIS** field to the generated FIS file path
+- Set the story's **Status** field to `In Progress`
+
 **Remember**: The FIS should be executable with minimal orchestration. All complexity and detail belongs in the FIS itself, not the execution command.
 
 

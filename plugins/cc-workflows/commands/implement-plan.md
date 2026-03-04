@@ -114,6 +114,8 @@ You MUST use the `TeamCreate` tool. Do NOT use `Task` alone (without `team_name`
 
 Each agent loops: **claim task → execute → mark done → claim next**.
 
+**Troubleshooter (on-demand)** — NOT spawned upfront. The orchestrator spawns a troubleshooter teammate only when an agent escalates an issue it cannot resolve (build failures, analysis errors, cross-story conflicts, persistent test failures, etc.). Uses `cc-workflows:build-troubleshooter` agent type. Receives a `fix-{story_id}` task with the issue context from the escalating agent. Shut down after the issue is resolved.
+
 #### Spawn Template
 
 Use this as prompt context when spawning each teammate via `Task(team_name: "plan-pipeline", name: "<role-N>", ...)`:
@@ -138,8 +140,7 @@ Important:
 - Wait for tasks to appear in `TaskList` before claiming work
 - Read the Workflow Rules, Guardrails and Guidelines in CLAUDE.md before starting
 - Follow existing codebase patterns
-- Report failures immediately via SendMessage to orchestrator
-- For build or test failures, use `cc-workflows:build-troubleshooter` agent to diagnose the root cause before reporting
+- For issues you cannot resolve yourself (build failures, analysis errors, persistent test failures, cross-story conflicts), escalate to orchestrator via SendMessage with full issue context — the orchestrator will spawn a dedicated troubleshooter
 ```
 
 **Gate**: Team created and all agents spawned
@@ -170,9 +171,17 @@ Use `TaskUpdate(addBlockedBy)`:
 
 #### 5d. Update Plan
 
-- Check off completed story acceptance criteria in `plan.md`
-- Add FIS reference to each completed story (e.g. `**FIS**: docs/specs/story-name.md`)
-- Move to next phase only after ALL stories in current phase are complete
+After each story's pipeline completes (spec → implement → review), update `plan.md`:
+- Set the story's **Status** field to `Done`
+- Set the story's **FIS** field to the generated spec path (e.g. `**FIS**: docs/specs/story-name.md`)
+- Check off completed acceptance criteria checkboxes (`- [ ]` → `- [x]`)
+- Update the Story Catalog table: set the story's Status column to `Done`
+
+Also update each completed FIS file:
+- Mark all task checkboxes as checked (`- [x]`)
+- Mark success criteria and Final Validation Checklist items as checked
+
+Move to next phase only after ALL stories in current phase are complete and plan is updated.
 
 **Create Phase N+1 tasks only after Phase N is fully complete.**
 
@@ -226,10 +235,9 @@ Spawn a **general-purpose sub-agent** to update project documentation. Scope the
 
 ## Failure Handling
 
-- **Agent reports failure** via `SendMessage` → orchestrator retries once with same or different agent → escalates to user if retry fails
+- **Agent reports failure** via `SendMessage` → orchestrator spawns an **on-demand Troubleshooter** teammate (`cc-workflows:build-troubleshooter`) with issue context → creates a `fix-{story_id}` task → troubleshooter diagnoses and fixes → shuts down troubleshooter after resolution → escalates to user only if troubleshooter also fails
 - **Dependent stories stay blocked** when a predecessor fails
 - **If >50% of a phase fails** → pause execution, notify user with failure summary
-- **Build/test failures** after implementation → route to `cc-workflows:build-troubleshooter` agent
 
 
 ## Fallback: No Agent Teams
