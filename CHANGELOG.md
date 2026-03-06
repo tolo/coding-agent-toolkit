@@ -7,6 +7,14 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 
 ---
 
+## 2026-03-05 — cc-workflows [0.10.0]
+
+### Changed
+- **Command renames**: `implement` → `exec-spec`, `implement-plan` → `exec-plan` — establishes `exec-` prefix convention (create documents with `plan`/`spec`, execute them with `exec-plan`/`exec-spec`)
+- **`plan`**: Added document references header to plan template — links to PRD, ADRs, design system, wireframes at top of generated plan
+
+---
+
 ## 2026-03-03 — cc-workflows [0.9.2]
 
 ### Fixed

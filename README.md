@@ -16,7 +16,7 @@ The centerpiece is the **[cc-workflows](#cc-workflows-plugin)** plugin — struc
 /plugin install cc-workflows@coding-agent-toolkit
 ```
 
-This gives you slash commands like `/spec`, `/implement`, `/review-code`, `/quick-implement`, and more. See [cc-workflows commands](#commands) below.
+This gives you slash commands like `/spec`, `/exec-spec`, `/review-code`, `/quick-implement`, and more. See [cc-workflows commands](#commands) below.
 
 ### 2. Set up your project's CLAUDE.md
 
@@ -60,7 +60,7 @@ Structured development workflows — from requirements to implementation with bu
 │  clarify ────────────→ spec ─────────→ review-doc    │
 │                              │                       │
 │                              ▼                       │
-│                         implement                    │
+│                         exec-spec                    │
 │                              │                       │
 │                              ▼                       │
 │                         review-gap                   │
@@ -85,8 +85,8 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 | `prd` | Create comprehensive PRD from refined requirements |
 | `spec` | Create implementation spec from feature requirements |
 | `plan` | Create implementation plan with story breakdown from PRD |
-| `implement` | Execute spec with validation loops until complete |
-| `implement-plan` | Execute entire plan through Agent Team pipeline |
+| `exec-spec` | Execute spec with validation loops until complete |
+| `exec-plan` | Execute entire plan through Agent Team pipeline |
 | `quick-implement` | Fast path for small features/fixes (supports `--issue` for GitHub) |
 | `review-code` | Comprehensive code review (quality, security, architecture, UI/UX) |
 | `review-gap` | Gap analysis: implementation vs requirements |
@@ -101,7 +101,7 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 ```bash
 # Implement a feature from scratch
 /spec "user data export as CSV and JSON"
-/implement
+/exec-spec
 /review-gap
 
 # Quick fix from GitHub issue

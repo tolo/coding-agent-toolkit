@@ -49,7 +49,7 @@ See [CLAUDE.template.md](./../../CLAUDE.template.md) for a starter template, or 
 
 ### Agent Teams (Optional)
 
-Some commands like `review-council` and `implement-plan` use [Agent Teams](https://code.claude.com/docs/en/agent-teams) for parallel multi-agent coordination.
+Some commands like `review-council` and `exec-plan` use [Agent Teams](https://code.claude.com/docs/en/agent-teams) for parallel multi-agent coordination.
 
 To enable Agent Teams (experimental):
 
@@ -80,14 +80,14 @@ Commands automatically fall back to single-agent alternatives when Agent Teams u
 │  │ wireframes, design-system, trade-off-analysis         │  │
 │  └───────────────────────────┬───────────────────────────┘  │
 │                              │                              │
-│  (optional)                  ▼         (optional)           │
-│  clarify ────────────→   spec   ────→ review-doc            │
+│  (optional)                  ▼          (optional)          │
+│  clarify ──────────────→   spec   ────→ review-doc          │
 │                              │                              │
 │                              ▼                              │
-│                          implement                          │
+│                          exec-spec                          │
 │                              │                              │
 │                              ▼                              │
-│                        review-gap                           │
+│                         review-gap                          │
 └─────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────┐
@@ -101,15 +101,14 @@ Commands automatically fall back to single-agent alternatives when Agent Teams u
 │    clarify ──→ prd ─────→  plan  ───────→ review-doc        │
 │                       (story breakdown)                     │
 │                              │                              │
-│                   ┌─────────┴──────────┐                    │
-│                   ▼                    ▼                    │
-│            Manual per-story    implement-plan            │
-│            (spec →             (Agent Team pipeline:        │
-│             implement →         parallel story execution)   │
-│             review-gap)                                     │
-│                   └─────────┬──────────┘                    │
+│                    ┌─────────┴──────────┐                   │
+│                    ▼                    ▼                   │
+│             Manual per-story        exec-plan               │
+│             (spec → exec-spec)    (Agent Team pipeline:     │
+│                    │              parallel story execution) │
+│                    └─────────┬──────────┘                   │
 │                              ▼                              │
-│                        review-gap                           │
+│                          review-gap                         │
 └─────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────┐
@@ -149,8 +148,8 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 |---------|---------|
 | `spec` | Create single FIS from feature requirements (includes research) |
 | `plan` | Create lightweight implementation plan with story breakdown from PRD |
-| `implement` | Execute FIS with validation loops until complete |
-| `implement-plan` | Execute entire plan through Agent Team pipeline (spec → implement → review-gap per story) |
+| `exec-spec` | Execute FIS with validation loops until complete |
+| `exec-plan` | Execute entire plan through Agent Team pipeline (spec → exec-spec → review-gap per story) |
 
 ### Quick Path
 
@@ -186,7 +185,7 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 /cc-workflows:spec <requirements from step 1>
 
 # 3. Execute the spec
-/cc-workflows:implement
+/cc-workflows:exec-spec
 
 # 4. Final review (against requirements)
 /cc-workflows:review-gap
@@ -207,11 +206,11 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 /cc-workflows:plan docs/specs/dashboard/
 
 # 4a. Execute all stories via Agent Team pipeline (recommended)
-/cc-workflows:implement-plan docs/specs/dashboard/
+/cc-workflows:exec-plan docs/specs/dashboard/
 
 # 4b. OR manually per story: create spec JIT, then execute
 /cc-workflows:spec "S01: Project Setup" # from plan
-/cc-workflows:implement
+/cc-workflows:exec-spec
 /cc-workflows:review-gap
 # ... repeat for each story
 
@@ -238,10 +237,10 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 ```bash
 # Execute entire plan through parallelized Agent Team pipeline
 # Requires Agent Teams feature enabled
-/cc-workflows:implement-plan docs/specs/dashboard/
+/cc-workflows:exec-plan docs/specs/dashboard/
 
 # Spawns Spec Creators, Implementers, and Reviewers that work
-# through all stories: spec → implement → review-gap
+# through all stories: spec → exec-spec → review-gap
 # Respects phase ordering, dependencies, and [P] parallel markers
 # Team size scales with story count (3-8 agents)
 
@@ -276,7 +275,7 @@ Some commands optionally use skills from other plugins when available:
 
 | Plugin | Used by | Purpose |
 |--------|---------|---------|
-| `code-simplifier` | `refactor`, `implement`, `quick-implement` | Code cleanup and simplification |
+| `code-simplifier` | `refactor`, `exec-spec`, `quick-implement` | Code cleanup and simplification |
 | `frontend-design` | `wireframes` (via `ui-ux-designer` agent) | Design implementation |
 
 Commands work without these plugins but skip the corresponding steps.
@@ -317,7 +316,7 @@ Detailed FIS specs are created just-in-time via `spec` when each story is ready 
 
 ### Implementation Loop
 
-Both `implement` and `quick-implement` use an iterative cycle:
+Both `exec-spec` and `quick-implement` use an iterative cycle:
 ```
 Implement → Verify → Evaluate → (repeat if needed)
 ```

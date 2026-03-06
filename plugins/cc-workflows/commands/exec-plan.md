@@ -1,11 +1,11 @@
 ---
-description: Executes an entire implementation plan through an Agent Team pipeline (spec → implement → review-gap per story)
+description: Executes an entire implementation plan through an Agent Team pipeline (spec → exec-spec → review-gap per story)
 argument-hint: <path-to-plan-directory>
 ---
 
 # Execute Plan with Agent Team Pipeline
 
-Execute ALL stories in an implementation plan (from `/cc-workflows:plan`) through a parallelized Agent Team pipeline: **spec → implement → review-gap** per story.
+Execute ALL stories in an implementation plan (from `/cc-workflows:plan`) through a parallelized Agent Team pipeline: **spec → exec-spec → review-gap** per story.
 
 **Uses Agent Teams** — Falls back to sequential execution (manual per-story loop) if Teams unavailable.
 
@@ -17,7 +17,7 @@ PLAN_DIR: $ARGUMENTS
 ## Usage
 
 ```
-/implement-plan PLAN_DIR="path/to/plan"
+/exec-plan PLAN_DIR="path/to/plan"
 ```
 
 
@@ -32,7 +32,7 @@ Make sure `PLAN_DIR` is provided — otherwise **STOP** immediately and ask the 
 - **Complete Implementation**: All stories in plan must be implemented
 - **Plan is source of truth** — follow phase ordering, dependencies, and parallel markers exactly
 - **Agent Team for pipeline** — use Agent Teams for parallel story execution
-- **Per-story pipeline**: spec → implement → review-gap (with fix loop)
+- **Per-story pipeline**: spec → exec-spec → review-gap (with fix loop)
 
 ### Orchestrator Role
 **You are the orchestrator.** Your job is to:
@@ -56,8 +56,8 @@ Make sure `PLAN_DIR` is provided — otherwise **STOP** immediately and ask the 
 Verify Agent Teams are available by checking that the `TeamCreate` tool exists in your available tools.
 
 If the `TeamCreate` tool is NOT available (experimental feature not enabled):
-- Inform user that implement-plan requires Agent Teams (`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`)
-- Suggest manual alternative: execute stories sequentially with `/cc-workflows:spec` → `/cc-workflows:implement` → `/cc-workflows:review-gap` per story
+- Inform user that exec-plan requires Agent Teams (`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`)
+- Suggest manual alternative: execute stories sequentially with `/cc-workflows:spec` → `/cc-workflows:exec-spec` → `/cc-workflows:review-gap` per story
 - Exit
 
 **Gate**: Agent Teams confirmed available
@@ -108,7 +108,7 @@ You MUST use the `TeamCreate` tool. Do NOT use `Task` alone (without `team_name`
 
 **Spec Creators** — Claim `spec-{story_id}` tasks and run `/cc-workflows:spec` with story scope as input. Output: FIS document.
 
-**Implementers** — Claim `impl-{story_id}` tasks (blocked by corresponding spec task) and run `/cc-workflows:implement` on the generated FIS. Output: implemented story.
+**Implementers** — Claim `impl-{story_id}` tasks (blocked by corresponding spec task) and run `/cc-workflows:exec-spec` on the generated FIS. Output: implemented story.
 
 **Reviewers** — Claim `review-{story_id}` tasks (blocked by corresponding impl task) and run `/cc-workflows:review-gap` per story. If issues found: fix them, then re-validate. **Max 2 fix attempts** — if issues persist after 2 rounds, escalate to the orchestrator via `SendMessage` instead of continuing the loop. Output: validated story.
 
@@ -130,7 +130,7 @@ Your workflow (loop until no tasks remain):
 2. Claim an unblocked, unassigned task via TaskUpdate (set owner to your name)
 3. Execute:
    - Spec Creator: Run /cc-workflows:spec with story scope from plan. Save FIS to docs/specs/ (per spec.md convention)
-   - Implementer: Run /cc-workflows:implement on the FIS for this story
+   - Implementer: Run /cc-workflows:exec-spec on the FIS for this story
    - Reviewer: Run /cc-workflows:review-gap for this story. Fix any issues found, then re-validate (max 2 fix attempts — escalate to orchestrator if issues persist)
 4. Mark task completed via TaskUpdate
 5. Check TaskList for next available task
@@ -171,7 +171,7 @@ Use `TaskUpdate(addBlockedBy)`:
 
 #### 5d. Update Plan
 
-After each story's pipeline completes (spec → implement → review), update `plan.md`:
+After each story's pipeline completes (spec → exec-spec → review), update `plan.md`:
 - Set the story's **Status** field to `Done`
 - Set the story's **FIS** field to the generated spec path (e.g. `**FIS**: docs/specs/story-name.md`)
 - Check off completed acceptance criteria checkboxes (`- [ ]` → `- [x]`)
@@ -247,7 +247,7 @@ If Agent Teams unavailable (Step 1 check fails), suggest the manual equivalent:
 ```bash
 # For each story in plan order:
 /cc-workflows:spec "S01: [Story Name]"
-/cc-workflows:implement
+/cc-workflows:exec-spec
 /cc-workflows:review-gap
 # ... repeat for each story
 ```

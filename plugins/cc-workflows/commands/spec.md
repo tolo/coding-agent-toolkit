@@ -185,7 +185,7 @@ Use the template below to generate the Feature Implementation Specification.
 > 1. **References over Content**: Link to docs, code (file:line), and research — don't inline them
 > 2. **Decisions, not Explanations**: State what to do, not lengthy rationale
 > 3. **Patterns by Reference**: Point to existing code patterns (file:line) rather than reproducing them
-> 4. **Validation at Execution**: Code is written during implement, not spec
+> 4. **Validation at Execution**: Code is written during exec-spec, not spec
 > 5. **Information Dense**: Keywords and patterns from the codebase, minimal prose
 > 6. **Delegate**: Sub-agents do the work; main agent orchestrates
 >
@@ -328,7 +328,7 @@ _Examples:_
 - Configuration/data models: describe structure briefly, don't write full schemas
 
 ### Validation Tasks
-> Validation methodology details (agents, checks) defined in implement.
+> Validation methodology details (agents, checks) defined in exec-spec.
 
 - [ ] **TV01** [P] Level 1: Code review and analysis
 - [ ] **TV02** [P] Level 2: Unit, integration, E2E testing

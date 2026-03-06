@@ -140,10 +140,17 @@ For each story, define:
 
 ### 4. Create Plan Document
 
-Generate `plan.md` with a structure like the following (adapt phases and structure to fit the project):
+Generate `plan.md` with a structure like the following (adapt phases and structure to fit the project).
+
+**Document references header**: Include a blockquote header at the top linking to all key reference documents discovered during Input Validation (PRD, ADRs, design system, wireframes, etc.). Use relative paths. Omit entries where no document exists — only include actual references.
 
 <example-plan-format>
 # Implementation Plan: [Project Name]
+
+> **PRD**: [`prd.md`](./prd.md)
+> **ADRs**: [link any ADR files if present]
+> **Design System**: [link if present]
+> **Wireframes**: [link if present]
 
 ## Overview
 - **Total stories**: [N]
@@ -211,13 +218,13 @@ S01 ──→ S02 ──→ S05
 1. Execute Phase 1 stories sequentially (S01 → S02 → ...)
 2. For each story ready to implement:
    - Run `/cc-workflows:spec` with story scope as input → update **FIS** field with generated spec path
-   - Run `/cc-workflows:implement` on generated FIS
+   - Run `/cc-workflows:exec-spec` on generated FIS
    - Check off completed acceptance criteria in this plan
    - Update **Status** field (Pending → In Progress → Done)
 3. Phase 2+ stories marked [P] can run in parallel after dependencies met
 4. Use `/cc-workflows:review-gap` after completing all stories
 
-> **Status tracking**: After each story's spec is created, update the **FIS** field with the spec file path. After implementation and review, check off acceptance criteria and set **Status** to Done. Update the Story Catalog table status accordingly. `/cc-workflows:implement-plan` does this automatically; for manual per-story execution, the orchestrating agent or user is responsible.
+> **Status tracking**: After each story's spec is created, update the **FIS** field with the spec file path. After implementation and review, check off acceptance criteria and set **Status** to Done. Update the Story Catalog table status accordingly. `/cc-workflows:exec-plan` does this automatically; for manual per-story execution, the orchestrating agent or user is responsible.
 </example-plan-format>
 
 **Gate**: Plan document complete
