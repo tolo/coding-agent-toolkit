@@ -93,12 +93,12 @@ After each sub-agent completes:
 For each implementation task (TI01, TI02, etc.):
 
 **Sequential tasks:**
-- Spawn **sub-agents** (foreground, i.e. `run_in_background=false`) with Input Template
+- Spawn **sub-agents** with Input Template
 - Wait for result
 - Process output, update FIS, track context for next task
 
 **Parallel tasks [P]:**
-- Spawn **parallel sub-agents** (foreground, i.e. `run_in_background=false`)
+- Spawn **parallel sub-agents**
 - Ensure tasks don't have file conflicts
 - Collect all results, update FIS
 

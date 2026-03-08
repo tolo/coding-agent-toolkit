@@ -130,7 +130,7 @@ Return:
 - Critical warnings/limitations
 ```
 
-Launch all research agents using **foreground parallel execution (`run_in_background=false`)** - multiple Task calls in one message.
+Launch all research agents using **parallel execution**.
 
 **Gate**: All research completed
 

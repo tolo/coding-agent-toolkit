@@ -65,7 +65,7 @@ ARGUMENTS: $ARGUMENTS
 
 #### Additional Research - If Needed
 - Only perform research if the feature request lacks sufficient detail or context
-- Use **parallel sub-agents (foreground, i.e. `run_in_background=false`)** for research tasks - multiple Task calls in one message.
+- Use **parallel sub-agents** for research tasks - multiple Task calls in one message.
 - Save findings to _`<project_root>/.agent_temp/research/{feature-name}/`_ **only** if substantial, and add links to generated FIS. Note: If only a file/URL is needed, do not create a research file, just add the reference.
 
 ##### 1. Codebase Research:
@@ -187,7 +187,6 @@ Use the template below to generate the Feature Implementation Specification.
 > 3. **Patterns by Reference**: Point to existing code patterns (file:line) rather than reproducing them
 > 4. **Validation at Execution**: Code is written during exec-spec, not spec
 > 5. **Information Dense**: Keywords and patterns from the codebase, minimal prose
-> 6. **Delegate**: Sub-agents do the work; main agent orchestrates
 >
 > **Size Constraint:**
 > - Target: **300-500 lines** max for most features
@@ -297,7 +296,7 @@ Below is an overview of the tasks that make up the implementation plan.
 **IMPORTANT:**
 - Each task is self-contained with all context needed, for independent execution
 - Check off task checkboxes (- [ ] → - [x]) as tasks are completed
-- Tasks that can be safely executed in parallel using sub-agents will be marked with a [P].
+- Tasks that can be safely executed in parallel are marked with [P].
 
 ### List of implementation tasks to be completed and the order in which they should be completed
 
@@ -328,7 +327,7 @@ _Examples:_
 - Configuration/data models: describe structure briefly, don't write full schemas
 
 ### Validation Tasks
-> Validation methodology details (agents, checks) defined in exec-spec.
+> Validation methodology details defined in exec-spec.
 
 - [ ] **TV01** [P] Level 1: Code review and analysis
 - [ ] **TV02** [P] Level 2: Unit, integration, E2E testing

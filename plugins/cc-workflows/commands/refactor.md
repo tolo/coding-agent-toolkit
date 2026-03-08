@@ -73,13 +73,13 @@ Produce a prioritized list of improvements. Ask user for confirmation before pro
 Delegate to `code-simplifier:code-simplifier` agent (if available):
 - Execute improvements from the prioritized list
 - Work file-by-file or by logical unit
-- For independent changes, use **parallel sub-agents (foreground, i.e. `run_in_background=false`)**
+- For independent changes, use **parallel sub-agents**
 - Ensure each change preserves existing behavior
 
 
 ### Phase 4: Verification
 
-Run in **parallel sub-agents (foreground, i.e. `run_in_background=false`)**:
+Run in **parallel sub-agents**:
 
 1. **Tests**: Run full test suite — all tests must pass
 2. **Code review**: Use `/cc-workflows:review-code` skill to verify improvements and catch regressions

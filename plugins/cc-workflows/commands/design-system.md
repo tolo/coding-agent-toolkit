@@ -65,7 +65,7 @@ From _`REQUIREMENTS`_, identify:
 - Identify suitable foundation design systems and/or component libraries
 - Research best practices for the specific domain
 
-_If available, delegate using **foreground parallel sub-agents (`run_in_background=false`)** - multiple Task calls in one message._
+_If available, delegate using **parallel sub-agents** - multiple Task calls in one message._
 
 #### 2.2 Document Findings
 Save research to _`<project_root>/.agent_temp/research/design/`_ only if substantial.
@@ -216,7 +216,7 @@ Review your work for:
 - Redundancy or over-engineering
 - Token usage consistency (no hardcoded values)
 
-_If available, delegate using **foreground parallel sub-agents (`run_in_background=false`)** - multiple Task calls in one message._
+_If available, delegate using **parallel sub-agents** - multiple Task calls in one message._
 
 #### 6.2 Refinement
 Address any issues found:

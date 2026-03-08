@@ -124,7 +124,7 @@ Execute fixes methodically and autonomously:
 - Ensure no sensitive data is exposed or logged
 - Run any security scanning tools available
 
-**Always** use **foreground parallel agents (`run_in_background=false`)** - multiple Task calls in one message - such as `cc-workflows:qa-test-engineer`, `cc-workflows:solution-architect`, `cc-workflows:ui-ux-designer`, `cc-workflows:build-troubleshooter`, and specialized technology agents as needed. For code review, use the `/cc-workflows:review-code` skill.
+**Always** use **parallel sub-agents** such as `cc-workflows:qa-test-engineer`, `cc-workflows:solution-architect`, `cc-workflows:ui-ux-designer`, `cc-workflows:build-troubleshooter`, and specialized technology agents as needed. For code review, use the `/cc-workflows:review-code` skill.
 
 **Gate**: All validations pass - application builds/starts, all tests pass, code quality checks pass, no regressions, security validated.
 

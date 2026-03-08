@@ -75,12 +75,12 @@ ARGUMENTS: $ARGUMENTS
 - Write tests first where applicable, otherwise alongside implementation
 - Write code following existing codebase patterns
 - Follow project guidelines strictly
-- Use **sub-agents (foreground, i.e. `run_in_background=false`)** for independent implementation tasks
+- Use **sub-agents** for independent implementation tasks
 - Delegate build issues to `cc-workflows:build-troubleshooter`
 
 #### Step 2: Verification
 
-Run each verification sub-step using **parallel sub-agents (foreground, i.e. `run_in_background=false`)**:
+Run each verification sub-step using **parallel sub-agents**:
 
 ##### 2.1. Code & Architecture Review
 - Static analysis, linting, type checking
