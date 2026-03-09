@@ -7,11 +7,42 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 
 ---
 
+## 2026-03-09 — cc-workflows [0.11.0]
+
+### Added
+- **`exec-plan-codex`**: New command — hybrid plan execution that uses Claude Code Agent Teams for orchestration and spec creation, but delegates implementation, review, and troubleshooting to **Codex CLI** instances via `codex exec`. Requires Codex CLI installed with simple-commands as `/prompts:` commands
+- **`simple-commands/troubleshoot`**: Ported from `plugins/cc-workflows/commands/utils/troubleshoot.md` — standalone troubleshooting workflow for non-Claude-Code agents (no sub-agent dependencies)
+
+---
+
+## 2026-03-08 — cc-workflows [0.10.1]
+
+### Changed
+- **Multiple commands**: Improved FIS portability — clarified instructions to be less Claude-Code-specific
+- **`exec-spec`**, **`spec`**, **`design-system`**, **`quick-implement`**, **`refactor`**, **`trade-off-analysis`**, **`troubleshoot`**: Removed explicit `run_in_background` instructions for sub-agents (agent decides autonomously)
+
+---
+
 ## 2026-03-05 — cc-workflows [0.10.0]
 
 ### Changed
 - **Command renames**: `implement` → `exec-spec`, `implement-plan` → `exec-plan` — establishes `exec-` prefix convention (create documents with `plan`/`spec`, execute them with `exec-plan`/`exec-spec`)
 - **`plan`**: Added document references header to plan template — links to PRD, ADRs, design system, wireframes at top of generated plan
+
+---
+
+## 2026-03-04 — Repository
+
+### Changed
+- **Prompt engineering guidelines**: Major updates to general, Claude-specific, and GPT-specific guidelines — expanded with latest model capabilities and patterns
+- **`exec-plan`**, **`exec-spec`**, **`plan`**, **`spec`**: Various corrections and improvements from review feedback
+
+---
+
+## 2026-03-03 — Repository
+
+### Added
+- **`dart-lsp`** plugin: New plugin for Dart/Flutter LSP integration
 
 ---
 

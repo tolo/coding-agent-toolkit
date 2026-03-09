@@ -87,6 +87,7 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 | `plan` | Create implementation plan with story breakdown from PRD |
 | `exec-spec` | Execute spec with validation loops until complete |
 | `exec-plan` | Execute entire plan through Agent Team pipeline |
+| `exec-plan-codex` | Execute plan via Agent Teams + Codex CLI delegation |
 | `quick-implement` | Fast path for small features/fixes (supports `--issue` for GitHub) |
 | `review-code` | Comprehensive code review (quality, security, architecture, UI/UX) |
 | `review-gap` | Gap analysis: implementation vs requirements |
@@ -235,18 +236,21 @@ The workflows in this toolkit aren't limited to Claude Code. Two directories con
 Use these as custom prompts or copy them into your agent's prompt/instruction directory:
 
 ```bash
-# Use a command prompt with Codex CLI
+# Install as Codex CLI prompts (accessible via /prompts:<name>)
+cp simple-commands/*.md ~/.codex/prompts/
+
+# Then use in Codex:
+codex exec "/prompts:exec-spec docs/specs/my-feature.md"
+codex exec "/prompts:review-gap"
+codex exec "/prompts:troubleshoot 'build failures in auth module'"
+
+# Or use directly with any agent
 codex exec --prompt simple-commands/review-code.md
-
-# Use a skill prompt
-codex exec --prompt plugins/cc-workflows/skills/review-code/SKILL.md
-
-# Or copy into your agent's custom prompts directory
-cp simple-commands/spec.md ~/.your-agent/prompts/
-cp plugins/cc-workflows/skills/review-code/SKILL.md ~/.your-agent/prompts/review-code.md
 ```
 
 Each file is self-contained — no plugin infrastructure required.
+
+**Codex CLI + Claude Code hybrid**: The `exec-plan-codex` command uses Claude Code as orchestrator while delegating coding work to Codex CLI instances. See the [cc-workflows README](plugins/cc-workflows/) for details.
 
 ---
 

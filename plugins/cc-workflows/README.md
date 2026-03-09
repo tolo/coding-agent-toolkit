@@ -101,11 +101,11 @@ Commands automatically fall back to single-agent alternatives when Agent Teams u
 │    clarify ──→ prd ─────→  plan  ───────→ review-doc        │
 │                       (story breakdown)                     │
 │                              │                              │
-│                    ┌─────────┴──────────┐                   │
-│                    ▼                    ▼                   │
-│             Manual per-story        exec-plan               │
-│             (spec → exec-spec)    (Agent Team pipeline:     │
-│                    │              parallel story execution) │
+│                    ┌─────────┼──────────┐                   │
+│                    ▼         ▼          ▼                   │
+│             Manual      exec-plan   exec-plan-codex         │
+│             per-story   (Agent Team (Agent Team +           │
+│                         pipeline)   Codex CLI)              │
 │                    └─────────┬──────────┘                   │
 │                              ▼                              │
 │                          review-gap                         │
@@ -150,6 +150,7 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 | `plan` | Create lightweight implementation plan with story breakdown from PRD |
 | `exec-spec` | Execute FIS with validation loops until complete |
 | `exec-plan` | Execute entire plan through Agent Team pipeline (spec → exec-spec → review-gap per story) |
+| `exec-plan-codex` | Execute plan via Agent Teams + Codex CLI (spec in Claude, coding/review delegated to Codex) |
 
 ### Quick Path
 
@@ -245,6 +246,22 @@ Invoke with `/cc-workflows:<command>` or just `/<command>` if unambiguous.
 # Team size scales with story count (3-8 agents)
 
 # Falls back to manual per-story execution if Agent Teams unavailable
+```
+
+### Plan Execution with Codex CLI Delegation
+
+```bash
+# Execute plan with Claude Code orchestration + Codex CLI for coding
+# Requires: codex CLI installed, simple-commands as /prompts:
+/cc-workflows:exec-plan-codex docs/specs/dashboard/
+
+# Same pipeline as exec-plan, but:
+# - Spec creation stays in Claude Code (research/analysis strength)
+# - Implementation delegated to Codex CLI via /prompts:exec-spec
+# - Review delegated to Codex CLI via /prompts:review-gap
+# - Troubleshooting delegated to Codex CLI via /prompts:troubleshoot
+
+# Falls back to standard exec-plan if Codex unavailable
 ```
 
 ### Multi-Perspective Review (Agent Teams)
