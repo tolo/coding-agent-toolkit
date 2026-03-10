@@ -38,7 +38,7 @@
   > (build, tests) before claiming overall completion.
 
 ### **Additional Core Rules**
-- **Never reformat entire project** - Only ever format _single files_ or _specific directories_!
+- **Never reformat entire project** - Only format modified code, leave other code as-is. Format entire _single files_ or _specific directories_ upon request only. 
 - **Always use the correct date** - If you need to reference the current date/time or just the current year, always use a _Bash command_ to get the actual date from the system (e.g. `date +%Y-%m-%d` for date only or `date -Iseconds` for full timestamp)
 - **Use the correct author** - Never write "Created by Claude Code" or similar in file headers, git commit messages etc 
 - **No estimates** - Never provide time or effort estimates (hours, days etc...) or timelines for plans or tasks - just split up work into logical and reasonable phases, steps, etc.

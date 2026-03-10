@@ -218,12 +218,14 @@ Sonnet 4.6 supports both adaptive and manual extended thinking:
 
 ### Effort Levels
 
-| Effort | Use Case | Thinking Behavior |
-|--------|----------|-------------------|
-| `low` | Simple lookups, classification | Minimal or no thinking |
-| `medium` | Standard tasks, code edits | Moderate thinking |
-| `high` | Complex reasoning, debugging | Deep analysis |
-| `max` | Research, architecture, critical decisions | Maximum depth |
+| Effort | Use Case | Thinking Behavior | Model Support |
+|--------|----------|-------------------|---------------|
+| `low` | Simple lookups, classification, subagents | Minimal or no thinking | Opus 4.6, Sonnet 4.6, Opus 4.5 |
+| `medium` | Standard tasks, code edits, most agentic coding | Moderate thinking | Opus 4.6, Sonnet 4.6, Opus 4.5 |
+| `high` | Complex reasoning, debugging, architecture | Deep analysis (API default) | Opus 4.6, Sonnet 4.6, Opus 4.5 |
+| `max` | Critical decisions, hardest problems | No constraints on thinking | **Opus 4.6 only** (error on other models) |
+
+> **Note**: Haiku 4.5 does **not** support the effort parameter. Effort is a behavioral signal, not a hard token cap — even at `low`, the model will still think on genuinely hard problems.
 
 ### Recommended Configurations
 
@@ -398,11 +400,19 @@ Throughout execution:
 
 ## Model Selection
 
-| Model | ID | Use When | Input/Output (per 1M) | Speed |
-|-------|-----|----------|----------------------|-------|
-| **Haiku 4.5** | `claude-haiku-4-5-20251001` | Simple tasks; clear logic; utilities; orchestrators | $1/$5 | Fastest |
-| **Sonnet 4.6** | `claude-sonnet-4-6` | Complex reasoning; multi-phase workflows; analysis | $3/$15 | Medium |
-| **Opus 4.6** | `claude-opus-4-6` | Very complex tasks; critical architectural decisions | $5/$25 | Slowest |
+| Model | ID | SWE-bench Verified | Context | Max Output | Input/Output (per 1M) |
+|-------|-----|-------------------|---------|------------|----------------------|
+| **Haiku 4.5** | `claude-haiku-4-5-20251001` | 73.3% | 200K | 64K | $1/$5 |
+| **Sonnet 4.6** | `claude-sonnet-4-6` | 79.6% | 200K (1M beta) | 64K | $3/$15 |
+| **Opus 4.6** | `claude-opus-4-6` | 80.8% | 200K (1M beta) | 128K | $5/$25 |
+
+| Model | Best For |
+|-------|----------|
+| **Haiku 4.5** | Simple tasks, subagents, high-volume parallel work. No effort param support. |
+| **Sonnet 4.6** | Most daily coding — within 1.2% of Opus at 60% cost. Sweet spot for implementation, review, testing. |
+| **Opus 4.6** | Planning, specs, ADRs, trade-off analysis, security audits, complex debugging. Only model supporting `max` effort. |
+
+See also: [Model & Effort Selection Guide](../../MODEL-EFFORT-SELECTION-GUIDE.md) for detailed task-specific recommendations.
 
 ---
 

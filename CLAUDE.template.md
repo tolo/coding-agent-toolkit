@@ -77,6 +77,26 @@ Retrieves and processes content from web pages, converting HTML to markdown for 
 - Fix any linting or type errors before considering the task complete
 - Do this for any file you create or modify
 
+### Tools and MCP Servers for visual validation and UI testing/exploration
+
+#### Agent Browser (`https://github.com/vercel-labs/agent-browser`)
+
+Use `agent-browser` for web automation and quick and efficient visual validation.
+
+Run `agent-browser --help` for all commands.
+Core workflow:
+1. `agent-browser open <url>` - Navigate to page
+2. `agent-browser snapshot -i` - Get interactive elements with refs (@e1, @e2)
+3. `agent-browser click @e1` / `fill @e2 "text"` - Interact using refs
+4. Re-snapshot after page changes
+
+See also this skill: `agent-browser`
+
+#### Chrome DevTools MCP (`https://github.com/ChromeDevTools/chrome-devtools-mcp`)
+Use the `chrome-devtools` for deeper visual validation and UI testing/exploration, as well as debugging, analysis/execution of JavaScript etc.
+
+See also this skill: `chrome-devtools`
+
 
 ---
 

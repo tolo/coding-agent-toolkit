@@ -254,10 +254,17 @@ Each file is self-contained — no plugin infrastructure required.
 
 ---
 
+## Model & Effort Selection Guide
+
+**[`MODEL-EFFORT-SELECTION-GUIDE.md`](MODEL-EFFORT-SELECTION-GUIDE.md)** — practical guidance for selecting models and thinking/effort levels across Claude Code and Codex CLI. Includes task-to-configuration matrices and recommended settings for each cc-workflows command.
+
+---
+
 ## Repository Structure
 
 ```
 ├── CLAUDE.template.md          # CLAUDE.md template for your projects
+├── MODEL-EFFORT-SELECTION-GUIDE.md  # Model & effort selection guide
 ├── hooks/
 │   ├── scripts/                # Standalone hook scripts
 │   ├── configs/                # Default hook configs
@@ -279,6 +286,18 @@ Each file is self-contained — no plugin infrastructure required.
     ├── prompt-guidelines/      # Prompt engineering guidelines
     └── specs/                  # Feature implementation specs
 ```
+
+---
+
+
+## Other useful resources (skills, plugins etc)
+
+- Agent Browser (CLI tool and Skill) - https://github.com/vercel-labs/agent-browser
+
+- Excalidraw Diagram Creator Skill - https://github.com/coleam00/excalidraw-diagram-skill/blob/main/SKILL.md
+
+
+---
 
 ## License
 
