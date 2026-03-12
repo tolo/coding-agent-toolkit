@@ -134,8 +134,9 @@ Ask ONLY if implementation is blocked by ambiguity.
 1. Each task: atomic, self-contained, with file:line references
 2. Mark parallelizable tasks with [P]
 3. Reference patterns, don't reproduce them
-4. Stay within 300-500 line target
-5. Replace `<path-to-this-file>` in the self-executing callout with the actual FIS output path
+4. Each task must include a **`Verify:`** line — concrete, observable proof that the task was completed correctly (e.g. command output, file existence, test result, UI state). This enables meaningful gap analysis during execution.
+5. Stay within 300-500 line target
+6. Replace `<path-to-this-file>` in the self-executing callout with the actual FIS output path
 
 
 ### 4. Self-Check
@@ -305,26 +306,36 @@ _Examples:_
   - Create deno.json with Fresh dependencies and tasks
   - Set up basic routes/, islands/, components/, lib/ directories
   - Configure import maps and TypeScript settings
+  - **Verify**: `routes/`, `islands/`, `components/`, `lib/` dirs exist; deno.json contains `fresh` dependency and `start`/`build` tasks
 
 - [ ] **TI02** Configure Supabase integration and environment
   - Create .env.example and .env files with Supabase credentials
   - Set up lib/supabase/client.ts and lib/supabase/server.ts
   - Configure database connection and authentication helpers
+  - **Verify**: `lib/supabase/client.ts` exports `createClient()`, `lib/supabase/server.ts` exports `createServerClient()`; `.env.example` lists `SUPABASE_URL` and `SUPABASE_ANON_KEY`
 
 - [ ] **TI03** [P] Set up development tooling and scripts
   - Configure deno fmt, deno lint, and deno check tasks
   - Set up Playwright for E2E testing in tests/e2e/
   - Create development and deployment scripts
+  - **Verify**: deno.json contains `fmt`, `lint`, `check` task entries; `tests/e2e/playwright.config.ts` exists with base URL configured
 
 - [ ] **TI04** [P] Integrate design system foundation
   - Add Pico CSS CDN link and Google Fonts (Nunito Sans, Outfit)
   - Create static/styles/architecture-theme.css with custom variables
   - Set up responsive design system per ADR-002
+  - **Verify**: `architecture-theme.css` defines color, spacing, and typography custom properties per ADR-002; root layout includes Pico CSS and Google Fonts links
 
 #### Implementation Notes (per task, only when needed)
 - Reference existing patterns: `see src/components/Modal.tsx:45-78 for similar pattern`
 - Only include pseudocode (max 5-10 lines) when no existing pattern exists in codebase
 - Configuration/data models: describe structure briefly, don't write full schemas
+
+#### Verification Criteria (per task, required)
+Each task's **`Verify:`** line should specify concrete, observable proof of completion unique to that task's deliverable. Good verification criteria are:
+- **Deliverable-specific**: what files exist, what they export, what structure they have (e.g. "`client.ts` exports `createClient()`")
+- **Observable**: file contents, UI state, or measurable behavior (e.g. "root layout includes Pico CSS link")
+- **Not duplicating validation tasks**: avoid generic build/lint/type checks — those are covered by TV01-TV02
 
 ### Validation Tasks
 > Validation methodology details defined in exec-spec.

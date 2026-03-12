@@ -26,7 +26,8 @@ _Always fully read and understand this file before doing any work:_ @docs/rules/
 
 
 ### Foundational Development Guidelines and Standards
-Always fully read relevant guidelines below as needed, based on the type of work being done:
+**Always read** relevant guidelines below as _needed_, based on the type of work being done. Review what guidelines are relevant to the task at hand before starting any work that involves coding, architecture, UX/UI, code review, etc.
+
 - _`<repository_root>/docs/guidelines/DEVELOPMENT-ARCHITECTURE-GUIDELINES.md`_ when doing development work (coding, architecture, etc.)
 - _`<repository_root>/docs/guidelines/UX-UI-GUIDELINES.md`_ when doing UX/UI related work
 - _`<repository_root>/docs/guidelines/WEB-DEV-GUIDELINES.md`_ when doing web development work

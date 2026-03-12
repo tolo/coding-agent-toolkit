@@ -7,6 +7,13 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 
 ---
 
+## 2026-03-12 — cc-workflows [0.11.2]
+
+### Added
+- **`spec`**, **`simple-commands/spec`**: Per-task **`Verify:`** line requirement — each implementation task must include concrete, deliverable-specific proof of completion (file existence, exports, structure, UI state). Includes guidance distinguishing verification from validation tasks (no generic build/lint checks) and updated template examples
+
+---
+
 ## 2026-03-09 — cc-workflows [0.11.0]
 
 ### Added
