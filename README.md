@@ -1,5 +1,13 @@
 # Coding Agent Toolkit
 
+> **This repository is archived.** The workflow system has evolved into a new project:
+>
+> ## → [IT-HUSET/andthen](https://github.com/IT-HUSET/andthen)
+>
+> **AndThen** is the successor to `cc-workflows` — a focused, opinionated workflow system for agentic development with a clean new structure and identity. Please use that repo going forward.
+
+---
+
 Development workflows, rules, guidelines, and safety hooks for Claude Code.
 
 The centerpiece is the **[cc-workflows](#cc-workflows-plugin)** plugin — structured workflows that take you from requirements through implementation to review. Everything else (rules, guidelines, hooks) supports and enhances those workflows.
